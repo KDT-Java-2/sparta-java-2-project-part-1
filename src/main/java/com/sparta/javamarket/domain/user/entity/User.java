@@ -1,15 +1,20 @@
 package com.sparta.javamarket.domain.user.entity;
 
 import com.sparta.javamarket.common.enums.UserRoleStatus;
+import com.sparta.javamarket.domain.purchase.entity.Purchase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,7 +42,7 @@ public class User {
   String email;
 
   @Column(nullable = false)
-  String passwordHash;
+  String password;
 
   @Column(nullable = false, length = 50)
   String name;
@@ -63,11 +68,14 @@ public class User {
   @UpdateTimestamp
   LocalDateTime updatedAt;
 
+  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+  List<Purchase> purchases = new ArrayList<>();
+
   @Builder
-  public User(String email, String passwordHash, String name, String nickname, String phone,
+  public User(String email, String password, String name, String nickname, String phone,
       String address, UserRoleStatus role) {
     this.email = email;
-    this.passwordHash = passwordHash;
+    this.password = password;
     this.name = name;
     this.nickname = nickname;
     this.phone = phone;
