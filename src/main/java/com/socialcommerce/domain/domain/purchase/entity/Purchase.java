@@ -3,6 +3,7 @@ package com.socialcommerce.domain.domain.purchase.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import com.socialcommerce.domain.common.enums.PurchaseStatus;
+import com.socialcommerce.domain.domain.coupon.Coupon;
 import com.socialcommerce.domain.domain.refund.entity.Refund;
 import com.socialcommerce.domain.domain.user.entity.User;
 import jakarta.persistence.Column;
@@ -24,7 +25,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -62,6 +62,10 @@ public class Purchase { // 주문
   // 전체환불
   @OneToOne(mappedBy = "purchase", fetch = FetchType.LAZY)
   Refund refund;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "coupon_id")
+  Coupon coupon;
 
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
