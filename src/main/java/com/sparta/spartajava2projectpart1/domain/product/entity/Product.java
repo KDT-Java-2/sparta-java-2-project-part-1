@@ -1,5 +1,6 @@
 package com.sparta.spartajava2projectpart1.domain.product.entity;
 
+import com.sparta.spartajava2projectpart1.domain.cart.entity.Cart;
 import com.sparta.spartajava2projectpart1.domain.category.entity.Category;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -13,6 +14,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table
 @Entity
@@ -41,6 +44,9 @@ public class Product {
     @JoinColumn(name = "category_id")
     Category category;
 
+    @OneToMany(mappedBy = "product")
+    List<Cart> carts = new ArrayList<>();
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     LocalDateTime createdAt;
@@ -50,10 +56,11 @@ public class Product {
     LocalDateTime updatedAt;
 
     @Builder
-    public Product(String name, String description, BigDecimal price, Integer stock) {
+    public Product(String name, String description, BigDecimal price, Integer stock, Category category) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.stock = stock;
+        this.category = category;
     }
 }

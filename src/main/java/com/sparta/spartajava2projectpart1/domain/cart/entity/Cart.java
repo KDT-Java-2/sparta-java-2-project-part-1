@@ -36,7 +36,7 @@ public class Cart {
     Product product;
 
     @Column(nullable = false)
-    Long quantity;
+    Integer quantity;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -47,7 +47,7 @@ public class Cart {
     LocalDateTime updatedAt;
 
     @Builder
-    public Cart(User user, Product product, Long quantity) {
+    public Cart(User user, Product product, Integer quantity) {
         this.user = user;
         this.product = product;
         this.quantity = quantity;

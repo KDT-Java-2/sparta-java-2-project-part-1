@@ -1,5 +1,6 @@
 package com.sparta.spartajava2projectpart1.domain.user.entity;
 
+import com.sparta.spartajava2projectpart1.domain.cart.entity.Cart;
 import com.sparta.spartajava2projectpart1.domain.purchase.entity.Purchase;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -49,6 +50,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     List<Purchase> purchases = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    List<Cart> carts = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

@@ -3,6 +3,9 @@ package com.sparta.spartajava2projectpart1.domain.category.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -13,8 +16,10 @@ import java.time.LocalDateTime;
 
 @Table
 @Entity
+@Getter
 @DynamicInsert
 @DynamicUpdate
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Category {
     @Id
@@ -36,4 +41,9 @@ public class Category {
     @Column
     @UpdateTimestamp
     LocalDateTime updatedAt;
+
+    @Builder
+    public Category(String name) {
+        this.name = name;
+    }
 }
