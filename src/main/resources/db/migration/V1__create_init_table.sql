@@ -19,7 +19,6 @@ CREATE TABLE purchase
     created_at  DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6)
 );
 
-
 -- product Table
 CREATE TABLE product
 (
@@ -32,7 +31,6 @@ CREATE TABLE product
     created_at  DATETIME                DEFAULT CURRENT_TIMESTAMP,
     updated_at  DATETIME                DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
 
 -- category Table
 CREATE TABLE category
