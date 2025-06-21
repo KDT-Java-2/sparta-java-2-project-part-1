@@ -2,15 +2,22 @@ package com.sparta.part_1.domain.user.entity;
 
 import com.sparta.part_1.common.enums.UserGrade;
 import com.sparta.part_1.common.enums.UserStatus;
+import com.sparta.part_1.domain.cart.entity.Cart;
+import com.sparta.part_1.domain.purchase.entity.Purchase;
+import com.sparta.part_1.domain.refunds.entity.Refund;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -62,6 +69,15 @@ public class User {
 
   @Column(nullable = false)
   Boolean isThirdPartyAgree;
+
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+  List<Cart> cart = new ArrayList<>();
+
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+  List<Refund> refunds = new ArrayList<>();
+
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+  List<Purchase> purchases = new ArrayList<>();
 
   @Column(nullable = false, updatable = false)
   @CreationTimestamp
