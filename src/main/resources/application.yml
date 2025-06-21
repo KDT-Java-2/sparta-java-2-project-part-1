@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: java2-project-part1
+  datasource:
+    url: jdbc:mysql://localhost:3306/spring_db
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+server:
+  port: 8080
