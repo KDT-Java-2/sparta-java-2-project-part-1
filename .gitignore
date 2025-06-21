@@ -56,3 +56,4 @@ Thumbs.db
 # 📄 기타 필요 없는 파일
 # ========================================
 HELP.md
+src/main/resources/application-secret.yml

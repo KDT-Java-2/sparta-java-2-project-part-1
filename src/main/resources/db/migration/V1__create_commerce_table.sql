@@ -1,0 +1,77 @@
+-- 유저 테이블
+CREATE TABLE user (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL COMMENT '유저 이름',
+    email VARCHAR(255) NOT NULL UNIQUE COMMENT '유저 이메일',
+    phone VARCHAR(20) COMMENT '유저 연락처',
+    password_hash VARCHAR(255) NOT NULL COMMENT '유저 비밀번호 해시값',
+    role VARCHAR(20) NOT NULL DEFAULT 'CUSTOMER' COMMENT '유저 권한',   -- enum
+    status VARCHAR(10) NOT NULL DEFAULT 'ACTIVE' COMMENT '사용자 상태',  -- enum
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 상품 테이블
+CREATE TABLE product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    product_name VARCHAR(255) NOT NULL COMMENT '상품명',
+    brand_name VARCHAR(255) NOT NULL COMMENT '브랜드명',
+    description TEXT COMMENT '상품 설명',
+    price DECIMAL(10, 2) NOT NULL COMMENT '상품 가격',
+    stock INT NOT NULL DEFAULT 0 COMMENT '재고 수량',
+    status VARCHAR(20) NOT NULL DEFAULT 'ON_SALE' COMMENT '판매 상태',    -- enum
+    category_id BIGINT COMMENT '카테고리 ID(FK)',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 카테고리 테이블
+CREATE TABLE category (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL COMMENT '카테고리명',
+    parent_id BIGINT DEFAULT NULL COMMENT '부모 카테고리 ID', -- 자기 참조
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 주문 테이블
+CREATE TABLE purchase (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL COMMENT '사용자 ID(FK)',
+    total_price DECIMAL(10, 2) NOT NULL COMMENT '주문 금액',
+    payment_method VARCHAR(20) NOT NULL DEFAULT 'CASH' COMMENT '결제 방식',  -- enum
+    status VARCHAR(20) NOT NULL DEFAULT 'PENDING' COMMENT '주문 상태',  -- enum
+    shipping_address TEXT NOT NULL COMMENT '배송지',
+    memo VARCHAR(255) COMMENT '배송 메모',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 주문-상품 테이블
+CREATE TABLE purchase_product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    purchase_id BIGINT NOT NULL COMMENT '주문 ID(FK)',
+    product_id BIGINT NOT NULL COMMENT '상품 ID(FK)',
+    quantity INT NOT NULL COMMENT '수량',
+    price DECIMAL(10, 2) NOT NULL COMMENT '상품 가격',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 장바구니 테이블
+CREATE TABLE cart (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL COMMENT '유저 ID(FK)',
+    product_id BIGINT NOT NULL COMMENT '상품 ID(FK)',
+    quantity INT NOT NULL COMMENT '수량',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 환불 테이블
+CREATE TABLE refund (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    purchase_id BIGINT NOT NULL COMMENT '주문 ID(FK)',
+    reason TEXT NOT NULL COMMENT '환불 사유',
+    status VARCHAR(20) NOT NULL DEFAULT 'PENDING' COMMENT '환불 상태',   -- enum
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
