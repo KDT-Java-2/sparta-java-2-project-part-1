@@ -29,6 +29,3 @@ logging:
 server:
   port: 8080
 
-springdoc:
-  swagger-ui:
-    enabled: true
