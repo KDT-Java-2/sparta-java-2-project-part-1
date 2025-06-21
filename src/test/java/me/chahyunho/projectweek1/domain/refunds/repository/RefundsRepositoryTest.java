@@ -21,7 +21,7 @@ class RefundsRepositoryTest {
 
   @Test
   void findAllRefunds() {
-    
+    // git merge test
     // 연관관계의 상태 엔티티안에서의 또 다른 엔티티를 조회할시 n + 1 이슈 발생으로 2개를 FETCH 했는데 이게 맞는지 모르겠다.
     List<Refunds> refunds = refundsRepository.findAllWithPurchaseAndUser();
 
