@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -44,10 +45,20 @@ public class Purchase extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private PurchaseStatus status = PurchaseStatus.PENDING;
+  private PurchaseStatus status;
 
   @Column(nullable = false)
   private LocalDateTime orderedAt;
 
   private LocalDateTime canceledAt;
+
+  @Builder
+  public Purchase(Member member, List<PurchaseProduct> purchaseProducts, BigDecimal totalPrice,
+      PurchaseStatus status, LocalDateTime orderedAt) {
+    this.member = member;
+    this.purchaseProducts = purchaseProducts;
+    this.totalPrice = totalPrice;
+    this.status = status == null ? PurchaseStatus.PENDING : status;
+    this.orderedAt = orderedAt;
+  }
 }

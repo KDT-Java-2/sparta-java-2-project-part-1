@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.math.BigDecimal;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -47,5 +48,16 @@ public class RefundItem extends BaseEntity {
   private RefundType  refundType;
 
   private String reason;
+
+  @Builder
+  public RefundItem(Refund refund, PurchaseProduct purchaseProduct, int refundQuantity,
+      BigDecimal refundAmount, RefundType refundType, String reason) {
+    this.refund = refund;
+    this.purchaseProduct = purchaseProduct;
+    this.refundQuantity = refundQuantity;
+    this.refundAmount = refundAmount;
+    this.refundType = refundType;
+    this.reason = reason;
+  }
 }
 

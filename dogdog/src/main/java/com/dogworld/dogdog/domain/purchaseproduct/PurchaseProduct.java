@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.math.BigDecimal;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -48,4 +49,14 @@ public class PurchaseProduct extends BaseEntity {
   @Column(nullable = false)
   private PurchaseProductStatus status = PurchaseProductStatus.ORDERED;
 
+  @Builder
+  public PurchaseProduct(Purchase purchase, Product product, int quantity, BigDecimal price,
+      BigDecimal totalPrice, PurchaseProductStatus status) {
+    this.purchase = purchase;
+    this.product = product;
+    this.quantity = quantity;
+    this.price = price;
+    this.totalPrice = totalPrice;
+    this.status = status;
+  }
 }

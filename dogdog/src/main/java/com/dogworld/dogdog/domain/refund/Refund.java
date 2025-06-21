@@ -16,6 +16,7 @@ import jakarta.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -41,4 +42,15 @@ public class Refund extends BaseEntity {
   private LocalDateTime requestedAt;
 
   private LocalDateTime processedAt;
+
+  @Builder
+  public Refund(RefundType refundType, String reason, RefundStatus status,
+      LocalDateTime requestedAt,
+      LocalDateTime processedAt) {
+    this.refundType = refundType;
+    this.reason = reason;
+    this.status = status;
+    this.requestedAt = requestedAt;
+    this.processedAt = processedAt;
+  }
 }

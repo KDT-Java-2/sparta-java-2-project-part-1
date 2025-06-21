@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -43,11 +44,11 @@ public class Member extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private MemberRole role = MemberRole.MEMBER;
+  private MemberRole role;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private MemberStatus status = MemberStatus.ACTIVE;
+  private MemberStatus status;
 
   @Column(nullable = false)
   private boolean agreedTerms;
@@ -61,4 +62,21 @@ public class Member extends BaseEntity {
   private LocalDateTime marketingAgreedAt;
 
   private LocalDateTime deletedAt;
+
+  @Builder
+  public Member(String username, String password, String name, String email, String phoneNumber,
+      MemberRole role, MemberStatus status, boolean agreedTerms, boolean agreedPrivacy,
+      boolean agreedMarketing, LocalDateTime marketingAgreedAt) {
+    this.username = username;
+    this.password = password;
+    this.name = name;
+    this.email = email;
+    this.phoneNumber = phoneNumber;
+    this.role = (role != null) ? role : MemberRole.MEMBER;
+    this.status = (status != null) ? status : MemberStatus.ACTIVE;
+    this.agreedTerms = agreedTerms;
+    this.agreedPrivacy = agreedPrivacy;
+    this.agreedMarketing = agreedMarketing;
+    this.marketingAgreedAt = marketingAgreedAt;
+  }
 }

@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.math.BigDecimal;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -44,11 +45,24 @@ public class Product extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private ProductStatus status = ProductStatus.SELLING;
+  private ProductStatus status;
 
   @Column(length = 500)
   private String thumbnailUrl;
 
   @Column(nullable = false)
   private boolean deleted;
+
+  @Builder
+  public Product(String name, String description, BigDecimal price, int stock, Category category,
+      ProductStatus status, String thumbnailUrl, boolean deleted) {
+    this.name = name;
+    this.description = description;
+    this.price = price;
+    this.stock = stock;
+    this.category = category;
+    this.status = (status == null) ? ProductStatus.SELLING : status;
+    this.thumbnailUrl = thumbnailUrl;
+    this.deleted = deleted;
+  }
 }
