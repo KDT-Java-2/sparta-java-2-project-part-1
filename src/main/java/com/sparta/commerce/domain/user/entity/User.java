@@ -15,6 +15,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -58,7 +59,7 @@ public class User {
   @Column(nullable = false)
   String passwordHash; // 유저 비밀번호
 
-  @Column(nullable = true, length = 20)
+  @Column(nullable = false, length = 20)
   String phoneNumber; // 유저 전화번호
 
   @Column(nullable = false)
@@ -84,4 +85,37 @@ public class User {
     this.isDeleted = true;
   }
 
+  /**
+   * 유저 정보 업데이트 메서드 (이름, 전화번호)
+   * @param name 변경할 이름 (null이 아니면 업데이트)
+   * @param phoneNumber 변경할 전화번호 (null이 아니면 업데이트)
+   */
+  public void updateUserInfo(String name, String phoneNumber) {
+    if (!ObjectUtils.isEmpty(name) && !name.trim().isEmpty()) {
+      this.name = name;
+    }
+    if (phoneNumber != null && !phoneNumber.trim().isEmpty()) {
+      this.phoneNumber = phoneNumber;
+    }
+  }
+
+  /**
+   * 유저 비밀번호 업데이트 메서드
+   * @param newPasswordHash 새로운 비밀번호 해시 (null이 아니면 업데이트)
+   */
+  public void updatePassword(String newPasswordHash) {
+    if (!ObjectUtils.isEmpty(newPasswordHash) && !newPasswordHash.trim().isEmpty()) {
+      this.passwordHash = newPasswordHash;
+    }
+  }
+
+  /**
+   * 유저 역할 변경 메서드 (관리자용)
+   * @param newRole 새로운 역할 (null이 아니면 업데이트)
+   */
+  public void updateRole(UserRole newRole) {
+    if (!ObjectUtils.isEmpty(newRole)) {
+      this.role = newRole;
+    }
+  }
 }

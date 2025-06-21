@@ -1,4 +1,4 @@
-package com.sparta.commerce.domain.purchase.entity;
+package com.sparta.commerce.domain.cart;
 
 import com.sparta.commerce.domain.product.entity.Product;
 import jakarta.persistence.Column;
@@ -6,11 +6,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -20,6 +18,8 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
+import jakarta.persistence.Id;
 
 @Table
 @Entity
@@ -28,39 +28,46 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-/**
- * 주문 - 상품 매핑 엔티티
- */
-public class PurchaseProduct {
+public class CartItem {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
 
   @Builder
-  public PurchaseProduct(Purchase purchase, Product product, Integer quantity, BigDecimal totalPrice) {
-    this.purchase = purchase;
+  public CartItem(Cart cart, Product product, Integer quantity) {
+    this.cart = cart;
     this.product = product;
     this.quantity = quantity;
-    this.totalPrice = totalPrice;
   }
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "purchase_id", nullable = false)
-  Purchase purchase; // 주문 정보
+  @JoinColumn(name = "cart_id", nullable = false)
+  Cart cart;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "product_id", nullable = false)
-  Product product;  // 구매한 상품
+  Product product; // 장바구니에 담긴 상품
 
   @Column(nullable = false)
-  private Integer quantity; // 주문 수량
-
-  @Column(nullable = false)
-  private BigDecimal totalPrice; // 주문 시점의 가격
+  Integer quantity; // 장바구니에 담긴 상품의 수량
 
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
   LocalDateTime createdAt;
 
+  @Column
+  @UpdateTimestamp
+  LocalDateTime updatedAt;
+
+  /**
+   * 장바구니 상품의 수량을 변경하는 메서드
+   * @param newQuantity 새로운 수량 (1 이상)
+   */
+  public void updateQuantity(Integer newQuantity) {
+    if (newQuantity == null || newQuantity <= 0) {
+      throw new IllegalArgumentException("상품 수량은 1개 이상이어야 합니다.");
+    }
+    this.quantity = newQuantity;
+  }
 }

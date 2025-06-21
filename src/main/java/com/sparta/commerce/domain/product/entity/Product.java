@@ -40,12 +40,14 @@ public class Product {
       Category category,
       String description,
       BigDecimal price,
-      Integer stock) {
+      Integer stock,
+      String imageUrl) {
     this.name = name;
     this.category = category;
     this.description = description;
     this.price = price;
     this.stock = stock;
+    this.imageUrl = imageUrl;
   }
 
   @Column
@@ -64,6 +66,9 @@ public class Product {
   @Column
   Integer stock; // 상품 재고 수량
 
+  @Column
+  String imageUrl; // 상품 이미지 URL
+
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
   LocalDateTime createdAt;
@@ -71,4 +76,59 @@ public class Product {
   @Column
   @UpdateTimestamp
   LocalDateTime updatedAt;
+
+  /**
+   * 상품 정보 (이름, 설명, 이미지 URL)를 업데이트하는 메서드
+   * @param newName 새로운 상품 이름
+   * @param newDescription 새로운 상품 설명
+   * @param newImageUrl 새로운 상품 이미지 URL
+   */
+  public void updateProductInfo(String newName, String newDescription, String newImageUrl) {
+    if (newName != null && !newName.trim().isEmpty()) {
+      this.name = newName;
+    }
+    if (newDescription != null && !newDescription.trim().isEmpty()) {
+      this.description = newDescription;
+    }
+    if (newImageUrl != null && !newImageUrl.trim().isEmpty()) {
+      this.imageUrl = newImageUrl;
+    }
+  }
+
+  /**
+   * 상품 가격을 업데이트하는 메서드
+   * @param newPrice 새로운 가격
+   */
+  public void updatePrice(BigDecimal newPrice) {
+    if (newPrice != null && newPrice.compareTo(BigDecimal.ZERO) >= 0) {
+      this.price = newPrice;
+    }
+  }
+
+  /**
+   * 상품 재고를 증가시키는 메서드 (입고 등)
+   * @param quantityToIncrease 증가시킬 수량
+   */
+  public void increaseStock(Integer quantityToIncrease) {
+    if (quantityToIncrease != null && quantityToIncrease > 0) {
+      this.stock += quantityToIncrease;
+    } else {
+      throw new IllegalArgumentException("증가시킬 수량은 0보다 커야 합니다.");
+    }
+  }
+
+  /**
+   * 상품 재고를 감소시키는 메서드 (판매 등)
+   * @param quantityToDecrease 감소시킬 수량
+   */
+  public void decreaseStock(Integer quantityToDecrease) {
+    if (quantityToDecrease != null && quantityToDecrease > 0) {
+      if (this.stock - quantityToDecrease < 0) {
+        throw new IllegalArgumentException("재고가 부족합니다.");
+      }
+      this.stock -= quantityToDecrease;
+    } else {
+      throw new IllegalArgumentException("감소시킬 수량은 0보다 커야 합니다.");
+    }
+  }
 }

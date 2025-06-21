@@ -62,4 +62,27 @@ public class Category {
   @Column
   @UpdateTimestamp
   LocalDateTime updatedAt;
+
+  /**
+   * 카테고리 이름을 업데이트하는 메서드
+   * @param newName 새로운 카테고리 이름
+   */
+  public void updateName(String newName) {
+    if (newName != null && !newName.trim().isEmpty()) {
+      this.name = newName;
+    }
+  }
+
+  /**
+   * 상위 카테고리를 설정하고 깊이를 재계산하는 메서드
+   * @param newParent 새로운 상위 카테고리
+   */
+  public void setParent(Category newParent) {
+    this.parent = newParent;
+    if (newParent != null) {
+      this.depth = newParent.getDepth() + 1;
+    } else {
+      this.depth = 0; // 최상위 카테고리인 경우
+    }
+  }
 }
