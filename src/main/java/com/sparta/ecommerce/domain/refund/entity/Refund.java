@@ -1,9 +1,12 @@
 package com.sparta.ecommerce.domain.refund.entity;
 
+import com.sparta.ecommerce.common.enums.RefundStatus;
 import com.sparta.ecommerce.domain.product.entity.Product;
 import com.sparta.ecommerce.domain.purchase.entity.Purchase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -49,8 +52,9 @@ public class Refund {
   @Column(nullable = false)
   String reason;
 
+  @Enumerated(EnumType.STRING)
   @Column(length = 20)
-  String refundStatus;
+  RefundStatus refundStatus;
 
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
@@ -62,7 +66,7 @@ public class Refund {
 
   @Builder
   public Refund(Purchase purchase, Product product, Integer quantity, String reason,
-      String refundStatus) {
+      RefundStatus refundStatus) {
     this.purchase = purchase;
     this.product = product;
     this.quantity = quantity;
