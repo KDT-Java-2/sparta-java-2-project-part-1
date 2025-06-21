@@ -1,0 +1,79 @@
+CREATE TABLE users (
+ id BIGINT AUTO_INCREMENT PRIMARY KEY,
+ password_hash VARCHAR(255) NOT NULL,
+ name VARCHAR(50) NOT NULL,
+ email VARCHAR(255) NOT NULL UNIQUE,
+ phone_number VARCHAR(255) NOT NULL,
+ del_yn VARCHAR(1) NOT NULL,
+ created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+ updated_at DATETIME,
+ deleted_at DATETIME
+);
+
+CREATE TABLE product(
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  description VARCHAR(255),
+  stock INTEGER NOT NULL,
+  category_id BIGINT NOT NULL,
+  del_yn VARCHAR(1) NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME,
+  deleted_at DATETIME
+);
+
+CREATE TABLE category (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  description VARCHAR(255),
+  parent_id BIGINT,
+  del_yn VARCHAR(1) NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME,
+  deleted_at DATETIME
+);
+
+CREATE TABLE purchase (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT NOT NULL,
+  product_id BIGINT NOT NULL,
+  total_price DECIMAL(10,2),
+  del_yn VARCHAR(1) NOT NULL,
+  memo VARCHAR(255),
+  status VARCHAR(20) NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME,
+  deleted_at DATETIME
+);
+
+CREATE TABLE purchase_product (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  purchase_id BIGINT NOT NULL,
+  product_id BIGINT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE cart (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  quantity INT NOT NULL,
+  user_id BIGINT NOT NULL,
+  product_id BIGINT NOT NULL,
+  del_yn VARCHAR(1) NOT NULL DEFAULT 'N',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME,
+  deleted_at DATETIME
+);
+
+CREATE TABLE refund (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  reason VARCHAR(500) NOT NULL,
+  status VARCHAR(20) NOT NULL,
+  refund_amount DECIMAL(10,2) NOT NULL,
+  purchase_id BIGINT NOT NULL,
+  del_yn VARCHAR(1) NOT NULL DEFAULT 'N',
+  deleted_at DATETIME,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME,
+  CONSTRAINT fk_refund_purchase FOREIGN KEY (purchase_id) REFERENCES purchase(id)
+);
