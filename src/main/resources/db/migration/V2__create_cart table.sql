@@ -1,0 +1,9 @@
+CREATE TABLE `cart`
+(
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id     BIGINT NOT NULL,
+    product_id  BIGINT NOT NULL,
+    quantity    BIGINT NOT NULL,
+    created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at  DATETIME DEFAULT CURRENT_TIMESTAMP
+);
