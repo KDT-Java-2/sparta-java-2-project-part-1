@@ -1,7 +1,9 @@
 package com.dogworld.dogdog.domain.cart;
 
 import com.dogworld.dogdog.domain.BaseEntity;
+import com.dogworld.dogdog.domain.cartItem.CartItem;
 import com.dogworld.dogdog.domain.member.Member;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,7 +14,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,8 +35,17 @@ public class Cart extends BaseEntity {
   @JoinColumn(name = "member_id", nullable = false)
   private Member member;
 
+  @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<CartItem> cartItems;
+
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private CartStatus status;
 
+  @Builder
+  public Cart(Member member, CartStatus status) {
+    this.member = member;
+    this.status = status;
+    this.cartItems = new ArrayList<>();
+  }
 }
