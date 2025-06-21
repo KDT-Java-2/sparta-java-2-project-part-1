@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,6 +23,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
+@Getter
 @Entity
 @Table(name = "cart")
 @DynamicInsert
@@ -56,8 +58,9 @@ public class Cart {
   LocalDateTime updatedAt;
 
   @Builder
-  public Cart(User user, Product product) {
+  public Cart(User user, Product product, int quantity) {
     this.user = user;
     this.product = product;
+    this.quantity = quantity;
   }
 }

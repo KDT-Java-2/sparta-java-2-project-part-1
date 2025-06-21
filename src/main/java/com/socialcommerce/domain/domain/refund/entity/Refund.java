@@ -1,6 +1,7 @@
 package com.socialcommerce.domain.domain.refund.entity;
 
 import com.socialcommerce.domain.common.enums.RefundStatus;
+import com.socialcommerce.domain.common.enums.RefundType;
 import com.socialcommerce.domain.domain.purchase.entity.Purchase;
 import com.socialcommerce.domain.domain.purchase.entity.PurchaseProduct;
 import jakarta.persistence.Column;
@@ -12,15 +13,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+@Getter
 @Entity
 @Table(name = "refunds")
 @DynamicInsert
@@ -31,6 +35,12 @@ public class Refund {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    // 전체환불
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "purchase_id", nullable = true)
+    private Purchase purchase;
+
+    // 부분환불
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "purchase_product_id", nullable = false, unique = true)
     private PurchaseProduct purchaseProduct;
@@ -41,6 +51,11 @@ public class Refund {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     RefundStatus status;
+
+    // 전체환불 or 부분환불 Enum
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 10)
+    private RefundType type; // ALL or PARTIAL
 
     @Column(name = "created_at", updatable = false)
     LocalDateTime createdAt;

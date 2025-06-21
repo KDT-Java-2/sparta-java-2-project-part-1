@@ -17,12 +17,14 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+@Getter
 @Entity
 @Table(name = "purchase_product")
 @DynamicInsert
@@ -40,11 +42,11 @@ public class PurchaseProduct {
   LocalDateTime createdAt;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "product_id", nullable = false)
+  @JoinColumn(name = "purchase_id", nullable = false)
   Purchase purchase;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "purchase_id", nullable = false)
+  @JoinColumn(name = "product_id", nullable = false)
   Product product;
 
   @Column(nullable = false)

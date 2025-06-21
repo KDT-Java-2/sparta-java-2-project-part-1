@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -58,6 +59,10 @@ public class Purchase { // 주문
   @Column(nullable = false, columnDefinition = "TEXT")
   String shippingAddress;
 
+  // 전체환불
+  @OneToOne(mappedBy = "purchase", fetch = FetchType.LAZY)
+  Refund refund;
+
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
   LocalDateTime createdAt;
@@ -75,9 +80,6 @@ public class Purchase { // 주문
   }
 
   public void setStatus(PurchaseStatus status) {
-    if (ObjectUtils.isEmpty(status)) {
-      this.status = status;
-    }
+     this.status = status;
   }
-
 }
