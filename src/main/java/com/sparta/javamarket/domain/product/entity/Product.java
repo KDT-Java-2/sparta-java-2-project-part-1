@@ -52,10 +52,6 @@ public class Product { // 상품
   @Column
   Integer stock;
 
-  @Enumerated(EnumType.STRING)
-  @Column
-  String role;
-
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
   LocalDateTime createdAt;
@@ -65,13 +61,11 @@ public class Product { // 상품
   LocalDateTime updatedAt;
 
   @Builder
-  public Product(User user, String name, String description, BigDecimal price, Integer stock,
-      String role) {
+  public Product(User user, String name, String description, BigDecimal price, Integer stock) {
     this.user = user;
     this.name = name;
     this.description = description;
     this.price = price;
     this.stock = stock;
-    this.role = role;
   }
 }
