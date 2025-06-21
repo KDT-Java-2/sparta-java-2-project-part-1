@@ -2,6 +2,7 @@ package com.tommy.ecommerproject.domain.purchase.entity;
 
 
 import com.tommy.ecommerproject.common.enums.PurchaseStatusType;
+import com.tommy.ecommerproject.domain.cart.entity.Cart;
 import com.tommy.ecommerproject.domain.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
@@ -45,28 +47,35 @@ public class Purchase {
   @Column(nullable = false, unique = true, length = 36)
   String alias;
 
-  /* 사용자와 관련된 필드 */
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  User user;
-
   /* 주문정보와 관련된 필드 */
+
   @Column(nullable = false)
   String address;       // 주문 주소
 
-  @Column(nullable = false)
+  @Column(nullable = false, length = 13)
   String phoneNumber;   // 주문자 핸드폰 번호
 
   @Column(nullable = false)
   String comment;       // 주문 요청사항
 
-  @Column
+  @Column(nullable = false)
   BigDecimal totalPrice;
 
   @Column(nullable = false, length=20)
   @Enumerated(EnumType.STRING)
   @ColumnDefault("PENDDING")
   PurchaseStatusType status;    // 주문상태
+
+
+  /* 사용자와 관련된 필드 */
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  User user;
+
+  /* 장바구니와 관련된 필드 */
+  @OneToOne(fetch = FetchType.EAGER)  // 주문이 만들어지면 Cart의 내역을 불어와야 하기 때문에 EAGER
+  @JoinColumn(name = "cart_id")
+  Cart cart;
 
   @Column
   @CreationTimestamp
@@ -77,15 +86,24 @@ public class Purchase {
   LocalDateTime updatedAt;
 
   @Builder
-  public Purchase(String alias, User user, String address, String phoneNumber, String comment,
-      BigDecimal totalPrice, PurchaseStatusType status) {
+  public Purchase(
+      String alias,
+      String address,
+      String phoneNumber,
+      String comment,
+      BigDecimal totalPrice,
+      PurchaseStatusType status,
+      User user,
+      Cart cart
+  ) {
     this.alias = alias;
-    this.user = user;
     this.address = address;
     this.phoneNumber = phoneNumber;
     this.comment = comment;
     this.totalPrice = totalPrice;
     this.status = status;
+    this.user = user;
+    this.cart = cart;
   }
 
   @PrePersist
