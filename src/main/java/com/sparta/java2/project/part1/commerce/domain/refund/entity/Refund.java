@@ -23,7 +23,7 @@ public class Refund extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "purchase_id", nullable = false, updatable = false)
     Purchase purchase;
 
