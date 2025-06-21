@@ -1,5 +1,6 @@
 package com.sparta.java_02.domain.purchase.entity;
 
+import com.sparta.java_02.domain.refunds.entity.Refund;
 import com.sparta.java_02.enums.PurchaseStatus;
 import com.sparta.java_02.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -36,6 +37,9 @@ public class Purchase {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     PurchaseStatus status;
+
+    @OneToOne(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
+    Refund refund;
 
     @CreationTimestamp
     @Column(updatable = false, nullable = false)

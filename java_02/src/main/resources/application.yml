@@ -1,6 +1,6 @@
 spring:
   application:
-    name: java-02
+    name: java-02_과제용
 
   # 데이터베이스 연결 설정
   datasource:
@@ -24,7 +24,7 @@ spring:
     properties:
       hibernate:
         # MySQL 8 버전에 맞는 Dialect(방언) 설정
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
 
   # 로깅 레벨 설정
   logging:

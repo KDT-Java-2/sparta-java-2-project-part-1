@@ -1,5 +1,6 @@
 package com.sparta.java_02.domain.user.entity;
 
+import com.sparta.java_02.domain.cart.entity.Cart;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,6 +12,8 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table
 @Entity
@@ -31,7 +34,10 @@ public class User {
     private String email;
 
     @Column
-    private String passwordHash;
+    private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Cart> carts = new ArrayList<>();
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -45,10 +51,10 @@ public class User {
     public User(
             String username,
             String email,
-            String passwordHash
+            String password
     ) {
         this.username = username;
         this.email = email;
-        this.passwordHash = passwordHash;
+        this.password = password;
     }
 }
