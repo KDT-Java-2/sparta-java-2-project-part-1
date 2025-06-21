@@ -10,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,5 +36,5 @@ public class Category extends BaseEntity {
   private int sortOrder;
 
   @Column(nullable = false)
-  private Boolean isActive = true;
+  private Boolean active = true;
 }
