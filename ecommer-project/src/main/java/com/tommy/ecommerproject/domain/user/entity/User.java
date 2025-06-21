@@ -48,6 +48,9 @@ public class User {
   String birth;
 
   @Column(nullable = false)
+  String phoneNumber;
+
+  @Column(nullable = false)
   String address;
 
   @Column(nullable = false)
@@ -55,11 +58,11 @@ public class User {
 
   @Column
   @CreationTimestamp
-  LocalDateTime create_at;
+  LocalDateTime createdAt;
 
   @Column
   @UpdateTimestamp
-  LocalDateTime update_at;
+  LocalDateTime updatedAt;
 
   @Builder
   public User(
@@ -68,6 +71,7 @@ public class User {
       String email,
       String name,
       String birth,
+      String phoneNumber,
       String address,
       List<Role> role
   ) {
@@ -76,6 +80,7 @@ public class User {
     this.email = email;
     this.name = name;
     this.birth = birth;
+    this.phoneNumber = phoneNumber;
     this.address = address;
     this.role = role;
   }
