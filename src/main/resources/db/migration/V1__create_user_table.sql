@@ -1,0 +1,20 @@
+CREATE TABLE user (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    gender ENUM('MALE', 'FEMALE', 'OTHER') DEFAULT NULL,
+    birth_date DATE DEFAULT NULL,
+    profile_image_url VARCHAR(500),
+    login_type ENUM('EMAIL', 'GOOGLE', 'KAKAO', 'NAVER') DEFAULT 'EMAIL',
+    status ENUM('ACTIVE', 'INACTIVE', 'DELETED') DEFAULT 'ACTIVE',
+    role ENUM('USER', 'PRODUCT_ADMIN', 'SUPER_ADMIN') DEFAULT 'USER',
+    last_login_at DATETIME DEFAULT NULL,
+    terms_agreed_at DATETIME NOT NULL,
+    privacy_agreed_at DATETIME NOT NULL,
+    marketing_agreed_at DATETIME DEFAULT NULL,
+    is_email_verified BOOLEAN DEFAULT FALSE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+); 
