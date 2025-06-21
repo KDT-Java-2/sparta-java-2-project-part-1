@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
@@ -57,9 +58,11 @@ public class PurchaseProduct {
   @JoinColumn(name = "product", nullable = false)
   Product product; // 주문 상품 정보
 
+  @Getter
   @Column(nullable = false)
   int quantity; // 주문 수량
 
+  @Getter
   @Column(nullable = false)
   BigDecimal priceAtOrder; // 주문 시점 가격
 
@@ -85,11 +88,4 @@ public class PurchaseProduct {
     this.itemOption = itemOption;
   }
 
-  public int getQuantity() {
-    return quantity;
-  }
-
-  public BigDecimal getPriceAtOrder() {
-    return priceAtOrder;
-  }
 }
