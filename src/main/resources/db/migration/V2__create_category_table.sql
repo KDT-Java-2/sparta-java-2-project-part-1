@@ -1,0 +1,7 @@
+CREATE TABLE category (
+    id              BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '카테고리 ID',
+    parent_id       BIGINT DEFAULT NULL COMMENT '부모 카테고리 ID',
+    category_nm     VARCHAR(50) NOT NULL COMMENT '카테고리명',
+    created_at      DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
+    updated_at      DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일'
+);
