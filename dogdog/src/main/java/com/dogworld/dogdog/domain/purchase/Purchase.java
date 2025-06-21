@@ -1,7 +1,7 @@
-package com.dogworld.dogdog.domain.product;
+package com.dogworld.dogdog.domain.purchase;
 
 import com.dogworld.dogdog.domain.BaseEntity;
-import com.dogworld.dogdog.domain.category.Category;
+import com.dogworld.dogdog.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,6 +12,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,35 +21,25 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Product extends BaseEntity {
+public class Purchase extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(length = 200, nullable = false)
-  private String name;
-
-  @Column(columnDefinition = "TEXT")
-  private String description;
-
-  @Column(nullable = false)
-  private int price;
-
-  @Column(nullable = false)
-  private int stock;
-
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "category_id", nullable = false)
-  private Category category;
+  @JoinColumn(name = "member_id", nullable = false)
+  private Member member;
+
+  @Column(nullable = false)
+  private BigDecimal totalPrice;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private ProductStatus status = ProductStatus.SELLING;
-
-  @Column(length = 500)
-  private String thumbnailUrl;
+  private PurchaseStatus status = PurchaseStatus.PENDING;
 
   @Column(nullable = false)
-  private boolean deleted;
+  private LocalDateTime orderedAt;
+
+  private LocalDateTime canceledAt;
 }
