@@ -38,10 +38,10 @@ public class PurchaseProduct extends BaseEntity {
   @Column(nullable = false)
   private int quantity;
 
-  @Column(nullable = false)
+  @Column(nullable = false, precision = 18, scale = 2)
   private BigDecimal price;
 
-  @Column(nullable = false)
+  @Column(nullable = false, precision = 18, scale = 2)
   private BigDecimal totalPrice;
 
   @Enumerated(EnumType.STRING)

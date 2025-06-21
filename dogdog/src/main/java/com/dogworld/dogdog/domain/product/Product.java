@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,8 +32,8 @@ public class Product extends BaseEntity {
   @Column(columnDefinition = "TEXT")
   private String description;
 
-  @Column(nullable = false)
-  private int price;
+  @Column(nullable = false, precision = 18, scale = 2)
+  private BigDecimal price;
 
   @Column(nullable = false)
   private int stock;

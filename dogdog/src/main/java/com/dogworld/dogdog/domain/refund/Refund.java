@@ -32,7 +32,7 @@ public class Refund extends BaseEntity {
   @JoinColumn(name = "purchase_product_id")
   private PurchaseProduct purchaseProduct;
 
-  @Column(nullable = false)
+  @Column(nullable = false, precision = 18, scale = 2)
   private BigDecimal refundAmount;
 
   @Enumerated(EnumType.STRING)

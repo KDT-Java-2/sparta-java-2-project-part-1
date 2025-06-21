@@ -39,7 +39,7 @@ public class Purchase extends BaseEntity {
   @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<PurchaseProduct> purchaseProducts = new ArrayList<>();
 
-  @Column(nullable = false)
+  @Column(nullable = false, precision = 18, scale = 2)
   private BigDecimal totalPrice;
 
   @Enumerated(EnumType.STRING)
