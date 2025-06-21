@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.math.BigDecimal;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -47,4 +48,19 @@ public class CartItem extends BaseEntity {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private CartItemStatus status;
+
+  @Builder
+  public CartItem(Cart cart, Product product, int quantity) {
+    this.cart = cart;
+    this.product = product;
+    this.quantity = quantity;
+
+    this.price = product.getPrice();
+    this.totalPrice = calculateTotalPrice();
+    this.status = CartItemStatus.ACTIVE;
+  }
+
+  private BigDecimal calculateTotalPrice() {
+    return price.multiply(BigDecimal.valueOf(quantity));
+  }
 }
