@@ -1,0 +1,12 @@
+CREATE TABLE product(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    name VARCHAR(200) NOT NULL,
+    description TEXT NOT NULL,
+    price DECIMAL NOT NULL ,
+    stock int DEFAULT 0,
+    publisher BIGINT,
+
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP
+)
