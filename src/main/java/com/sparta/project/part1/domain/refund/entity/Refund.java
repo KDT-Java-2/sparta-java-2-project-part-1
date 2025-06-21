@@ -16,6 +16,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -57,4 +58,14 @@ public class Refund {
   @Column(nullable = false, updatable = false)
   @CreationTimestamp
   LocalDateTime createdAt;
+
+  @Builder
+  public Refund(Purchase purchase, PurchaseProduct purchaseProduct, String reason, Integer quantity,
+      RefundStatus status) {
+    this.purchase = purchase;
+    this.purchaseProduct = purchaseProduct;
+    this.reason = reason;
+    this.quantity = quantity;
+    this.status = status;
+  }
 }
