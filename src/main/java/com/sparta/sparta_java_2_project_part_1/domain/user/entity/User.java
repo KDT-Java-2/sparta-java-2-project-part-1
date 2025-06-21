@@ -36,6 +36,15 @@ public class User {
   @Column
   String email;
 
+  @Column(nullable = false, length = 10)
+  Integer postalCode;
+
+  @Column(nullable = false)
+  String address1;
+
+  @Column
+  String address2;
+
   @Column
   String passwordHash;
 
@@ -48,9 +57,12 @@ public class User {
   LocalDateTime updatedAt;
 
   @Builder
-  public User(String name, String email, String passwordHash) {
+  public User(String name, String email, Integer postalCode, String address1, String address2, String passwordHash) {
     this.name = name;
     this.email = email;
+    this.postalCode = postalCode;
+    this.address1 = address1;
+    this.address2 = address2;
     this.passwordHash = passwordHash;
   }
 
