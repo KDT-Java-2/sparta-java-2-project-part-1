@@ -1,4 +1,4 @@
-package com.sparta.sparta_java_2_project_part_1.domain.refund.entity;
+package com.sparta.sparta_java_2_project_part_1.domain.refunds.entity;
 
 import com.sparta.sparta_java_2_project_part_1.domain.purchase.entity.Purchase;
 import com.sparta.sparta_java_2_project_part_1.enums.RefundStatus;
