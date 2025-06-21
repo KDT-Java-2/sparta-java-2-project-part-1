@@ -1,11 +1,9 @@
-package com.sparta.commerce_project_01.domain.purchase.entity;
+package com.sparta.commerce_project_01.domain.cart.entity;
 
-import com.sparta.commerce_project_01.common.enums.PurchaseStatus;
-import com.sparta.commerce_project_01.domain.user.entity.User;
+
+import com.sparta.commerce_project_01.domain.product.entity.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +15,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,31 +23,30 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table
-@Getter
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Purchase {
+@Table
+public class CartProduct {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
+  private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", nullable = false)
-  User user;
+  @JoinColumn(name = "cart_id")
+  Cart cart;
 
-  @Column
-  BigDecimal totalPrice;
-
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false, length = 20)
-  PurchaseStatus status;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "product_id")
+  Product product;
 
   @Column(nullable = false)
-  String shippingAddress;
+  int quantity;
+
+  @Column(nullable = false)
+  BigDecimal price;
 
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
@@ -61,10 +57,13 @@ public class Purchase {
   LocalDateTime updatedAt;
 
   @Builder
-  public Purchase(User user, BigDecimal totalPrice, PurchaseStatus status, String shippingAddress) {
-    this.user = user;
-    this.totalPrice = totalPrice;
-    this.status = status;
-    this.shippingAddress = shippingAddress;
+  public CartProduct(
+      Product product,
+      Cart cart
+  ) {
+    this.product = product;
+    this.cart = cart;
   }
+
 }
+

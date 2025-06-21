@@ -6,6 +6,10 @@ spring:
     username: root
     password: passw0rd
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10  # 최대 커넥션 개수
+      connection-timeout: 30000 # 커넥션을 얻기 위해 대기하는 최대 시간 (ms)
+      max-lifetime: 1800000 # 커넥션의 최대 수명 (ms)
   jpa:
     hibernate:
       ddl-auto: none
@@ -19,6 +23,7 @@ spring:
     enabled: true # Flyway 활성화
     # 마이그레이션 파일 위치 지정 (기본값)
     locations: classpath:db/migration
+    #baseline-on-migrate: true # 기존에 테이블이 있는 DB에 Flyway를 처음 적용할 때 사용
 
 # 로깅 설정은 spring 아래가 아닌 최상위 레벨에 위치해야 합니다
 logging:
