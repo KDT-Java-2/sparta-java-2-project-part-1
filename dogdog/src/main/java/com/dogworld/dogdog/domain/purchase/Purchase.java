@@ -2,6 +2,8 @@ package com.dogworld.dogdog.domain.purchase;
 
 import com.dogworld.dogdog.domain.BaseEntity;
 import com.dogworld.dogdog.domain.member.Member;
+import com.dogworld.dogdog.domain.purchaseproduct.PurchaseProduct;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,8 +14,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +35,9 @@ public class Purchase extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "member_id", nullable = false)
   private Member member;
+
+  @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<PurchaseProduct> purchaseProducts = new ArrayList<>();
 
   @Column(nullable = false)
   private BigDecimal totalPrice;
