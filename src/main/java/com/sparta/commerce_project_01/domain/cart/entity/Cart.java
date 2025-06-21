@@ -57,5 +57,4 @@ public class Cart {
         this.quantity = quantity;
         this.price = price;
     }
-
 }

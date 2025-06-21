@@ -2,7 +2,6 @@ package com.sparta.commerce_project_01.domain.purchase.repository;
 
 import com.sparta.commerce_project_01.common.enums.PurchaseStatus;
 import com.sparta.commerce_project_01.domain.purchase.entity.Purchase;
-import com.sparta.commerce_project_01.domain.purchase.entity.repository.PurchaseRepository;
 import com.sparta.commerce_project_01.domain.user.entity.User;
 import com.sparta.commerce_project_01.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;

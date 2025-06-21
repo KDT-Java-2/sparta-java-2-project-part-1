@@ -4,6 +4,8 @@ package com.sparta.commerce_project_01.domain.product.entity;
 import com.sparta.commerce_project_01.domain.category.entity.Category;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,7 +13,8 @@ import java.time.LocalDateTime;
 @Table
 @Entity
 @Getter
-@Builder
+@DynamicInsert
+@DynamicUpdate
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Product {
@@ -50,5 +53,20 @@ public class Product {
     @PreUpdate
     public void onPreUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    @Builder
+    public Product(
+            String name,
+            String description,
+            BigDecimal price,
+            Integer stock,
+            Category category
+    ) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
+        this.category = category;
     }
 }
