@@ -12,6 +12,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+  flyway:
+    enabled: true # Flyway 활성화
+    # 마이그레이션 파일 위치 지정 (기본값)
+    locations: classpath:db/migration
 
 server:
   port: 8080
