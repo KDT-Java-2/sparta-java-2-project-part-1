@@ -53,7 +53,6 @@ CREATE TABLE user_balance (
     version INT DEFAULT 0 COMMENT '낙관적 락 버전 관리'
 ) COMMENT='사용자 적립금(잔액) 테이블';
 
-
 CREATE TABLE category (
     id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '카테고리 고유 ID',
 
@@ -191,6 +190,19 @@ CREATE TABLE issued_coupon (
     used_at DATETIME DEFAULT NULL COMMENT '사용된 시점',
     created_at DATETIME NOT NULL COMMENT '발급 시각'
 ) COMMENT='사용자에게 발급된 쿠폰 테이블';
+
+CREATE TABLE payment (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '결제 고유 ID',
+
+    order_id BIGINT NOT NULL COMMENT '구매 ID (purchase 테이블 참조)',
+    user_id BIGINT NOT NULL COMMENT '결제한 사용자 ID',
+
+    amount DECIMAL(10, 2) NOT NULL COMMENT '결제 금액',
+    issued_coupon_id BIGINT DEFAULT NULL COMMENT '사용된 쿠폰 ID',
+    status VARCHAR(20) NOT NULL COMMENT '결제 상태',
+
+    created_at DATETIME NOT NULL COMMENT '결제 생성 시각'
+) COMMENT='결제 내역 테이블';
 
 
 
