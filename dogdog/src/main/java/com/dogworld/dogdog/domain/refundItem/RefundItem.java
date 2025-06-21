@@ -34,14 +34,14 @@ public class RefundItem extends BaseEntity {
   private Refund refund;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "purcahse_product_id", nullable = false)
+  @JoinColumn(name = "purchase_product_id", nullable = false)
   private PurchaseProduct purchaseProduct;
 
   @Column(nullable = false)
-  private int refund_quantity;
+  private int refundQuantity;
 
   @Column(nullable = false)
-  private BigDecimal refund_amount;
+  private BigDecimal refundAmount;
 
   @Enumerated(EnumType.STRING)
   private RefundType  refundType;
