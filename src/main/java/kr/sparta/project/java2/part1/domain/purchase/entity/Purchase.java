@@ -10,10 +10,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import kr.sparta.project.java2.part1.common.enums.PurchaseStatus;
+import kr.sparta.project.java2.part1.domain.refund.Refund;
 import kr.sparta.project.java2.part1.domain.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -41,6 +45,9 @@ public class Purchase {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
   User user;
+
+  @OneToMany(mappedBy = "purchase", fetch = FetchType.LAZY)
+  List<Refund> purchases = new ArrayList<>();
 
   @Column
   BigDecimal totalPrice;

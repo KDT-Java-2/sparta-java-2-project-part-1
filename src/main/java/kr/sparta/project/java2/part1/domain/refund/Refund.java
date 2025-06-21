@@ -1,7 +1,9 @@
-package kr.sparta.project.java2.part1.domain.cart;
+package kr.sparta.project.java2.part1.domain.refund;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +12,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import kr.sparta.project.java2.part1.domain.product.entity.Product;
+import kr.sparta.project.java2.part1.common.enums.RefundStatus;
+import kr.sparta.project.java2.part1.domain.purchase.entity.Purchase;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,30 +31,34 @@ import org.hibernate.annotations.UpdateTimestamp;
 @DynamicUpdate
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CartItem {
+public class Refund {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "product_id", nullable = false)
-  Product product;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "cart_id", nullable = false)
-  Cart cart;
+  @JoinColumn(name = "purchase_id")
+  Purchase purchase;
 
   @Column
-  Integer quantity;
+  String reason;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 20)
+  RefundStatus status;
 
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
   LocalDateTime createdAt;
 
+  @Column
+  @UpdateTimestamp
+  LocalDateTime updatedAt;
+
   @Builder
-  public CartItem(Product product, Cart cart, int quantity) {
-    this.product = product;
-    this.cart = cart;
-    this.quantity = quantity;
+  public Refund(Purchase purchase, String reason, RefundStatus status) {
+    this.purchase = purchase;
+    this.reason = reason;
+    this.status = status;
   }
 }
