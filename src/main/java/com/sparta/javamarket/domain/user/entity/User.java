@@ -68,9 +68,6 @@ public class User {
   @UpdateTimestamp
   LocalDateTime updatedAt;
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-  List<Purchase> purchases = new ArrayList<>();
-
   @Builder
   public User(String email, String password, String name, String nickname, String phone,
       String address, UserRoleStatus role) {
