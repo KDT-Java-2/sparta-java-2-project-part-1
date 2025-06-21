@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
@@ -47,20 +48,15 @@ public class Cart {
   @Column(nullable = false)
   User user;
 
-  // 상품 정보
-  @ManyToOne(fetch = FetchType.LAZY)
-  @Column
-  Product product;
-
-  // 구매
-  @ManyToOne(fetch = FetchType.LAZY)
-  @Column
-  Purchase purchase;
-
   // 장바구니 Product 수량
   @Column(nullable = false)
-  @ColumnDefault("1")
+  @ColumnDefault("0")
   Integer quantity;
+
+  /* 장바구니와 구매 관계 필드 */
+  @OneToOne(mappedBy = "purchase_id")
+  @Column(name = "purchase_id")
+  Purchase purchase;
 
   @Column
   @CreationTimestamp
@@ -71,19 +67,14 @@ public class Cart {
   LocalDateTime updatedAt;
 
   @Builder
-  public Cart(
-      String alias,
-      User user,
-      Product product,
-      Purchase purchase,
-      Integer quantity
-  ) {
+  public Cart(String alias, User user, Integer quantity, Purchase purchase) {
     this.alias = alias;
     this.user = user;
-    this.product = product;
-    this.purchase = purchase;
     this.quantity = quantity;
+    this.purchase = purchase;
   }
+
+
 
   @PrePersist
   public void generatedUuid() {
