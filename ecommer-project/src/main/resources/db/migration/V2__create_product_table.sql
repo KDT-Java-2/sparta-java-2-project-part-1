@@ -10,7 +10,7 @@ CREATE TABLE product(
     -- 상품 가격
     price DECIMAL NOT NULL ,
     -- 상품 재고
-    stock int DEFAULT 0,
+    stock int DEFAULT '0',
     -- 상품 등록자
     user_id BIGINT,
     -- 카테고리
