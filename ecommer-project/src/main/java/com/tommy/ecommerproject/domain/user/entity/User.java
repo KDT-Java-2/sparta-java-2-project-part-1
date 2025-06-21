@@ -1,14 +1,18 @@
 package com.tommy.ecommerproject.domain.user.entity;
 
-import com.tommy.ecommerproject.common.enums.Role;
+import com.tommy.ecommerproject.common.enums.RoleType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,13 +28,16 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Getter
 @DynamicInsert
 @DynamicUpdate
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
+
+  @Column(nullable = false, unique = true, length = 36)
+  String alias;
 
   @Column(nullable = false, updatable = false, unique = true)
   String username;
@@ -54,7 +61,8 @@ public class User {
   String address;
 
   @Column(nullable = false)
-  List<Role> role;
+  @Enumerated(EnumType.STRING)
+  List<RoleType> role;
 
   @Column
   @CreationTimestamp
@@ -73,7 +81,7 @@ public class User {
       String birth,
       String phoneNumber,
       String address,
-      List<Role> role
+      List<RoleType> role
   ) {
     this.username = username;
     this.passwordHash = passwordHash;
@@ -83,6 +91,14 @@ public class User {
     this.phoneNumber = phoneNumber;
     this.address = address;
     this.role = role;
+  }
+
+  // 엔티티가 영속하기 전에 자동으로 호출시키는 어노테이션
+  @PrePersist
+  public void generatedUuid() {
+    if(this.alias == null){ // alias가 존재하지 않으면 UUID를 생성하여 String으로 넣어준다.
+      this.alias = UUID.randomUUID().toString();
+    }
   }
 
 }
