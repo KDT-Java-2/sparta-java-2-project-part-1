@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: commerce_project_01
+  datasource:
+    url: jdbc:mysql://localhost:3306/commerce_db?useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: passw0rd
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        highlight_sql: true
+
+  flyway:
+    enabled: true # Flyway 활성화
+    # 마이그레이션 파일 위치 지정 (기본값)
+    locations: classpath:db/migration
+
+# 로깅 설정은 spring 아래가 아닌 최상위 레벨에 위치해야 합니다
+logging:
+  level:
+    org.hibernate.SQL: DEBUG # Swagger UI 설정 (Springdoc)
+
+springdoc:
+  swagger-ui:
+    enabled: true
+
+server:
+  port: 8080
