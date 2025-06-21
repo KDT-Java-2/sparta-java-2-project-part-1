@@ -1,0 +1,77 @@
+# Compiled class files
+*.class
+
+# Log files
+*.log
+logs/
+target/*.log
+
+# Package Files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+
+# IDE-specific files
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+tmp/
+
+# VS Code
+.vscode/
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.bak
+pom.xml.versionsBackup
+pom.xml.entries
+
+# Gradle
+.gradle/
+build/
+*.class
+.project
+.settings/
+# Gradle user-specific config
+# gradle-wrapper.properties가 아닌 gradle.properties는 개인 설정이므로 제외
+!gradle/wrapper/gradle-wrapper.properties
+gradle-wrapper.jar
+
+# Spring Boot
+# 실행 가능한 JAR/WAR 생성 시 포함되는 파일
+*.original
+*.bak
+
+# 각종 설정 파일 (보안상 민감한 정보 포함 가능성)
+# 실제 프로젝트에서는 .env 파일 등을 사용하고 외부에 노출되지 않도록 주의
+application*.properties
+application*.yml
+.env
+*.key
+*.pem
+*.p12
+
+# OS generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# 기타
+# 테스트 결과 리포트
+test-output/
+
+# 일시적인 파일 (예: Lombok 생성 파일)
+# IntelliJ IDEA에서 빌드 시 생성될 수 있는 파일
+gen/
