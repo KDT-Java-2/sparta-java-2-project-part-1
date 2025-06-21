@@ -1,5 +1,6 @@
 package com.tommy.ecommerproject.domain.product.entity;
 
+import com.tommy.ecommerproject.domain.category.Category;
 import com.tommy.ecommerproject.domain.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,6 +53,12 @@ public class Product {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   User publisher;
+
+  //카테고리
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "category_id")
+  Category category;
+
 
   @Column
   @CreationTimestamp
