@@ -1,21 +1,25 @@
-package com.scb.project.commerce.domain.user.entity;
+package com.scb.project.commerce.domain.purchase.entity;
 
-import com.scb.project.commerce.common.enums.UserRole;
-import com.scb.project.commerce.common.enums.UserStatus;
+import com.scb.project.commerce.common.enums.PaymentMethod;
+import com.scb.project.commerce.common.enums.PurchaseStatus;
+import com.scb.project.commerce.domain.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -30,32 +34,32 @@ import org.springframework.util.ObjectUtils;
 @DynamicUpdate
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class Purchase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable = false, length = 50)
-    String name;    // 유저 이름
-
-    @Column(nullable = false, unique = true)
-    String email;   // 유저 이메일
-
-    @Setter
-    @Column(length = 20)
-    String phone;   // 유저 연락처
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    User user;  // 사용자 ID
 
     @Column(nullable = false)
-    String passwordHash;    // 유저 비밀번호 해시값
+    BigDecimal totalPrice;  // 주문 금액
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    UserRole role;  // 유저 권한
+    PaymentMethod paymentMethod;    // 결제 방식
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
-    UserStatus status;  // 사용자 상태
+    @Column(nullable = false, length = 20)
+    PurchaseStatus status;  // 주문 상태
+
+    @Column(nullable = false)
+    String shippingAddress; // 배송지
+
+    @Column
+    String memo;    // 배송 메모
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -66,23 +70,23 @@ public class User {
     LocalDateTime updatedAt;
 
     @Builder
-    public User(
-        String name,
-        String email,
-        String phone,
-        String passwordHash,
-        UserRole role,
-        UserStatus status
+    public Purchase(
+        User user,
+        BigDecimal totalPrice,
+        PaymentMethod paymentMethod,
+        PurchaseStatus status,
+        String shippingAddress,
+        String memo
     ) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.passwordHash = passwordHash;
-        this.role = role;
+        this.user = user;
+        this.totalPrice = totalPrice;
+        this.paymentMethod = paymentMethod;
         this.status = status;
+        this.shippingAddress = shippingAddress;
+        this.memo = memo;
     }
 
-    public void setStatus(UserStatus status) {
+    public void setStatus(PurchaseStatus status) {
         if (!ObjectUtils.isEmpty(status)) {
             this.status = status;
         }
