@@ -8,14 +8,14 @@ CREATE TABLE purchase_product (
         NOT NULL,
     price_at_order DECIMAL(19,2)
         NOT NULL,
-    option VARCHAR(100),
+    item_option VARCHAR(100),
     created_at DATETIME
         NOT NULL
         DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_pp_purchase
-        FOREIGN KEY (purchase)
+        FOREIGN KEY (purchase_id)
         REFERENCES purchase(id),
     CONSTRAINT fk_pp_product
-        FOREIGN KEY (product)
+        FOREIGN KEY (product_id)
         REFERENCES product(id)
 );

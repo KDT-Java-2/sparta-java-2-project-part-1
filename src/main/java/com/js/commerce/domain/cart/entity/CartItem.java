@@ -44,14 +44,20 @@ public class CartItem {
   BigDecimal priceAtAdd; // 담을 당시 가격
 
   @Column
-  String option; // 상품 옵션 정보
+  String itemOption; // 상품 옵션 정보
 
-  public CartItem(Cart cart, Product product, int quantity, BigDecimal priceAtAdd, String option) {
+  public CartItem(
+      Cart cart,
+      Product product,
+      int quantity,
+      BigDecimal priceAtAdd,
+      String itemOption
+  ) {
     this.cart = cart;
     this.product = product;
     this.quantity = quantity;
     this.priceAtAdd = priceAtAdd;
-    this.option = option;
+    this.itemOption = itemOption;
   }
 
   /**

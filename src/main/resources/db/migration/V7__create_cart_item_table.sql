@@ -8,7 +8,7 @@ CREATE TABLE cart_item (
         NOT NULL,
     price_at_add DECIMAL(19,2)
         NOT NULL,
-    option VARCHAR(100),
+    item_option VARCHAR(100),
     CONSTRAINT fk_cart_item_cart
         FOREIGN KEY (cart_id)
         REFERENCES cart(id),

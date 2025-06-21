@@ -50,7 +50,12 @@ public class Product {
   LocalDateTime updatedAt;
 
   @Builder
-  public Product(String name, String description, BigDecimal price, Integer stack) {
+  public Product(
+      String name,
+      String description,
+      BigDecimal price,
+      Integer stack
+  ) {
     this.name = name;
     this.description = description;
     this.price = price;

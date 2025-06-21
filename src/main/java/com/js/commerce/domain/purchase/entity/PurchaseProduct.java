@@ -64,20 +64,25 @@ public class PurchaseProduct {
   BigDecimal priceAtOrder; // 주문 시점 가격
 
   @Column
-  String option; // 최종 상품 옵션 정보 (장바구니에서 복사)
+  String itemOption; // 최종 상품 옵션 정보 (장바구니에서 복사)
 
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
   LocalDateTime createdAt;
 
   @Builder
-  public PurchaseProduct(Purchase purchase, Product product, int quantity, BigDecimal priceAtOrder,
-      String option) {
+  public PurchaseProduct(
+      Purchase purchase,
+      Product product,
+      int quantity,
+      BigDecimal priceAtOrder,
+      String itemOption
+  ) {
     this.purchase = purchase;
     this.product = product;
     this.quantity = quantity;
     this.priceAtOrder = priceAtOrder;
-    this.option = option;
+    this.itemOption = itemOption;
   }
 
   public int getQuantity() {

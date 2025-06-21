@@ -51,7 +51,11 @@ public class Refund {
   LocalDateTime processedAt; // 처리 시각
 
   @Builder
-  public Refund(Purchase purchase, String reason, RefundStatus status) {
+  public Refund(
+      Purchase purchase,
+      String reason,
+      RefundStatus status
+  ) {
     this.purchase = purchase;
     this.reason = reason;
     this.status = status;
