@@ -1,6 +1,6 @@
 package com.tommy.ecommerproject.domain.user.entity;
 
-import com.tommy.ecommerproject.common.enums.RoleType;
+import com.tommy.ecommerproject.common.enums.UserRoleType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -62,7 +62,7 @@ public class User {
 
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
-  List<RoleType> role;
+  List<UserRoleType> role;
 
   @Column
   @CreationTimestamp
@@ -81,7 +81,7 @@ public class User {
       String birth,
       String phoneNumber,
       String address,
-      List<RoleType> role
+      List<UserRoleType> role
   ) {
     this.username = username;
     this.passwordHash = passwordHash;
