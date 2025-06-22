@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -26,6 +27,11 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartProduct {
+
+  /*
+  * Cart와 Product의
+  * M:N 관계로 인한 중간테이블
+  * */
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,4 +49,9 @@ public class CartProduct {
   @CreationTimestamp
   LocalDateTime createdAt;
 
+  @Builder
+  public CartProduct(Cart cart, Product product) {
+    this.cart = cart;
+    this.product = product;
+  }
 }
