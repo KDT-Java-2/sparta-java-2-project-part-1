@@ -1,0 +1,94 @@
+create table user (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    login_id VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    grade VARCHAR(10) NOT NULL DEFAULT 'SILVER', -- SILVER, GOLD, DIAMOND
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+create table category (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    name VARCHAR(255) NOT NULL,
+    parent_id BIGINT DEFAULT NULL COMMENT '부모 카테고리 ID(자기 참조)',
+    description TEXT,
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+create table product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    category_id BIGINT NOT NULL COMMENT '상품이 속한 카테고리 ID', -- FK '카테고리'
+
+    name VARCHAR(255) NOT NULL,
+    color VARCHAR (50) NOT NULL,
+    size VARCHAR (3) NOT NULL, -- S, M, L, XL, XXL
+    price DECIMAL(10,2) NOT NULL,
+    stock INT NOT NULL DEFAULT 0,
+    description TEXT,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+create table purchase (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL, -- FK, user 테이블
+
+    order_id VARCHAR(50) NOT NULL UNIQUE,
+    total_price DECIMAL(10,2) NOT NULL,
+    total_quantity INT NOT NULL,
+    payment_type VARCHAR(50), -- BANK_TRANSFER, CARD
+    status VARCHAR(20) NOT NULL,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+create table purchase_product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    purchase_id BIGINT NOT NULL COMMENT '어떤 주문에 속하는지', -- FK
+    product_id BIGINT NOT NULL COMMENT '어떤 상품인지', -- FK
+
+    quantity INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL COMMENT '주문 시점의 상품 가격',
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+create table cart (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    user_id BIGINT NOT NULL, -- FK
+    product_id BIGINT NOT NULL, -- FK
+
+    quantity INT NOT NULL DEFAULT 1,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+create table refunds (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    user_id BIGINT NOT NULL, -- FK
+    purchase_id BIGINT NOT NULL, -- FK
+
+    refund_price DECIMAL(10,2) NOT NULL,
+    refund_status VARCHAR(20) NOT NULL DEFAULT 'REQUESTED', -- REQUESTED, PROCESSING, COMPLETED, REJECTED, CANCELLED
+    description TEXT,
+
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
