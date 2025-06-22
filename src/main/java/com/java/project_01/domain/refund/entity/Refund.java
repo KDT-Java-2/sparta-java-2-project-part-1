@@ -1,7 +1,7 @@
 package com.java.project_01.domain.refund.entity;
 
 import com.java.project_01.common.enums.RefundStatus;
-import com.java.project_01.domain.purchase.entity.Purchase;
+import com.java.project_01.domain.purchase.entity.PurchaseProduct;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,7 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -37,9 +37,9 @@ public class Refund {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "purchase_id", nullable = false, unique = true)
-  Purchase purchase;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "purchase_product_id", nullable = false)
+  PurchaseProduct purchaseProduct;
 
   @Column
   String reason;
@@ -57,8 +57,8 @@ public class Refund {
   LocalDateTime updatedAt;
 
   @Builder
-  public Refund(Purchase purchase, String reason, RefundStatus status) {
-    this.purchase = purchase;
+  public Refund(PurchaseProduct purchaseProduct, String reason, RefundStatus status) {
+    this.purchaseProduct = purchaseProduct;
     this.reason = reason;
     this.status = status;
   }

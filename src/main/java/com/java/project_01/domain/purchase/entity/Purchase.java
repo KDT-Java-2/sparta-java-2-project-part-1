@@ -1,7 +1,6 @@
 package com.java.project_01.domain.purchase.entity;
 
 import com.java.project_01.common.enums.PurchaseStatus;
-import com.java.project_01.domain.refund.entity.Refund;
 import com.java.project_01.domain.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -54,8 +52,23 @@ public class Purchase { //주문
   @Column(nullable = false)
   PurchaseStatus status;
 
-  @Column(nullable = false, columnDefinition = "TEXT")
-  String shippingAddress;
+  @Column(nullable = false)
+  String orderNumber;
+
+  @Column(nullable = false)
+  String receiverName;
+
+  @Column(nullable = false)
+  String receiverPhone;
+
+  @Column(nullable = false)
+  String receiverAddress;
+
+  @Column
+  String receiverAddressDetail;
+
+  @Column
+  String receiverZipcode;
 
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
@@ -68,14 +81,19 @@ public class Purchase { //주문
   @OneToMany(mappedBy = "purchase")
   List<PurchaseProduct> purchaseProductList = new ArrayList<>();
 
-  @OneToOne(mappedBy = "purchase")
-  Refund refund;
-
   @Builder
-  public Purchase(User user, BigDecimal totalPrice, PurchaseStatus status) {
+  public Purchase(User user, BigDecimal totalPrice, PurchaseStatus status, String orderNumber,
+      String receiverName, String receiverPhone, String receiverAddress,
+      String receiverAddressDetail, String receiverZipcode) {
     this.user = user;
     this.totalPrice = totalPrice;
     this.status = status;
+    this.orderNumber = orderNumber;
+    this.receiverName = receiverName;
+    this.receiverPhone = receiverPhone;
+    this.receiverAddress = receiverAddress;
+    this.receiverAddressDetail = receiverAddressDetail;
+    this.receiverZipcode = receiverZipcode;
   }
 
 }

@@ -1,6 +1,7 @@
 package com.java.project_01.domain.purchase.entity;
 
 import com.java.project_01.domain.product.entity.Product;
+import com.java.project_01.domain.refund.entity.Refund;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,9 +10,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,6 +47,9 @@ public class PurchaseProduct {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "product_id", nullable = false)
   Product product;
+
+  @OneToMany(mappedBy = "purchaseProduct")
+  List<Refund> refunds = new ArrayList<>();
 
   @Column(nullable = false)
   int quantity;
