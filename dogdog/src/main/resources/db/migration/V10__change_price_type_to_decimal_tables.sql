@@ -1,0 +1,16 @@
+ALTER TABLE product
+    MODIFY COLUMN price DECIMAL(18, 2) NOT NULL;
+
+ALTER TABLE purchase
+    MODIFY COLUMN total_price DECIMAL(18, 2) NOT NULL;
+
+ALTER TABLE purchase_product
+    MODIFY COLUMN price DECIMAL(18, 2) NOT NULL,
+    MODIFY COLUMN total_price DECIMAL(18, 2) NOT NULL;
+
+ALTER TABLE cart_item
+    MODIFY COLUMN price DECIMAL(18, 2) NOT NULL,
+    MODIFY COLUMN total_price DECIMAL(18, 2) NOT NULL;
+
+ALTER TABLE refund
+    MODIFY COLUMN refund_amount DECIMAL(18, 2) NOT NULL;
