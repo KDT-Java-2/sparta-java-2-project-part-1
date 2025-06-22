@@ -36,12 +36,12 @@ public class Refund {
   Long id;
 
   @OneToOne
-  @PrimaryKeyJoinColumn
+  @PrimaryKeyJoinColumn(name = "purchase_id")
   Purchase purchase;
 
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
   @ColumnDefault("REFUNDDING")
+  @Column(nullable = false, length = 20)
   RefundStatusType status;
 
   @Column
