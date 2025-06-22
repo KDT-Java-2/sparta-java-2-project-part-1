@@ -29,7 +29,6 @@ dependencies {
 		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
 	}
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
