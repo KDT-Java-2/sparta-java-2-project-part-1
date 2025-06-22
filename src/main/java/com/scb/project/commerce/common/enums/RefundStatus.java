@@ -1,7 +1,7 @@
 package com.scb.project.commerce.common.enums;
 
 public enum RefundStatus {
-    PENDING,    // 활불 요청 대기
+    PENDING,    // 환불 요청 대기
     APPROVED,   // 환불 승인
     REJECTED,   // 환불 거절
     PROCESSING, // 환불 처리중

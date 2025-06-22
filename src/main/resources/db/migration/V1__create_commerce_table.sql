@@ -1,11 +1,11 @@
 -- 유저 테이블
 CREATE TABLE user (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL COMMENT '유저 이름',
-    email VARCHAR(255) NOT NULL UNIQUE COMMENT '유저 이메일',
-    phone VARCHAR(20) COMMENT '유저 연락처',
-    password_hash VARCHAR(255) NOT NULL COMMENT '유저 비밀번호 해시값',
-    role VARCHAR(20) NOT NULL DEFAULT 'CUSTOMER' COMMENT '유저 권한',   -- enum
+    name VARCHAR(50) NOT NULL COMMENT '사용자 이름',
+    email VARCHAR(255) NOT NULL UNIQUE COMMENT '사용자 이메일',
+    phone VARCHAR(20) COMMENT '사용자 연락처',
+    password_hash VARCHAR(255) NOT NULL COMMENT '사용자 비밀번호 해시값',
+    role VARCHAR(20) NOT NULL DEFAULT 'CUSTOMER' COMMENT '사용자 권한',   -- enum
     status VARCHAR(10) NOT NULL DEFAULT 'ACTIVE' COMMENT '사용자 상태',  -- enum
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -60,7 +60,7 @@ CREATE TABLE purchase_product (
 -- 장바구니 테이블
 CREATE TABLE cart (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id BIGINT NOT NULL COMMENT '유저 ID(FK)',
+    user_id BIGINT NOT NULL COMMENT '사용자 ID(FK)',
     product_id BIGINT NOT NULL COMMENT '상품 ID(FK)',
     quantity INT NOT NULL COMMENT '수량',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
