@@ -72,8 +72,12 @@ class PurchaseProductRepositoryTest {
         purchaseProductRepository.save(savePurchaseProduct);
 
         // then
-        PurchaseProduct purchaseProduct = purchaseProductRepository.findById(6L)
-            .orElseThrow(() -> new RuntimeException("주문-상품이 존재하지 않습니다."));
+        // Id가 계속 늘어나는데 찾아서 에러 발생
+//        PurchaseProduct purchaseProduct = purchaseProductRepository.findById(6L)
+//            .orElseThrow(() -> new RuntimeException("주문-상품이 존재하지 않습니다."));
+
+        PurchaseProduct purchaseProduct = purchaseProductRepository.findByPurchaseAndProduct(
+            purchase, product);
 
         assertThat(purchaseProduct.getProduct()).isEqualTo(product);
     }
