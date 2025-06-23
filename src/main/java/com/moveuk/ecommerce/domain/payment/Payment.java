@@ -26,11 +26,6 @@ public class Payment {
     @JoinColumn(name = "purchase_id", nullable = false)
     private Purchase purchase;
 
-    // 연관관계: 사용자
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
     // 연관관계: 사용한 쿠폰 (nullable)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "issued_coupon_id")

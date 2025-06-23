@@ -147,8 +147,6 @@ CREATE TABLE cart_item (
 
 CREATE TABLE refund (
     id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '환불 고유 ID',
-    purchase_id BIGINT NOT NULL COMMENT '환불 대상 주문 ID',
-    user_id BIGINT NOT NULL COMMENT '환불 요청자 사용자 ID',
     payment_id BIGINT NOT NULL COMMENT '환불이 발생한 결제 ID',
 
     total_refund_amount DECIMAL(10,2) NOT NULL COMMENT '총 환불 요청 금액',
@@ -193,9 +191,7 @@ CREATE TABLE issued_coupon (
 
 CREATE TABLE payment (
     id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '결제 고유 ID',
-
     order_id BIGINT NOT NULL COMMENT '구매 ID (purchase 테이블 참조)',
-    user_id BIGINT NOT NULL COMMENT '결제한 사용자 ID',
 
     amount DECIMAL(10, 2) NOT NULL COMMENT '결제 금액',
     issued_coupon_id BIGINT DEFAULT NULL COMMENT '사용된 쿠폰 ID',
