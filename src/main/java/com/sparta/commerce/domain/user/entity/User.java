@@ -9,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -39,7 +38,6 @@ public class User {
   @Column(nullable = false, length = 50)
   String name;
 
-  @Email(message = "형식에 맞지 않는 이메일 주소입니다.")
   @Column(nullable = false, unique = true)
   String email;
 
