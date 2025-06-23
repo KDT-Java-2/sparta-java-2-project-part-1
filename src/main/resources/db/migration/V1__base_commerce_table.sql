@@ -1,0 +1,171 @@
+-- 회원
+CREATE TABLE user (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    encrypt_password VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(20) DEFAULT NULL,
+    nickname VARCHAR(50) DEFAULT NULL,
+    gender VARCHAR(20) DEFAULT NULL COMMENT 'MALE, FEMALE, OTHER',
+    birth_date DATE DEFAULT NULL,
+    role VARCHAR(20) DEFAULT 'ROLE_USER' COMMENT 'ROLE_USER, ROLE_ADMIN',
+    marketing_agree BOOLEAN DEFAULT FALSE,
+    is_verified BOOLEAN DEFAULT FALSE,
+    last_login_at DATETIME DEFAULT NULL,
+    last_password_change_at DATETIME DEFAULT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 주소
+CREATE TABLE address (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT NOT NULL,
+  receiver_name VARCHAR(50) NOT NULL,
+  zipcode VARCHAR(10) NOT NULL,
+  road_address VARCHAR(255) NOT NULL,
+  detail_address VARCHAR(255),
+  is_default BOOLEAN DEFAULT FALSE,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+);
+
+-- 판매자
+CREATE TABLE seller (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    name VARCHAR(20) NOT NULL,
+    encrypt_password VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(20) DEFAULT NULL,
+    last_login_at DATETIME DEFAULT NULL,
+    last_password_change_at DATETIME DEFAULT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 상품 테이블
+CREATE TABLE product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    seller_id BIGINT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    brand VARCHAR(100) DEFAULT NULL,
+    description TEXT,
+    category_id BIGINT COMMENT '상품 카테고리 ID',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 상품 이미지 테이블
+CREATE TABLE product_image (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  product_id BIGINT NOT NULL,
+  original_name VARCHAR(500) NOT NULL,
+  saved_name VARCHAR(500) NOT NULL,
+  image_url VARCHAR(500) NOT NULL,
+  is_thumbnail BOOLEAN DEFAULT FALSE,
+
+  FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
+);
+
+-- 상품 개별 아이템(옵션별 상품등록)
+CREATE TABLE product_item (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    product_id BIGINT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    stock INT NOT NULL DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
+);
+
+-- 상품 옵션 테이블
+CREATE TABLE option_group (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL COMMENT '예: 색상, 사이즈',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 상품 옵션 항목 테이블
+CREATE TABLE option_item (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    option_group_id BIGINT NOT NULL,
+    value VARCHAR(100) NOT NULL COMMENT '예: 검정, 260',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (option_group_id) REFERENCES option_group(id) ON DELETE CASCADE
+);
+
+-- 상품 개별 아이템과 옵션 매핑 테이블
+CREATE TABLE product_item_option (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    product_item_id BIGINT NOT NULL,
+    option_item_id BIGINT NOT NULL,
+
+    FOREIGN KEY (product_item_id) REFERENCES product_item(id) ON DELETE CASCADE,
+    FOREIGN KEY (option_item_id) REFERENCES option_item(id) ON DELETE CASCADE
+);
+
+-- 장바구니 테이블
+CREATE TABLE cart (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT NOT NULL,
+  product_item_id BIGINT NOT NULL,
+  quantity INT NOT NULL DEFAULT 1,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+  FOREIGN KEY (product_item_id) REFERENCES product_item(id)
+);
+
+
+-- 카테고리
+CREATE TABLE category (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    parent_id BIGINT DEFAULT NULL, -- 서브 카테고리용
+    depth INT DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 구매
+CREATE TABLE purchase (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL COMMENT '구매한 사용자 ID',
+    address_id BIGINT NOT NULL COMMENT '구매 주소지 ID',
+    total_price DECIMAL(10, 2) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'ORDERED' COMMENT 'ORDERED, PREPARING, SHIPPED, DELIVERED, CANCELED, RETURNED, REFUNDED',    created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
+    updated_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
+);
+
+-- 상품-구매 중간관계 테이블
+CREATE TABLE purchase_product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    purchase_id BIGINT NOT NULL,
+    product_item_id BIGINT NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL COMMENT '구매 당시 가격',
+    created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
+    refunded_at DATETIME DEFAULT NULL,
+
+    FOREIGN KEY (purchase_id) REFERENCES purchase(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_item_id) REFERENCES product_item(id)
+);
+
+-- 환불 테이블
+CREATE TABLE refund (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  purchase_product_id BIGINT NOT NULL,
+  refund_reason TEXT,
+  refund_status VARCHAR(20) DEFAULT 'REQUESTED' COMMENT 'REQUESTED, APPROVED, REJECTED, COMPLETED',
+  requested_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  processed_at DATETIME DEFAULT NULL,
+
+  FOREIGN KEY (purchase_product_id) REFERENCES purchase_product(id)
+);
+
+
+
+-- 결제 등 관련 테이블 추가 예정
