@@ -46,18 +46,6 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // 연관관계: UserProfile (1:1)
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private UserProfile profile;
-
-    // 연관관계: UserAgreement (1:1)
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private UserAgreement agreement;
-
-    // 연관관계: UserBalance (1:1)
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private UserBalance balance;
-
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
