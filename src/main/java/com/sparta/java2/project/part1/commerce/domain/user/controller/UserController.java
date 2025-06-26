@@ -5,6 +5,7 @@ import com.sparta.java2.project.part1.commerce.domain.user.dto.*;
 import com.sparta.java2.project.part1.commerce.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class UserController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED) // 성공 시 201 Created 상태 코드 반환
     public ApiResponse<UserResponse> create(
             @Valid @RequestBody UserCreateRequest userCreateRequest) {
         return ApiResponse.success(userService.create(userCreateRequest));

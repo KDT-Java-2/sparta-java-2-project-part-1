@@ -10,6 +10,7 @@ import com.sparta.java2.project.part1.commerce.domain.user.mapper.UserMapper;
 import com.sparta.java2.project.part1.commerce.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,11 +20,13 @@ public class UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
 
+    @Transactional
     public UserResponse getById(Long id) {
         return userMapper.toUserResponse(userRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_USER)));
     }
 
+    @Transactional
     public List<UserSearchResponse> getAll() {
         return userRepository.findAll()
                 .stream()
@@ -31,16 +34,19 @@ public class UserService {
                 .toList();
     }
 
+    @Transactional
     public UserResponse create(UserCreateRequest userCreateRequest) {
         return userMapper.toUserResponse(
                 userRepository.save(userMapper.toUser(userCreateRequest))
         );
     }
 
+    @Transactional
     public void update(Long id, UserUpdateRequest userUpdateRequest) {
         userRepository.save(userMapper.toUser(userUpdateRequest));
     }
 
+    @Transactional
     public void delete(Long id) {
         userRepository.deleteById(id);
     }

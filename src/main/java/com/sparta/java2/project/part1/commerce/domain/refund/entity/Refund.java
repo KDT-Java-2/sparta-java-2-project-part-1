@@ -21,7 +21,7 @@ import org.hibernate.annotations.DynamicUpdate;
 public class Refund extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "purchase_id", nullable = false, updatable = false)
