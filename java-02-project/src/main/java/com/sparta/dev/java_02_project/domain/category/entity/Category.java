@@ -1,4 +1,4 @@
-package com.sparta.dev.java_02_project.domain.catagory.entity;
+package com.sparta.dev.java_02_project.domain.category.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
