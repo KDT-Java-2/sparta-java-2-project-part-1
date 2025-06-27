@@ -60,24 +60,7 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-// Q-type 소스 생성 위치 지정
-def querydslDir = "$buildDir/generated/querydsl"
-
-// sourceSets 설정
-sourceSets {
-	main.java.srcDirs += [ querydslDir ]
-}
-
-// tasks 설정
-tasks.withType(JavaCompile) {
-	options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
-}
-
+// build.gradle 파일 하단에 추가
 tasks.named('compileJava') {
 	options.annotationProcessorPath = configurations.annotationProcessor
-}
-
-// clean 태스크 설정
-clean.doLast {
-	file(querydslDir).deleteDir()
 }
