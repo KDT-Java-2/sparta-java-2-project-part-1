@@ -133,7 +133,7 @@ public class AdminService {
         .build();
   }
 
-  // 카테고리 삭제
+  // 카테 고리 삭제
   @DeleteMapping("/categories/{categoryId}")
   public void deleteAdminCategory(@PathVariable Long categoryId) {
 
