@@ -1,62 +1,76 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.5.0'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'org.springframework.boot' version '3.5.0'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'com.js'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	// spring-boot 가 붙은 건 수많은 게 응집되어 있음. 옛날에 xml로 다 설정해야 했던 것들!
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	// jpa가 있으면 DB부터 찾으려고 함! DB 설정 필수
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	// 기존 Tomcat 의존성 제외
-	implementation('org.springframework.boot:spring-boot-starter-web') {
-		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
-	}
-	// Undertow 의존성 추가
-	implementation 'org.springframework.boot:spring-boot-starter-undertow'
-	// Swagger 를 위해 의존성 추가
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
-	// Flyway는 데이터베이스의 스키마 변경 이력을 코드로 관리하고, 애플리케이션 실행 시 정해진 순서에 따라 자동으로 DB에 반영(마이그레이션)해주는 도구
-	implementation 'org.flywaydb:flyway-core'
-	implementation 'org.flywaydb:flyway-mysql'
+    // spring-boot 가 붙은 건 수많은 게 응집되어 있음. 옛날에 xml로 다 설정해야 했던 것들!
+    // 기존 Tomcat 의존성 제외
+    implementation('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+    // Undertow 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-undertow'
+    implementation 'org.springframework.security:spring-security-crypto:6.1.3'
+    // jpa가 있으면 DB부터 찾으려고 함! DB 설정 필수
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    // Querydsl 의존성 추가
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 
-	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    // Swagger 를 위해 의존성 추가
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+    // Flyway는 데이터베이스의 스키마 변경 이력을 코드로 관리하고, 애플리케이션 실행 시 정해진 순서에 따라 자동으로 DB에 반영(마이그레이션)해주는 도구
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-mysql'
 
-	compileOnly 'org.projectlombok:lombok'
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    compileOnly 'org.projectlombok:lombok'
 
-	runtimeOnly 'com.mysql:mysql-connector-j'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	annotationProcessor 'org.projectlombok:lombok'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-	// runtimeoOnly 아래에, 그리고 웬만하면 lombok 아래에 있어야 함!
+    runtimeOnly 'com.mysql:mysql-connector-j'
 
+    annotationProcessor 'org.projectlombok:lombok'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // runtimeoOnly 아래에, 그리고 웬만하면 lombok 아래에 있어야 함!
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    // 마찬가지로 lombok 아래에 있어야 함! 그만큼 정말 많은 걸 롬복으로 처리하기 때문에 롬복이 먼저 돌아야 함
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
+}
+
+// 어노테이션프로세서가 컴파일 시점에 그냥 돌아감 (빌드하지 않아도 실행만 하면 어노테이션프로세서들이 적용된다?)
+tasks.named('compileJava') {
+    options.annotationProcessorPath = configurations.annotationProcessor
 }
