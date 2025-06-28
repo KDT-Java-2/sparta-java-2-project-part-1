@@ -18,9 +18,6 @@ public class UserController {
 
     private final UserService userService;
 
-    // 회원 가입 API
-    // 새로운 사용자의 정보 시스템에 등록
-
     /**
      * 회원 가입 API
      * <p>새로운 사용자의 정보를 시스템에 등록합니다.</p>
