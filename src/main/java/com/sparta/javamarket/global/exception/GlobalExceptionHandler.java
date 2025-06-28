@@ -1,9 +1,9 @@
 package com.sparta.javamarket.global.exception;
 
 import com.sparta.javamarket.common.response.ApiResponse;
+import com.sparta.javamarket.common.exception.ServiceException;
 import io.swagger.v3.oas.annotations.Hidden;
 import java.util.concurrent.atomic.AtomicReference;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
