@@ -1,5 +1,6 @@
 package me.chahyunho.projectweek1.domain.purchase.repository;
 
+
 import java.util.List;
 import me.chahyunho.projectweek1.domain.purchase.entity.Purchase;
 import org.springframework.data.jpa.repository.JpaRepository;

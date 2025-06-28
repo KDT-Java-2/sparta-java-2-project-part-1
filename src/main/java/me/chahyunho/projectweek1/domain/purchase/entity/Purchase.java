@@ -1,5 +1,7 @@
 package me.chahyunho.projectweek1.domain.purchase.entity;
 
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,9 +12,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,12 +51,18 @@ public class Purchase { // 주문
   @JoinColumn(name = "user_id", nullable = false)
   User user;
 
+  @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
+  List<PurchaseProduct> purchaseProducts = new ArrayList<>();
+
   @Column
   BigDecimal totalPrice;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
   PurchaseStatus status;
+
+  @Column(nullable = false)
+  String shippingAddress;
 
   @CreationTimestamp // 엔티티 생성시 시간이 자동으로 기록됨
   @Column(nullable = false, updatable = false)
@@ -59,21 +72,40 @@ public class Purchase { // 주문
   @Column(nullable = false, updatable = false)
   LocalDateTime updatedAt;
 
+  @PrePersist
+  public void onPrePersist() {
+    this.createdAt = LocalDateTime.now();
+    this.updatedAt = this.createdAt;
+  }
+
+  @PreUpdate
+  public void onPreUpdate() {
+    this.updatedAt = LocalDateTime.now();
+  }
+
+
   public void setStatus(PurchaseStatus status) {
     if (!ObjectUtils.isEmpty(status)) {
       this.status = status;
     }
+  }
 
+
+  public void addPurchaseItem(PurchaseProduct item) {
+    this.purchaseProducts.add(item);     // 리스트에 추가
+    item.setPurchase(this);// 역방향도 연결
   }
 
   @Builder
   public Purchase(
       User user,
       BigDecimal totalPrice,
-      PurchaseStatus status
+      PurchaseStatus status,
+      String shippingAddress
   ) {
     this.user = user;
     this.totalPrice = totalPrice;
     this.status = status;
+    this.shippingAddress = shippingAddress;
   }
 }
