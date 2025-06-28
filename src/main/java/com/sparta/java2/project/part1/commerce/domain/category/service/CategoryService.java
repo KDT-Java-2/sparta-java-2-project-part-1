@@ -5,6 +5,7 @@ import com.sparta.java2.project.part1.commerce.domain.category.entity.Category;
 import com.sparta.java2.project.part1.commerce.domain.category.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
+    @Transactional(readOnly = true)
     public List<CategorySearchHierarchyResponse> searchHierarchy() {
         List<CategorySearchHierarchyResponse> roots = new ArrayList<>();
 

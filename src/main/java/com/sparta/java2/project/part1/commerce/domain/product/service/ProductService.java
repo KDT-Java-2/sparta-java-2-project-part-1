@@ -29,6 +29,7 @@ public class ProductService {
     private CategoryRepository categoryRepository;
 
     // User API
+    @Transactional(readOnly = true)
     public Page<ProductSearchResponse> search(ProductSearchRequest productSearchRequest) {
         Sort sort = QueryDslUtil.toSort(productSearchRequest.getSortBy());
         Pageable pageable = PageRequest.of(
@@ -39,6 +40,7 @@ public class ProductService {
     }
 
     // Admin API
+    @Transactional
     public ProductCreateResponse createProduct(ProductCreateRequest productCreateRequest) {
         /*
 - **기능 요구사항**:
