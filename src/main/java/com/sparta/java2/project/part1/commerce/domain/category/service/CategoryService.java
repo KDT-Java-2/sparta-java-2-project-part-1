@@ -1,5 +1,9 @@
 package com.sparta.java2.project.part1.commerce.domain.category.service;
 
+import com.sparta.java2.project.part1.commerce.common.exception.ServiceException;
+import com.sparta.java2.project.part1.commerce.common.exception.ServiceExceptionCode;
+import com.sparta.java2.project.part1.commerce.domain.category.dto.CategoryCreateRequest;
+import com.sparta.java2.project.part1.commerce.domain.category.dto.CategoryCreateResponse;
 import com.sparta.java2.project.part1.commerce.domain.category.dto.CategorySearchHierarchyResponse;
 import com.sparta.java2.project.part1.commerce.domain.category.entity.Category;
 import com.sparta.java2.project.part1.commerce.domain.category.repository.CategoryRepository;
@@ -10,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,5 +45,31 @@ public class CategoryService {
         }
 
         return roots;
+    }
+
+    @Transactional
+    public CategoryCreateResponse createCategory(CategoryCreateRequest categoryCreateRequest) {
+        Category createCategory;
+        Long parentId = categoryCreateRequest.getParentId();
+        if (parentId == null) {
+            createCategory = Category.builder()
+                    .name(categoryCreateRequest.getName())
+                    .parent(null)
+                    .build();
+        } else {
+            Optional<Category> parent = categoryRepository.findById(parentId);
+            if (parent.isEmpty()) {
+                throw new ServiceException(ServiceExceptionCode.NOT_FOUND_PARENT_CATEGORY);
+            }
+            createCategory = Category.builder()
+                    .name(categoryCreateRequest.getName())
+                    .parent(parent.get())
+                    .build();
+        }
+
+        return CategoryCreateResponse.builder()
+                .categoryId(
+                        categoryRepository.save(createCategory).getId()
+                ).build();
     }
 }

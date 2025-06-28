@@ -14,6 +14,7 @@ public enum ServiceExceptionCode {
     NOT_FOUND_PRODUCT("상품을 찾을 수 없습니다."),
     NOT_FOUND_REFUND("환불주문을 찾을 수 없습니다."),
     NOT_FOUND_CATEGORY("상품분류를 찾을 수 없습니다."),
+    NOT_FOUND_PARENT_CATEGORY("부모 상품분류를 찾을 수 없습니다."),
 
     // Duplicated
     ALREADY_EXIST_EMAIL("이미 존재하는 이메일 입니다."),
