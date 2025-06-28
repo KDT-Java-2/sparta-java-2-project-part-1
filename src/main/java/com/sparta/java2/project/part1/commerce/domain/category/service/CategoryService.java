@@ -8,6 +8,7 @@ import com.sparta.java2.project.part1.commerce.domain.category.dto.CategorySearc
 import com.sparta.java2.project.part1.commerce.domain.category.dto.CategoryUpdateResponse;
 import com.sparta.java2.project.part1.commerce.domain.category.entity.Category;
 import com.sparta.java2.project.part1.commerce.domain.category.repository.CategoryRepository;
+import com.sparta.java2.project.part1.commerce.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
 
     @Transactional(readOnly = true)
     public List<CategorySearchHierarchyResponse> searchHierarchy() {
@@ -92,5 +94,22 @@ public class CategoryService {
             updateInstance.get().setParent(null);
         }
         return null;
+    }
+
+    @Transactional
+    public void deleteCategory(Long categoryId) {
+        // category 존재여부
+        if (!categoryRepository.existsById(categoryId)) {
+            throw new ServiceException(ServiceExceptionCode.NOT_FOUND_CATEGORY);
+        }
+        // 자식 존재여부
+        if (categoryRepository.existsByParent_Id(categoryId)) {
+            throw new ServiceException(ServiceExceptionCode.ALREADY_REGISTERED_CHILD_CATEGORY);
+        }
+        // 제품 존재여부
+        if (productRepository.existsByCategory_Id(categoryId)) {
+            throw new ServiceException(ServiceExceptionCode.ALREADY_REGISTERED_PRODUCT_CATEGORY);
+        }
+        categoryRepository.deleteById(categoryId);
     }
 }

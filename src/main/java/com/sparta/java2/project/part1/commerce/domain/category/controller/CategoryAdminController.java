@@ -29,4 +29,12 @@ public class CategoryAdminController {
     ) {
         return ApiResponse.success(categoryService.updateCategory(categoryId, categoryCreateRequest));
     }
+
+    @DeleteMapping("/{categoryId}")
+    public ApiResponse<?> deleteCategory(
+            @PathVariable Long categoryId
+    ) {
+        categoryService.deleteCategory(categoryId);
+        return ApiResponse.success();
+    }
 }
