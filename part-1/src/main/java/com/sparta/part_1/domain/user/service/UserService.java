@@ -26,12 +26,16 @@ public class UserService {
   @Transactional
   public UserJoinResponse join(UserJoinRequestDto dto) {
 
-    if (userQueryRepository.hasSameUserEmail(dto.getEmail())) {
+    if (Boolean.TRUE.equals(hasSameEmail(dto.getEmail()))) {
       throw new UserServiceException(UserErrorCode.HAS_SAME_USER_EMAIL);
     }
 
     User save = userRepository.save(mapper.toUserEntity(dto));
 
     return mapper.toUserJoinResponse(save);
+  }
+
+  private boolean hasSameEmail(String email) {
+    return userQueryRepository.hasSameUserEmail(email);
   }
 }
