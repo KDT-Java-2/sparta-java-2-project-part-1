@@ -3,15 +3,14 @@ package com.sparta.java2.project.part1.commerce.domain.category.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sparta.java2.project.part1.commerce.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 
 @Entity
+@Getter
 @Table
 @DynamicInsert
 @DynamicUpdate
@@ -22,9 +21,11 @@ public class Category extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Setter
     @Column(nullable = false)
     String name;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     @JsonBackReference
