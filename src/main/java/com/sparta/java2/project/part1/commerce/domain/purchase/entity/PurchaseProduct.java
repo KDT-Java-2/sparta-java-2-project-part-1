@@ -5,6 +5,7 @@ import com.sparta.java2.project.part1.commerce.domain.product.entity.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
@@ -13,6 +14,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import java.math.BigDecimal;
 
 @Entity
+@Getter
 @Table
 @DynamicInsert
 @DynamicUpdate

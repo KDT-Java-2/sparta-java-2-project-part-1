@@ -21,6 +21,7 @@ public enum ServiceExceptionCode {
 
     // Features
     INSUFFICIENT_STOCK("상품의 재고가 부족합니다."),
+    ALREADY_PURCHASED_PRODUCT("이미 구매기록이 존재하는 상품입니다.")
     ;
 
     final String message;
