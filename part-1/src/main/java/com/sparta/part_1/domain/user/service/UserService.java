@@ -2,7 +2,7 @@ package com.sparta.part_1.domain.user.service;
 
 import com.sparta.part_1.common.exception.UserErrorCode;
 import com.sparta.part_1.common.exception.UserServiceException;
-import com.sparta.part_1.domain.user.dto.request.UserJoinRequestDto;
+import com.sparta.part_1.domain.user.dto.request.UserJoinRequest;
 import com.sparta.part_1.domain.user.dto.response.UserJoinResponse;
 import com.sparta.part_1.domain.user.entity.User;
 import com.sparta.part_1.domain.user.mapper.UserEntityMapper;
@@ -24,7 +24,7 @@ public class UserService {
 
 
   @Transactional
-  public UserJoinResponse join(UserJoinRequestDto dto) {
+  public UserJoinResponse join(UserJoinRequest dto) {
 
     if (Boolean.TRUE.equals(hasSameEmail(dto.getEmail()))) {
       throw new UserServiceException(UserErrorCode.HAS_SAME_USER_EMAIL);

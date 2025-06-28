@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserJoinRequestDto {
+public class UserJoinRequest {
 
   @Min(value = 1, message = "이름은 1글자 일 수 없습니다.")
   String name;

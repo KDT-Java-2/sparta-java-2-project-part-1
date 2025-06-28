@@ -1,7 +1,7 @@
 package com.sparta.part_1.domain.user.controller;
 
 import com.sparta.part_1.common.respeonse.ApiResponse;
-import com.sparta.part_1.domain.user.dto.request.UserJoinRequestDto;
+import com.sparta.part_1.domain.user.dto.request.UserJoinRequest;
 import com.sparta.part_1.domain.user.dto.response.UserJoinResponse;
 import com.sparta.part_1.domain.user.service.UserService;
 import jakarta.validation.Valid;
@@ -20,7 +20,7 @@ public class UserController {
 
   @PostMapping
   public ApiResponse<UserJoinResponse> addUsers(
-      @Valid @RequestBody UserJoinRequestDto userJoinRequestDto) {
+      @Valid @RequestBody UserJoinRequest userJoinRequestDto) {
     return ApiResponse.success(userService.join(userJoinRequestDto));
   }
 }
