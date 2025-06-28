@@ -21,7 +21,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.util.ObjectUtils;
 
 @Table
 @Entity
@@ -80,11 +79,5 @@ public class User {
         this.passwordHash = passwordHash;
         this.role = role;
         this.status = status;
-    }
-
-    public void setStatus(UserStatus status) {
-        if (!ObjectUtils.isEmpty(status)) {
-            this.status = status;
-        }
     }
 }
