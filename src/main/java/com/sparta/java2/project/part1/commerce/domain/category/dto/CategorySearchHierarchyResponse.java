@@ -1,12 +1,15 @@
 package com.sparta.java2.project.part1.commerce.domain.category.dto;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategorySearchHierarchyResponse {
     Long id;
     String name;

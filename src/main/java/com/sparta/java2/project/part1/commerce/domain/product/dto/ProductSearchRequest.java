@@ -1,10 +1,13 @@
 package com.sparta.java2.project.part1.commerce.domain.product.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Getter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductSearchRequest {
     /*
     - `category` (Long, 선택): 특정 카테고리 ID에 속한 상품만 필터링합니다.

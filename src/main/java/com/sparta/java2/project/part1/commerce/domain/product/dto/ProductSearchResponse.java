@@ -1,10 +1,13 @@
 package com.sparta.java2.project.part1.commerce.domain.product.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductSearchResponse {
     /*
   "message": {

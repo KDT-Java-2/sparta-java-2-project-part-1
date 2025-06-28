@@ -3,9 +3,12 @@ package com.sparta.java2.project.part1.commerce.domain.product.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductCreateRequest {
     /*
     - **요청 (Request Body)**:
@@ -16,18 +19,18 @@ public class ProductCreateRequest {
     - `categoryId` (Long, 필수): 상품이 속할 카테고리의 ID.
      */
     @NotBlank
-    private String name;
+    String name;
 
     @NotBlank
-    private String description;
+    String description;
 
     @NotNull
     @PositiveOrZero
-    private Integer price;
+    Integer price;
 
     @NotNull
     @PositiveOrZero
-    private Integer stock;
+    Integer stock;
 
     @NotNull
     Long categoryId;
