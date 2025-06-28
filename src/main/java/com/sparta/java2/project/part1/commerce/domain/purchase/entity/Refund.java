@@ -1,8 +1,7 @@
-package com.sparta.java2.project.part1.commerce.domain.refund.entity;
+package com.sparta.java2.project.part1.commerce.domain.purchase.entity;
 
 import com.sparta.java2.project.part1.commerce.common.entity.BaseTimeEntity;
 import com.sparta.java2.project.part1.commerce.common.enums.RefundStatus;
-import com.sparta.java2.project.part1.commerce.domain.purchase.entity.Purchase;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
