@@ -15,7 +15,8 @@ public class UserCreateRequest {
   @NotBlank
   String email;
 
-  @NotBlank @Size(min = 8, message = "비밀번호는 8자 이상이어야 합니다.")
+  @NotBlank
+  @Size(min = 8, message = "비밀번호는 8자 이상이어야 합니다.")
   String password;
 
   @NotBlank
