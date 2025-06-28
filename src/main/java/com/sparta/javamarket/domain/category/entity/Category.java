@@ -14,15 +14,18 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.util.ObjectUtils;
 
 @Table
 @Entity
+@Getter
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
@@ -52,6 +55,12 @@ public class Category {
   public Category(String name, Category parent) {
     this.name = name;
     this.parent = parent;
+  }
+
+  public void setName(String name) {
+    if(!ObjectUtils.isEmpty(name)){
+      this.name = name;
+    }
   }
 }
 

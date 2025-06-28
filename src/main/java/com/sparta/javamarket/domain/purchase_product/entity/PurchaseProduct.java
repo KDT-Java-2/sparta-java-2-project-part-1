@@ -1,7 +1,7 @@
 package com.sparta.javamarket.domain.purchase_product.entity;
 
-import com.sparta.javamarket.domain.product.entity.Product;
 import com.sparta.javamarket.domain.purchase.entity.Purchase;
+import com.sparta.javamarket.domain.product.entity.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

@@ -24,6 +24,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.util.ObjectUtils;
 
 @Table
 @Entity
@@ -78,5 +79,29 @@ public class User {
     this.phone = phone;
     this.address = address;
     this.role = role;
+  }
+
+  public void setNickname(String nickname) {
+    if(!ObjectUtils.isEmpty(nickname)){
+      this.nickname = nickname;
+    }
+  }
+
+  public void setPassword(String password) {
+    if(!ObjectUtils.isEmpty((password))){
+      this.password = password;
+    }
+  }
+
+  public void setPhone(String phone) {
+    if(!ObjectUtils.isEmpty(phone)){
+      this.phone = phone;
+    }
+  }
+
+  public void setRole(UserRoleStatus role) {
+    if(!ObjectUtils.isEmpty((role))){
+      this.role = role;
+    }
   }
 }

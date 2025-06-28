@@ -1,8 +1,0 @@
-CREATE TABLE category
-(
-    id         BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name       VARCHAR(255),
-    parent_id  BIGINT,
-    created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
-    updated_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6)
-);
