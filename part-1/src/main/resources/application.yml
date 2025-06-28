@@ -20,6 +20,8 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
         highlight_sql: true
+  jackson:
+    property-naming-strategy: SNAKE_CASE #변수가 스네이크 케이스로 와도 역직렬화가 정상적으로 진행됨
 
 # ?? ?? ??
 logging:

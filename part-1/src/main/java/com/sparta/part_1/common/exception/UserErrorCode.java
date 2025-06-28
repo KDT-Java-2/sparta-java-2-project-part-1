@@ -13,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public enum UserErrorCode {
 
+  HAS_SAME_USER_EMAIL("해당 이메일은 가입된 이력이 존재합니다."),
   USER_NOT_FOUND("유저를 찾을 수 없습니다."),
   USER_SAVE_FAILED("회원 가입에 실패했습니다.");
 

@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -47,8 +48,8 @@ public class User {
   @Column(nullable = false)
   String email;
 
-  @Column(name = "password_hash", nullable = false)
-  String password;
+  @Column(nullable = false)
+  String passwordHash;
 
   @Column(nullable = false, length = 10)
   @Enumerated(EnumType.STRING)
@@ -92,7 +93,7 @@ public class User {
       (
           String name,
           String email,
-          String password,
+          String passwordHash,
           UserStatus status,
           LocalDateTime birth,
           String phoneNumber,
@@ -102,12 +103,24 @@ public class User {
       ) {
     this.name = name;
     this.email = email;
-    this.password = password;
+    this.passwordHash = passwordHash;
     this.status = status;
     this.birth = birth;
     this.phoneNumber = phoneNumber;
     this.grade = grade;
     this.isPersonalInfoAgree = isPersonalInfoAgree;
     this.isThirdPartyAgree = isThirdPartyAgree;
+  }
+
+  // 영속성 전에 기본값을 세팅한다.
+  @PrePersist
+  public void prePersist() {
+    if (status == null) {
+      status = UserStatus.ACTIVE;
+    }
+
+    if (grade == null) {
+      grade = UserGrade.NORMAL;
+    }
   }
 }
