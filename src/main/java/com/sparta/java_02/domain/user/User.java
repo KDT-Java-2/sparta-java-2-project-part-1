@@ -26,10 +26,13 @@ public class User {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(nullable = false, length = 100)
-    private String name;
+    @Column(nullable = false, length = 255)
+    private String password;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 100)
+    private String username;
+
+    @Column(length = 20)
     private String phone;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -46,9 +49,16 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    public User(String email, String name, String phone) {
+    public User(String email, String password, String username) {
         this.email = email;
-        this.name = name;
+        this.password = password;
+        this.username = username;
+    }
+
+    public User(String email, String password, String username, String phone) {
+        this.email = email;
+        this.password = password;
+        this.username = username;
         this.phone = phone;
     }
 

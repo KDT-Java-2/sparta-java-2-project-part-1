@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +24,17 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, unique = true, length = 200)
     private String name;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
+    @Column(nullable = false)
+    private Integer price;
 
     @Column(nullable = false)
-    private Integer stockQuantity;
+    private Integer stock;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -55,15 +54,15 @@ public class Product {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    public Product(String name, String description, BigDecimal price, Integer stockQuantity, Category category) {
+    public Product(String name, String description, Integer price, Integer stock, Category category) {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.stockQuantity = stockQuantity;
+        this.stock = stock;
         this.category = category;
     }
 
-    public void updateInfo(String name, String description, BigDecimal price, Category category) {
+    public void updateInfo(String name, String description, Integer price, Category category) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -71,25 +70,25 @@ public class Product {
     }
 
     public void updateStock(Integer quantity) {
-        this.stockQuantity = quantity;
+        this.stock = quantity;
     }
 
     public boolean isStockAvailable(Integer requestedQuantity) {
-        return this.stockQuantity >= requestedQuantity;
+        return this.stock >= requestedQuantity;
     }
 
     public void decreaseStock(Integer quantity) {
         if (!isStockAvailable(quantity)) {
-            throw new IllegalArgumentException("재고가 부족합니다. 현재 재고: " + this.stockQuantity);
+            throw new IllegalArgumentException("재고가 부족합니다. 현재 재고: " + this.stock);
         }
-        this.stockQuantity -= quantity;
+        this.stock -= quantity;
     }
 
     public void increaseStock(Integer quantity) {
         if (quantity <= 0) {
             throw new IllegalArgumentException("증가할 재고는 0보다 커야 합니다.");
         }
-        this.stockQuantity += quantity;
+        this.stock += quantity;
     }
 
     public void changeCategory(Category newCategory) {

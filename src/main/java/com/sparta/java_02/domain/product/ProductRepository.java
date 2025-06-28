@@ -5,11 +5,20 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
+    /**
+     * 상품명 중복 확인
+     */
+    boolean existsByName(String name);
+
+    /**
+     * 상품명 중복 확인 (자기 자신 제외)
+     */
+    boolean existsByNameAndIdNot(String name, Long id);
 
     /**
      * 상품명으로 검색 (부분 일치)
@@ -19,17 +28,22 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     /**
      * 가격 범위로 상품 검색
      */
-    List<Product> findByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
+    List<Product> findByPriceBetween(Integer minPrice, Integer maxPrice);
 
     /**
      * 재고가 있는 상품만 조회
      */
-    @Query("SELECT p FROM Product p WHERE p.stockQuantity > 0")
+    @Query("SELECT p FROM Product p WHERE p.stock > 0")
     List<Product> findAvailableProducts();
 
     /**
      * 재고가 부족한 상품 조회
      */
-    @Query("SELECT p FROM Product p WHERE p.stockQuantity < :threshold")
+    @Query("SELECT p FROM Product p WHERE p.stock < :threshold")
     List<Product> findLowStockProducts(@Param("threshold") Integer threshold);
+
+    /**
+     * 카테고리별 상품 조회
+     */
+    List<Product> findByCategoryId(Long categoryId);
 } 

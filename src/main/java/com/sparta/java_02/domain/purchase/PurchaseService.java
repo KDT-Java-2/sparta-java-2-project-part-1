@@ -36,14 +36,14 @@ public class PurchaseService {
 
         // 재고 확인 및 차감
         if (!product.isStockAvailable(quantity)) {
-            throw new IllegalArgumentException("재고가 부족합니다. 현재 재고: " + product.getStockQuantity());
+            throw new IllegalArgumentException("재고가 부족합니다. 현재 재고: " + product.getStock());
         }
         
         product.decreaseStock(quantity);
         productRepository.save(product);
 
         // 구매 생성
-        Purchase purchase = new Purchase(user, product, quantity, product.getPrice(), 
+        Purchase purchase = new Purchase(user, product, quantity, java.math.BigDecimal.valueOf(product.getPrice()), 
                                        paymentMethod, deliveryAddress, orderNotes);
         
         return purchaseRepository.save(purchase);
