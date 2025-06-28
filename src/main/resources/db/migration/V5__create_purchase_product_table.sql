@@ -4,8 +4,5 @@ CREATE TABLE purchase_product (
     product_id BIGINT NOT NULL,
     quantity INT NOT NULL,
     total_price DECIMAL(19, 2) NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-
-    CONSTRAINT fk_purchase_product_purchase FOREIGN KEY (purchase_id) REFERENCES purchase (id),
-    CONSTRAINT fk_purchase_product_product FOREIGN KEY (product_id) REFERENCES product (id)
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
 );

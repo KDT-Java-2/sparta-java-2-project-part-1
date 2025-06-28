@@ -8,8 +8,5 @@ CREATE TABLE refund (
     requested_at DATETIME,
     processed_at DATETIME,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-
-    CONSTRAINT fk_refund_purchase FOREIGN KEY (purchase_id) REFERENCES purchase (id),
-    CONSTRAINT fk_refund_product FOREIGN KEY (product_id) REFERENCES product (id)
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
