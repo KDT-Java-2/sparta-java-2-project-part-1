@@ -4,6 +4,7 @@ import com.sparta.java2.project.part1.commerce.common.response.ApiResponse;
 import com.sparta.java2.project.part1.commerce.domain.product.dto.ProductSearchRequest;
 import com.sparta.java2.project.part1.commerce.domain.product.dto.ProductSearchResponse;
 import com.sparta.java2.project.part1.commerce.domain.product.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,9 +21,8 @@ public class ProductController {
 
     @GetMapping
     public ApiResponse<Page<ProductSearchResponse>> search(
-            @RequestBody ProductSearchRequest productSearchRequest,
-            Pageable pageable
+            @Valid @RequestBody ProductSearchRequest productSearchRequest
     ) {
-        return ApiResponse.success(productService.search(productSearchRequest, pageable));
+        return ApiResponse.success(productService.search(productSearchRequest));
     }
 }

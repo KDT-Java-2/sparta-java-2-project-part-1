@@ -1,18 +1,22 @@
 package com.sparta.java2.project.part1.commerce.domain.product.repository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sparta.java2.project.part1.commerce.common.util.QueryDslUtil;
 import com.sparta.java2.project.part1.commerce.domain.product.dto.ProductSearchRequest;
 import com.sparta.java2.project.part1.commerce.domain.product.dto.ProductSearchResponse;
 import com.sparta.java2.project.part1.commerce.domain.product.dto.QProductSearchResponse;
+import com.sparta.java2.project.part1.commerce.domain.product.entity.Product;
 import com.sparta.java2.project.part1.commerce.domain.product.entity.QProduct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -36,9 +40,9 @@ public class ProductQueryRepository {
                         equalsCategoryId(request.getCategory()),
                         betweenPrice(request.getMinPrice(), request.getMaxPrice())
                 )
-                .offset(request.getPage())
-                .limit(request.getSize())
-                .orderBy(setOrderBy(request.getSortBy()))
+                .orderBy(toOrderSpecifiers(pageable.getSort()))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         Long total = jpaQueryFactory.query()
@@ -64,11 +68,13 @@ public class ProductQueryRepository {
         return booleanBuilder;
     }
 
-    private OrderSpecifier<?> setOrderBy(String sortBy) {
-        OrderSpecifier<?> order = QProduct.product.createdAt.asc(); // default
-        if (!sortBy.isBlank()) {
-            order = QueryDslUtil.setOrderBy(sortBy, order);
-        }
-        return order;
+    private OrderSpecifier<?>[] toOrderSpecifiers(Sort sort) {
+        return sort.stream()
+                .map(order -> {
+                    PathBuilder<Product> pathBuilder = new PathBuilder<>(Product.class, QProduct.product.getMetadata().getName());
+                    Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+                    return new OrderSpecifier<>(direction, pathBuilder.get(order.getProperty(), Comparable.class));
+                })
+                .toArray(OrderSpecifier[]::new);
     }
 }
