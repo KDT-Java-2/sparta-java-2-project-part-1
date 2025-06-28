@@ -3,10 +3,7 @@ package com.sparta.java2.project.part1.commerce.domain.product.entity;
 import com.sparta.java2.project.part1.commerce.common.entity.BaseTimeEntity;
 import com.sparta.java2.project.part1.commerce.domain.category.entity.Category;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -26,18 +23,23 @@ public class Product extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Setter
     @Column(nullable = false)
     String name;
 
+    @Setter
     @Column
     String description;
 
+    @Setter
     @Column
     BigDecimal price;
 
+    @Setter
     @Column
     Integer stock;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     Category category;

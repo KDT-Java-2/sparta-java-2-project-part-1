@@ -22,4 +22,12 @@ public class ProductAdminController {
         return ApiResponse.success(productService.createProduct(productCreateRequest));
     }
 
+    @PutMapping("/{productId}")
+    public ApiResponse<?> updateProduct(
+            @PathVariable Long productId,
+            @Valid @RequestBody ProductCreateRequest productUpdateRequest
+    ) {
+        return ApiResponse.success(productService.updateProduct(productId, productUpdateRequest));
+    }
+
 }

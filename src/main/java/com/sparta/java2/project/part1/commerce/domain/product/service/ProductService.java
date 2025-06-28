@@ -5,10 +5,7 @@ import com.sparta.java2.project.part1.commerce.common.exception.ServiceException
 import com.sparta.java2.project.part1.commerce.common.util.QueryDslUtil;
 import com.sparta.java2.project.part1.commerce.domain.category.entity.Category;
 import com.sparta.java2.project.part1.commerce.domain.category.repository.CategoryRepository;
-import com.sparta.java2.project.part1.commerce.domain.product.dto.ProductCreateRequest;
-import com.sparta.java2.project.part1.commerce.domain.product.dto.ProductCreateResponse;
-import com.sparta.java2.project.part1.commerce.domain.product.dto.ProductSearchRequest;
-import com.sparta.java2.project.part1.commerce.domain.product.dto.ProductSearchResponse;
+import com.sparta.java2.project.part1.commerce.domain.product.dto.*;
 import com.sparta.java2.project.part1.commerce.domain.product.entity.Product;
 import com.sparta.java2.project.part1.commerce.domain.product.mapper.ProductMapper;
 import com.sparta.java2.project.part1.commerce.domain.product.repository.ProductQueryRepository;
@@ -19,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -75,6 +73,32 @@ public class ProductService {
                                         .category(category)
                                         .build()
                                 ).getId())
+                .build();
+    }
+
+    @Transactional
+    public ProductUpdateResponse updateProduct(Long productId, ProductCreateRequest productUpdateRequest) {
+        Product updateInstance = productRepository.findById(productId)
+                .orElseThrow(()-> new ServiceException(ServiceExceptionCode.NOT_FOUND_PRODUCT));
+
+        Category category = categoryRepository.findById(productUpdateRequest.getCategoryId())
+                .orElseThrow(()-> new ServiceException(ServiceExceptionCode.NOT_FOUND_CATEGORY));
+
+        // duplication Name은 검증 안함?
+
+        updateInstance.setName(productUpdateRequest.getName());
+        updateInstance.setDescription(productUpdateRequest.getDescription());
+        updateInstance.setPrice(BigDecimal.valueOf(productUpdateRequest.getPrice()));
+        updateInstance.setStock(productUpdateRequest.getStock());
+        updateInstance.setCategory(category);
+
+        return ProductUpdateResponse.builder()
+                .productId(updateInstance.getId())
+                .name(updateInstance.getName())
+                .description(updateInstance.getDescription())
+                .price(updateInstance.getPrice().intValue())
+                .stock(updateInstance.getStock())
+                .category(category)
                 .build();
     }
 }
