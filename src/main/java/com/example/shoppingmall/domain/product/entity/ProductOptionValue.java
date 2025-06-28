@@ -1,6 +1,5 @@
-package com.example.shoppingmall.domain.category.entity;
+package com.example.shoppingmall.domain.product.entity;
 
-import com.example.shoppingmall.domain.product.entity.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,11 +8,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,31 +20,25 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Table(name = "category")
+@Table(name = "product_option_value")
 @Entity
 @Getter
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Category {
+public class ProductOptionValue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable = false)
-    String name;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    Category parent;
+    @JoinColumn(name = "option_group_id")
+    ProductOptionGroup optionGroup;
 
-    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
-    List<Category> children = new ArrayList<>();
-
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    List<Product> products = new ArrayList<>();
+    @Column(length = 100)
+    String value;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -59,8 +49,12 @@ public class Category {
     LocalDateTime updatedAt;
 
     @Builder
-    public Category(String name, Category parent) {
-        this.name = name;
-        this.parent = parent;
+    public ProductOptionValue(ProductOptionGroup optionGroup, String value) {
+        this.optionGroup = optionGroup;
+        this.value = value;
+    }
+
+    public void updateValue(String value) {
+        this.value = value;
     }
 } 

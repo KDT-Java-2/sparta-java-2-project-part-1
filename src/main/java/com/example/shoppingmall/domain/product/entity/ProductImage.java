@@ -1,6 +1,5 @@
-package com.example.shoppingmall.domain.category.entity;
+package com.example.shoppingmall.domain.product.entity;
 
-import com.example.shoppingmall.domain.product.entity.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,11 +8,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,31 +20,31 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Table(name = "category")
+@Table(name = "product_image")
 @Entity
 @Getter
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Category {
+public class ProductImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable = false)
-    String name;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    Category parent;
+    @JoinColumn(name = "product_id")
+    Product product;
 
-    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
-    List<Category> children = new ArrayList<>();
+    @Column(nullable = false, length = 500)
+    String url;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    List<Product> products = new ArrayList<>();
+    @Column(nullable = false, length = 20)
+    String type; // THUMBNAIL, DETAIL 등
+
+    @Column(nullable = false)
+    Integer sortOrder = 0;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -59,8 +55,16 @@ public class Category {
     LocalDateTime updatedAt;
 
     @Builder
-    public Category(String name, Category parent) {
-        this.name = name;
-        this.parent = parent;
+    public ProductImage(Product product, String url, String type, Integer sortOrder) {
+        this.product = product;
+        this.url = url;
+        this.type = type;
+        this.sortOrder = sortOrder != null ? sortOrder : 0;
+    }
+
+    public void update(String url, String type, Integer sortOrder) {
+        this.url = url;
+        this.type = type;
+        this.sortOrder = sortOrder != null ? sortOrder : 0;
     }
 } 

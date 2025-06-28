@@ -1,6 +1,6 @@
-package com.example.shoppingmall.domain.category.entity;
+package com.example.shoppingmall.domain.product.entity;
 
-import com.example.shoppingmall.domain.product.entity.Product;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,31 +24,28 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Table(name = "category")
+@Table(name = "product_option_group")
 @Entity
 @Getter
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Category {
+public class ProductOptionGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    Product product;
+
+    @Column(length = 100)
     String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    Category parent;
-
-    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
-    List<Category> children = new ArrayList<>();
-
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    List<Product> products = new ArrayList<>();
+    @OneToMany(mappedBy = "optionGroup", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ProductOptionValue> optionValues = new ArrayList<>();
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -59,8 +56,12 @@ public class Category {
     LocalDateTime updatedAt;
 
     @Builder
-    public Category(String name, Category parent) {
+    public ProductOptionGroup(Product product, String name) {
+        this.product = product;
         this.name = name;
-        this.parent = parent;
+    }
+
+    public void updateName(String name) {
+        this.name = name;
     }
 } 

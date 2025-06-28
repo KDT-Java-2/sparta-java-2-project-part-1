@@ -1,6 +1,7 @@
-package com.example.shoppingmall.domain.category.entity;
+package com.example.shoppingmall.domain.purchase.entity;
 
 import com.example.shoppingmall.domain.product.entity.Product;
+import com.example.shoppingmall.domain.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,11 +10,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,31 +23,39 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Table(name = "category")
+@Table(name = "purchase_product_review")
 @Entity
 @Getter
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Category {
+public class PurchaseProductReview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable = false)
-    String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    Product product;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "purchase_product_id")
+    PurchaseProduct purchaseProduct;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    Category parent;
+    @JoinColumn(name = "user_id")
+    User user;
 
-    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
-    List<Category> children = new ArrayList<>();
+    @Column(nullable = false, length = 100)
+    String title;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    List<Product> products = new ArrayList<>();
+    @Column(columnDefinition = "TEXT", nullable = false)
+    String content;
+
+    @Column(nullable = false)
+    Integer rating;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -59,8 +66,18 @@ public class Category {
     LocalDateTime updatedAt;
 
     @Builder
-    public Category(String name, Category parent) {
-        this.name = name;
-        this.parent = parent;
+    public PurchaseProductReview(Product product, PurchaseProduct purchaseProduct, User user, String title, String content, Integer rating) {
+        this.product = product;
+        this.purchaseProduct = purchaseProduct;
+        this.user = user;
+        this.title = title;
+        this.content = content;
+        this.rating = rating;
+    }
+
+    public void update(String title, String content, Integer rating) {
+        this.title = title;
+        this.content = content;
+        this.rating = rating;
     }
 } 

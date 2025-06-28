@@ -1,6 +1,6 @@
-package com.example.shoppingmall.domain.category.entity;
+package com.example.shoppingmall.domain.product.entity;
 
-import com.example.shoppingmall.domain.product.entity.Product;
+import com.example.shoppingmall.domain.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,31 +24,45 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Table(name = "category")
+@Table(name = "product_qna")
 @Entity
 @Getter
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Category {
+public class ProductQna {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable = false)
-    String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    Category parent;
+    @JoinColumn(name = "user_id")
+    User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    ProductQna parent;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
-    List<Category> children = new ArrayList<>();
+    List<ProductQna> children = new ArrayList<>();
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    List<Product> products = new ArrayList<>();
+    @Column(columnDefinition = "TEXT", nullable = false)
+    String question;
+
+    @Column(columnDefinition = "TEXT")
+    String answer;
+
+    @Column(nullable = false)
+    Boolean isPrivate = false;
+
+    @Column
+    LocalDateTime answeredAt;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -59,8 +73,20 @@ public class Category {
     LocalDateTime updatedAt;
 
     @Builder
-    public Category(String name, Category parent) {
-        this.name = name;
+    public ProductQna(Product product, User user, ProductQna parent, String question, String answer, Boolean isPrivate, LocalDateTime answeredAt) {
+        this.product = product;
+        this.user = user;
         this.parent = parent;
+        this.question = question;
+        this.answer = answer;
+        this.isPrivate = isPrivate;
+        this.answeredAt = answeredAt;
+    }
+
+    public void update(String question, String answer, Boolean isPrivate, LocalDateTime answeredAt) {
+        this.question = question;
+        this.answer = answer;
+        this.isPrivate = isPrivate;
+        this.answeredAt = answeredAt;
     }
 } 
