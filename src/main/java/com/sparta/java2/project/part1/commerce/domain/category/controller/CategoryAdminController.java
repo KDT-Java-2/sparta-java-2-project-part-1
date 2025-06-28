@@ -21,4 +21,12 @@ public class CategoryAdminController {
     ) {
         return ApiResponse.success(categoryService.createCategory(categoryCreateRequest));
     }
+
+    @PutMapping("/{categoryId}")
+    public ApiResponse<?> updateCategory(
+            @PathVariable Long categoryId,
+            @Valid @RequestBody CategoryCreateRequest categoryCreateRequest
+    ) {
+        return ApiResponse.success(categoryService.updateCategory(categoryId, categoryCreateRequest));
+    }
 }

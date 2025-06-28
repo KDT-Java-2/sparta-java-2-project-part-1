@@ -5,6 +5,7 @@ import com.sparta.java2.project.part1.commerce.common.exception.ServiceException
 import com.sparta.java2.project.part1.commerce.domain.category.dto.CategoryCreateRequest;
 import com.sparta.java2.project.part1.commerce.domain.category.dto.CategoryCreateResponse;
 import com.sparta.java2.project.part1.commerce.domain.category.dto.CategorySearchHierarchyResponse;
+import com.sparta.java2.project.part1.commerce.domain.category.dto.CategoryUpdateResponse;
 import com.sparta.java2.project.part1.commerce.domain.category.entity.Category;
 import com.sparta.java2.project.part1.commerce.domain.category.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -71,5 +72,25 @@ public class CategoryService {
                 .categoryId(
                         categoryRepository.save(createCategory).getId()
                 ).build();
+    }
+
+    @Transactional
+    public CategoryUpdateResponse updateCategory(Long categoryId, CategoryCreateRequest request) {
+        Optional<Category> updateInstance = categoryRepository.findById(categoryId);
+        if (updateInstance.isEmpty()) {
+            throw new ServiceException(ServiceExceptionCode.NOT_FOUND_CATEGORY);
+        }
+        if (request.getParentId() != null) {
+            Optional<Category> parentInstance = categoryRepository.findById(request.getParentId());
+            if (parentInstance.isEmpty()) {
+                throw new ServiceException(ServiceExceptionCode.NOT_FOUND_PARENT_CATEGORY);
+            }
+            updateInstance.get().setName(request.getName());
+            updateInstance.get().setParent(parentInstance.get());
+        } else {
+            updateInstance.get().setName(request.getName());
+            updateInstance.get().setParent(null);
+        }
+        return null;
     }
 }
