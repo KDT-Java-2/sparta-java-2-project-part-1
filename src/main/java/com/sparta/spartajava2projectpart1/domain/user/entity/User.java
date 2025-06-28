@@ -46,7 +46,7 @@ public class User {
     Boolean marketing;
 
     @Column
-    Boolean deleted;
+    Boolean deleted = false;
 
     @OneToMany(mappedBy = "user")
     List<Purchase> purchases = new ArrayList<>();
