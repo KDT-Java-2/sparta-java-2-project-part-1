@@ -3,9 +3,14 @@ package com.scb.project.commerce.domain.admin.controller;
 import com.scb.project.commerce.common.response.ApiResponse;
 import com.scb.project.commerce.domain.admin.dto.AdminProductCreateRequest;
 import com.scb.project.commerce.domain.admin.dto.AdminProductCreateResponse;
+import com.scb.project.commerce.domain.admin.dto.AdminProductUpdateRequest;
+import com.scb.project.commerce.domain.admin.dto.AdminProductUpdateResponse;
 import com.scb.project.commerce.domain.admin.service.AdminProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +35,26 @@ public class AdminProductController {
      */
     @PostMapping
     public ApiResponse<AdminProductCreateResponse> createProduct(
-        @RequestBody AdminProductCreateRequest request) {
+        @Valid @RequestBody AdminProductCreateRequest request) {
         return ApiResponse.success(adminProductService.createProduct(request));
+    }
+
+    /**
+     * 상품 정보를 수정하는 API
+     *
+     * <p>요청으로 전달된 필드 중 null이 아닌 값만 선별적으로 업데이트합니다.
+     * <br>예: 이름, 가격만 보낼 경우 해당 항목만 수정됩니다.
+     * <br>카테고리 ID가 없으면 기존 값 유지합니다.
+     *
+     * @param productId 수정 대상 상품의 ID
+     * @param request   수정할 상품 정보
+     * @return 수정된 상품 정보 응답
+     */
+    @PutMapping("/{productId}")
+    public ApiResponse<AdminProductUpdateResponse> updateProduct(
+        @PathVariable Long productId,
+        @Valid @RequestBody AdminProductUpdateRequest request
+    ) {
+        return ApiResponse.success(adminProductService.updateProduct(productId, request));
     }
 }

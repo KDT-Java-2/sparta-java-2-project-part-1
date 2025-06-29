@@ -1,6 +1,7 @@
 package com.scb.project.commerce.domain.admin.mapper;
 
 import com.scb.project.commerce.domain.admin.dto.AdminProductCreateRequest;
+import com.scb.project.commerce.domain.admin.dto.AdminProductUpdateResponse;
 import com.scb.project.commerce.domain.category.entity.Category;
 import com.scb.project.commerce.domain.product.entity.Product;
 import org.mapstruct.Mapper;
@@ -20,4 +21,16 @@ public interface AdminProductMapper {
      */
     @Mapping(source = "request.name", target = "productName")
     Product toEntity(AdminProductCreateRequest request, Category category);
+
+    /**
+     * 상품 수정 응답 DTO로 변환
+     *
+     * @param product  수정된 상품 엔티티
+     * @param category 상품에 속한 카테고리 엔티티
+     * @return 수정된 상품 수정 응답 DTO
+     */
+    @Mapping(source = "product.id", target = "productId")
+    @Mapping(source = "category.id", target = "categoryId")
+    @Mapping(source = "category.name", target = "categoryName")
+    AdminProductUpdateResponse toResponse(Product product, Category category);
 }

@@ -1,6 +1,7 @@
 package com.scb.project.commerce.domain.product.entity;
 
 import com.scb.project.commerce.common.enums.ProductStatus;
+import com.scb.project.commerce.domain.admin.dto.AdminProductUpdateRequest;
 import com.scb.project.commerce.domain.category.entity.Category;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -88,9 +89,40 @@ public class Product {
         this.category = category;
     }
 
-    public void setProductName(String productName) {
-        if (!productName.isEmpty()) {
-            this.productName = productName;
+    /**
+     * 관리자 상품 수정 요청에 따라 상품 정보를 갱신합니다.
+     *
+     * <p>요청 필드 중 null이 아닌 값만 반영하여 선별적으로 수정하며,
+     * 카테고리도 null이 아닌 경우에만 변경합니다.
+     * <br>이를 통해 부분 수정(PATCH) 방식의 유연한 업데이트를 지원합니다.
+     *
+     * @param request  관리자 상품 수정 요청 DTO
+     * @param category 요청된 카테고리 엔티티 (null인 경우 기존 카테고리 유지)
+     */
+    public void updateProductInfo(AdminProductUpdateRequest request, Category category) {
+
+        if (request.getName() != null) {
+            this.productName = request.getName();
+        }
+
+        if (request.getBrandName() != null) {
+            this.brandName = request.getBrandName();
+        }
+
+        if (request.getDescription() != null) {
+            this.description = request.getDescription();
+        }
+
+        if (request.getPrice() != null) {
+            this.price = request.getPrice();
+        }
+
+        if (request.getStock() != null) {
+            this.stock = request.getStock();
+        }
+
+        if (category != null) {
+            this.category = category;
         }
     }
 }
