@@ -1,7 +1,10 @@
 package com.java_project.part_1.domain.product.dto;
 
+import com.java_project.part_1.common.enums.ProductStatus;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
@@ -16,14 +19,16 @@ public class ProductCreateRequest {
   @NotBlank
   String description;
 
-  @NotBlank
+  @NotNull
   @Positive(message = "양수만 입력 가능합니다.")
-  Integer price;
+  BigDecimal price;
 
-  @NotBlank
+  @NotNull(message = "재고는 필수입니다.")
   @Positive(message = "양수만 입력 가능합니다.")
   Integer stock;
 
-  @NotBlank
+  @NotNull
   Long categoryId;
+
+  ProductStatus status;
 }

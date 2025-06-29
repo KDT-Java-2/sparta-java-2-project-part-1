@@ -68,13 +68,37 @@ public class Product {
   @Builder
   public Product(
       String name,
+      String description,
       BigDecimal price,
       Integer stock,
+      Category category,
       ProductStatus status) {
     this.name = name;
+    this.description = description;
     this.price = price;
     this.stock = stock;
+    this.category = category;
     this.status = status;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public void setPrice(BigDecimal price) {
+    this.price = price;
+  }
+
+  public void setStock(Integer stock) {
+    this.stock = stock;
+  }
+
+  public void setCategory(Category category) {
+    this.category = category;
   }
 
   public void setStatus(ProductStatus status) {
