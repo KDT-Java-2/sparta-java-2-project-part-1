@@ -47,7 +47,7 @@ public class User {
   @Column(nullable = false, length = 50)
   String name;
 
-  @Column
+  @Column(nullable = false)
   String email;
 
   @Column(length = 50)
@@ -73,10 +73,12 @@ public class User {
       String userId,
       String password,
       String name,
+      String email,
       Role role) {
     this.userId = userId;
     this.password = password;
     this.name = name;
+    this.email = email;
     this.role = role;
   }
 }
