@@ -23,8 +23,6 @@ public class AdminProductController {
 
     private final AdminProductService adminProductService;
 
-    // 상품 등록 API
-
     /**
      * 상품 등록 API
      *

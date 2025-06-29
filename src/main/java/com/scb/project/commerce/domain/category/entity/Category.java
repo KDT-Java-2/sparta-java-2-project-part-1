@@ -20,6 +20,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.util.StringUtils;
 
 @Table
 @Entity
@@ -54,5 +55,13 @@ public class Category {
     public Category(String name, Category parent) {
         this.name = name;
         this.parent = parent;
+    }
+    
+    // 카테고리 Setter
+    public void setName(String name) {
+
+        if (StringUtils.hasText(name)) {
+            this.name = name;
+        }
     }
 }

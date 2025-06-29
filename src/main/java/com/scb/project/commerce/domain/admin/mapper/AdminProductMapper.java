@@ -13,8 +13,6 @@ public interface AdminProductMapper {
     /**
      * 관리자 상품 등록 요청을 상품 엔티티로 변환하는 매퍼
      *
-     * <p>요청 정보와 카테고리 엔티티를 기반으로 Product 엔티티를 생성합니다.</p>
-     *
      * @param request  상품 등록 요청 DTO
      * @param category 등록할 상품의 카테고리 엔티티
      * @return 생성된 상품 엔티티

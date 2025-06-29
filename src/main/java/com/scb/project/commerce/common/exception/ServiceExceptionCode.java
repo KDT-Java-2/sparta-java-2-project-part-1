@@ -18,8 +18,11 @@ public enum ServiceExceptionCode {
     DUPLICATE_PRODUCT_NAME("이미 사용 중인 상품명입니다."),
 
     INVALID_NEGATIVE_VALUE("음수는 허용되지 않는 값입니다."),
+    INVALID_PARENT_SELF_REFERENCE("부모는 자기 자신이 될 수 없습니다."),
 
     CANNOT_DELETE_COMPLETED_PRODUCT("배송중이거나 배송완료된 상품은 삭제할 수 없습니다."),
+    CANNOT_DELETE_HAS_CHILD("하위 카테고리가 존재하여 삭제할 수 없습니다."),
+    CANNOT_DELETE_HAS_PRODUCT("해당 카테고리에는 상품이 존재하여 삭제할 수 없습니다."),
     ;
 
     final String message;

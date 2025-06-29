@@ -69,8 +69,8 @@ public class AdminProductService {
     /**
      * 관리자 상품 수정 서비스
      *
-     * <p>요청된 상품 ID에 해당하는 상품을 조회한 후, 요청된 필드가 null이 아닌 항목만 선별적으로 업데이트합니다.
-     * <br>카테고리 ID가 null인 경우 기존 카테고리를 유지하며, 이름 중복 체크도 포함됩니다.
+     * <p>요청된 상품 ID에 해당하는 상품을 조회한 후, 요청된 필드가 null이 아닌 항목만 선별적으로 업데이트합니다.</p>
+     * <p>카테고리 ID가 null인 경우 기존 카테고리를 유지하며, 이름 중복 체크도 포함됩니다.</p>
      *
      * @param productId 수정할 상품의 ID
      * @param request   관리자 상품 수정 요청 DTO
@@ -103,8 +103,8 @@ public class AdminProductService {
     /**
      * 관리자 상품 삭제 서비스
      *
-     * <p>해당 상품이 '배송중(SHIPPED)' 또는 '배송완료(DELIVERED)' 상태의 주문에 포함된 경우
-     * 삭제가 불가능하며 예외를 발생시킵니다.
+     * <p>해당 상품이 '배송중(SHIPPED)' 또는 '배송완료(DELIVERED)' 상태의 주문에 포함된 경우</p>
+     * <p>삭제가 불가능하며 예외를 발생시킵니다.</p>
      *
      * @param productId 삭제할 상품 ID
      * @throws ServiceException 존재하지 않는 상품이거나 배송 관련 상태로 삭제가 불가능한 경우
