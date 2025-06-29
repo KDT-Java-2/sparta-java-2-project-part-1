@@ -18,7 +18,6 @@ public class UserResponse {
   String acceptTermsAt;
   String acceptPrivacyAt;
   String acceptMarketingAt;
-  String status;
   String createdAt;
   String updatedAt;
   String lastLogin;
