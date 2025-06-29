@@ -18,7 +18,6 @@ import me.chahyunho.projectweek1.domain.product.repository.CategoryProductQueryR
 import me.chahyunho.projectweek1.domain.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
@@ -134,7 +133,7 @@ public class AdminService {
   }
 
   // 카테 고리 삭제
-  @DeleteMapping("/categories/{categoryId}")
+  @Transactional
   public void deleteAdminCategory(@PathVariable Long categoryId) {
 
     Category category = categoryRepository.findById(categoryId)
