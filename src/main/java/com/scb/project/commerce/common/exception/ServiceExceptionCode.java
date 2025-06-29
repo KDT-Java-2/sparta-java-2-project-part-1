@@ -11,11 +11,13 @@ import lombok.experimental.FieldDefaults;
 public enum ServiceExceptionCode {
 
     NOT_FOUND_DATA("데이터를 찾을 수 없습니다."),
+    NOT_FOUND_PRODUCT("상품을 찾을 수 없습니다."),
+    NOT_FOUND_CATEGORY("카테고리를 찾을 수 없습니다."),
 
     DUPLICATE_EMAIL("이미 사용 중인 이메일입니다."),
+    DUPLICATE_PRODUCT_NAME("이미 사용 중인 상품명입니다."),
 
-    NOT_FOUND_PRODUCT("상품을 찾을 수 없습니다."),
-
+    INVALID_NEGATIVE_VALUE("음수는 허용되지 않는 값입니다."),
     ;
 
     final String message;

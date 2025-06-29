@@ -8,10 +8,12 @@ import org.mapstruct.Mapper;
 public interface ProductMapper {
 
     /**
-     * Product 엔티티를 상품 상세 응답 DTO로 변환합니다.
+     * 상품 엔티티를 응답 DTO로 변환하는 매퍼
      *
-     * @param product 조회된 상품 엔티티
-     * @return 상품 상세 정보 응답 DTO
+     * <p>상품 정보를 API 응답 형태로 가공하여 반환합니다.</p>
+     *
+     * @param product 상품 엔티티
+     * @return 상품 응답 DTO
      */
     ProductResponse toResponse(Product product);
 }
