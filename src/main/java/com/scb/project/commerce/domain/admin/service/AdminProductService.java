@@ -11,6 +11,8 @@ import com.scb.project.commerce.domain.category.entity.Category;
 import com.scb.project.commerce.domain.category.repository.CategoryRepository;
 import com.scb.project.commerce.domain.product.entity.Product;
 import com.scb.project.commerce.domain.product.repository.ProductRepository;
+import com.scb.project.commerce.domain.purchase.repository.PurchaseProductQueryRepository;
+import com.scb.project.commerce.domain.purchase.repository.PurchaseProductRepository;
 import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,8 +24,11 @@ public class AdminProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final PurchaseProductRepository purchaseProductRepository;
 
     private final AdminProductMapper adminProductMapper;
+
+    private final PurchaseProductQueryRepository purchaseProductQueryRepository;
 
     /**
      * 관리자 상품 등록 서비스
@@ -93,6 +98,27 @@ public class AdminProductService {
         product.updateProductInfo(request, category);
 
         return adminProductMapper.toResponse(product, category);
+    }
+
+    /**
+     * 관리자 상품 삭제 서비스
+     *
+     * <p>해당 상품이 '배송중(SHIPPED)' 또는 '배송완료(DELIVERED)' 상태의 주문에 포함된 경우
+     * 삭제가 불가능하며 예외를 발생시킵니다.
+     *
+     * @param productId 삭제할 상품 ID
+     * @throws ServiceException 존재하지 않는 상품이거나 배송 관련 상태로 삭제가 불가능한 경우
+     */
+    @Transactional
+    public void deleteProduct(Long productId) {
+
+        // 주문이 완료(배송중, 배송완료)된 상품이 존재하는지 체크
+        boolean isCompleted = purchaseProductQueryRepository.existsCompletedProduct(productId);
+        if (isCompleted) {
+            throw new ServiceException(ServiceExceptionCode.CANNOT_DELETE_COMPLETED_PRODUCT);
+        }
+
+        productRepository.delete(getProduct(productId));
     }
 
 

@@ -8,6 +8,7 @@ import com.scb.project.commerce.domain.admin.dto.AdminProductUpdateResponse;
 import com.scb.project.commerce.domain.admin.service.AdminProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -56,5 +57,20 @@ public class AdminProductController {
         @Valid @RequestBody AdminProductUpdateRequest request
     ) {
         return ApiResponse.success(adminProductService.updateProduct(productId, request));
+    }
+
+    /**
+     * 관리자 상품 삭제 API
+     *
+     * <p>상품 ID에 해당하는 상품을 삭제합니다.
+     * <br>단, 해당 상품이 배송중 또는 배송완료 상태의 주문에 포함된 경우 삭제할 수 없습니다.
+     *
+     * @param productId 삭제할 상품 ID
+     * @return 삭제 성공 여부 응답
+     */
+    @DeleteMapping("/{productId}")
+    public ApiResponse<Void> deleteProduct(@PathVariable Long productId) {
+        adminProductService.deleteProduct(productId);
+        return ApiResponse.success();
     }
 }
