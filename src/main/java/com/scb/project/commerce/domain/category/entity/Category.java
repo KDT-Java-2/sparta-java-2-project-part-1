@@ -38,7 +38,7 @@ public class Category {
     String name;    // 카테고리명
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id", nullable = false)
+    @JoinColumn(name = "parent_id")
     @Setter
     Category parent;    // 부모 카테고리 ID
 
