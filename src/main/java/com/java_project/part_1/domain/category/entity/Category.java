@@ -19,6 +19,8 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Table
@@ -44,6 +46,9 @@ public class Category {
   @Column
   Integer depth;
 
+  @Column
+  String description;
+
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
   LocalDateTime createdAt;
@@ -51,8 +56,28 @@ public class Category {
   @Builder
   public Category(
       String name,
+      String description,
       Category parent) {
     this.name = name;
+    this.description = description;
     this.parent = parent;
+  }
+
+  public void setName(String name) {
+    if (StringUtils.hasText(name)) {
+      this.name = name;
+    }
+  }
+
+  public void setDescription(String description) {
+    if (StringUtils.hasText(description)) {
+      this.description = description;
+    }
+  }
+
+  public void setParent(Category parent) {
+    if (!ObjectUtils.isEmpty(parent)) {
+      this.parent = parent;
+    }
   }
 }
