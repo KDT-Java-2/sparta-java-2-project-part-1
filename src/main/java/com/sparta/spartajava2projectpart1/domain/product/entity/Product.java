@@ -2,9 +2,11 @@ package com.sparta.spartajava2projectpart1.domain.product.entity;
 
 import com.sparta.spartajava2projectpart1.domain.cart.entity.Cart;
 import com.sparta.spartajava2projectpart1.domain.category.entity.Category;
+import com.sparta.spartajava2projectpart1.domain.product.dto.CategoryUpdateRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
@@ -19,6 +21,7 @@ import java.util.List;
 
 @Table
 @Entity
+@Getter
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
@@ -61,6 +64,28 @@ public class Product {
         this.description = description;
         this.price = price;
         this.stock = stock;
+        this.category = category;
+    }
+
+    public void updateProduct(CategoryUpdateRequest request) {
+        if (request.getName() != null) {
+            this.name = request.getName();
+        }
+
+        if (request.getDescription() != null) {
+            this.description = request.getDescription();
+        }
+
+        if (request.getPrice() != null) {
+            this.price = request.getPrice();
+        }
+
+        if (request.getStock() != null) {
+            this.stock = request.getStock();
+        }
+    }
+
+    public void changeCategory(Category category) {
         this.category = category;
     }
 }
