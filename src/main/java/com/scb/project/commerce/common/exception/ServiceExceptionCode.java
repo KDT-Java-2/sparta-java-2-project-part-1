@@ -14,6 +14,8 @@ public enum ServiceExceptionCode {
 
     DUPLICATE_EMAIL("이미 사용 중인 이메일입니다."),
 
+    NOT_FOUND_PRODUCT("상품을 찾을 수 없습니다."),
+
     ;
 
     final String message;
