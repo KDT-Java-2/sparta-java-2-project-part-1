@@ -20,4 +20,12 @@ public class UserCreateRequest {
   @Pattern(regexp = "^\\d{8}$", message = "password must be 8 digits")
   String password;
 
+  @NotNull(message = "nickname이 입력되지 않았습니다.")
+  String nickname;
+
+  String address;
+
+  @Pattern(regexp = "^\\d{10}$", message = "phoneNumber must be 10 digits")
+  String phone;
+
 }
