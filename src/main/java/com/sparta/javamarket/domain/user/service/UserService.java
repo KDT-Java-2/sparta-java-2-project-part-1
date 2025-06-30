@@ -45,8 +45,11 @@ public class UserService {
   }
 
   @Transactional
-  public void create(UserCreateRequest userCreateRequest) {
+  public UserSearchResponse create(UserCreateRequest userCreateRequest) {
     userRepository.save(userMapper.toEntity(userCreateRequest));
+    UserSearchResponse userSearchResponse = userRepository.findFirstByEmail(userCreateRequest.getEmail());
+    return userSearchResponse;
+
   }
 
   @Transactional

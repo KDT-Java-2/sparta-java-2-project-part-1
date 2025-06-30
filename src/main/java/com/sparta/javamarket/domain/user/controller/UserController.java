@@ -48,9 +48,9 @@ public class UserController {
   }
 
   @PostMapping
-  public ApiResponse<Void> create(@Valid @RequestBody UserCreateRequest userCreateRequest) {
-    userService.create(userCreateRequest);
-    return ApiResponse.success();
+  public ApiResponse<UserSearchResponse> create(@Valid @RequestBody UserCreateRequest userCreateRequest) {
+
+    return ApiResponse.success(userService.create(userCreateRequest));
   }
 
   @PutMapping("/{userId}")
