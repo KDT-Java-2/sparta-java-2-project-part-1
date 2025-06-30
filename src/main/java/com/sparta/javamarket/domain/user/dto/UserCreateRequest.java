@@ -25,7 +25,6 @@ public class UserCreateRequest {
 
   String address;
 
-  @Pattern(regexp = "^\\d{10}$", message = "phoneNumber must be 10 digits")
   String phone;
 
 }

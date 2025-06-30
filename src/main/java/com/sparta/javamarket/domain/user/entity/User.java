@@ -81,6 +81,12 @@ public class User {
     this.role = role;
   }
 
+  public void setName(String name) {
+   if(!ObjectUtils.isEmpty(name)) {
+     this.name = name;
+   }
+  }
+
   public void setNickname(String nickname) {
     if(!ObjectUtils.isEmpty(nickname)){
       this.nickname = nickname;
