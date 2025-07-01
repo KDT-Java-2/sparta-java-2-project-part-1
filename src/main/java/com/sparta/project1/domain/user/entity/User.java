@@ -46,7 +46,7 @@ public class User {
     // nullable: 디폴트 TRUE라서 false는 별도 설정
     // length: 기본 255라서 255아닌경우 별도 설정
     @Column(nullable = false, length = 50)
-    String username; //필드명은 카멜방식 권장, DB 필드명으로 생성
+    String name; //필드명은 카멜방식 권장, DB 필드명으로 생성
 
     @Column
     String email;
@@ -58,22 +58,19 @@ public class User {
     // updatable = false 넣어 create만 되게 방지
     @Column(nullable = false, updatable = false)
     @CreationTimestamp //CURRENT TIMESTAMP 속성 지원
-            LocalDateTime createdAt; //자바 자주쓰는 날짜시간 함수
+    LocalDateTime createdAt; //자바 자주쓰는 날짜시간 함수
 
     @OneToMany(mappedBy = "user")
     private List<Purchase> purchases = new ArrayList<>();
 
-    public void changeUserName(String username) {
-        this.username = username;
-    }
 
     @Builder //외부에 노출시킬 제한된 필드만 다루기위해 명시한 생성자에 명시하는걸 실무적 관점에서 권장
     public User(
-            String username,
+            String name,
             String email,
             String password
     ) {
-        this.username = username;
+        this.name = name;
         this.email = email;
         this.password = password;
     }

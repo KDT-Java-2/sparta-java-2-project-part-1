@@ -2,11 +2,14 @@ package com.sparta.project1.domain.user.service;
 
 import com.sparta.project1.common.exception.ServiceException;
 import com.sparta.project1.common.exception.ServiceExceptionCode;
+import com.sparta.project1.domain.user.dto.UserCreateRequest;
 import com.sparta.project1.domain.user.dto.UserResponse;
 import com.sparta.project1.domain.user.entity.User;
 import com.sparta.project1.domain.user.mapper.UserMapper;
 import com.sparta.project1.domain.user.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +20,6 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-
     private final UserMapper userMapper;
 
     @Transactional(readOnly = true)
@@ -32,4 +34,6 @@ public class UserService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_USER));
     }
+
+
 }

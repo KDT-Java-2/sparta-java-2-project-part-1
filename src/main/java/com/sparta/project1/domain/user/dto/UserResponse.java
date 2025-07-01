@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
@@ -14,4 +16,6 @@ public class UserResponse {
     String email;
 
     String password;
+
+    LocalDateTime createdAt;
 }
