@@ -1,6 +1,11 @@
 package com.dogworld.dogdog.domain.product;
 
+import com.dogworld.dogdog.api.product.request.ProductRequest;
 import com.dogworld.dogdog.api.product.response.ProductResponse;
+import com.dogworld.dogdog.domain.category.Category;
+import com.dogworld.dogdog.domain.category.CategoryRepository;
+import com.dogworld.dogdog.global.error.code.ErrorCode;
+import com.dogworld.dogdog.global.error.exception.CustomException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductService {
 
   private final ProductRepository productRepository;
+  private final CategoryRepository categoryRepository;
 
   public List<ProductResponse> getAllProducts() {
     List<Product> products = productRepository.findAll();
@@ -20,5 +26,19 @@ public class ProductService {
     return products.stream()
         .map(ProductResponse::from)
         .collect(Collectors.toList());
+  }
+
+  @Transactional
+  public ProductResponse createProduct(ProductRequest request) {
+    Category category = getCategory(request.getCategoryId());
+
+    Product createdProduct = Product.create(request, category);
+    Product savedProduct = productRepository.save(createdProduct);
+    return ProductResponse.from(savedProduct);
+  }
+
+  private Category getCategory(Long categoryId) {
+    return categoryRepository.findById(categoryId)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CATEGORY));
   }
 }

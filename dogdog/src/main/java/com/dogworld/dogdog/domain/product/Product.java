@@ -1,5 +1,6 @@
 package com.dogworld.dogdog.domain.product;
 
+import com.dogworld.dogdog.api.product.request.ProductRequest;
 import com.dogworld.dogdog.domain.BaseEntity;
 import com.dogworld.dogdog.domain.category.Category;
 import jakarta.persistence.Column;
@@ -64,5 +65,17 @@ public class Product extends BaseEntity {
     this.status = (status == null) ? ProductStatus.SELLING : status;
     this.thumbnailUrl = thumbnailUrl;
     this.deleted = deleted;
+  }
+
+  public static Product create(ProductRequest request, Category category) {
+    return Product.builder()
+        .name(request.getName())
+        .description(request.getDescription())
+        .price(request.getPrice())
+        .stock(request.getStock())
+        .category(category)
+        .status(request.getStatus())
+        .thumbnailUrl(request.getThumbnailUrl())
+        .build();
   }
 }

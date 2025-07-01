@@ -13,7 +13,7 @@ public enum ErrorCode {
 
 
     //category
-    NOT_FOUND_CATEGORY("NOT_FOUND_CATEGORY", "상위 카테고리를 찾을 수 없습니다.", HttpStatus.NOT_FOUND)
+    NOT_FOUND_CATEGORY("NOT_FOUND_CATEGORY", "카테고리를 찾을 수 없습니다.", HttpStatus.NOT_FOUND)
     ;
 
 
