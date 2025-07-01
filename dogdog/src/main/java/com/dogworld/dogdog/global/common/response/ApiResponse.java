@@ -2,7 +2,6 @@ package com.dogworld.dogdog.global.common.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 public class ApiResponse<T> {
