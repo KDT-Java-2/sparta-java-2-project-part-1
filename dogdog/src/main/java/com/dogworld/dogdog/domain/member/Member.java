@@ -1,5 +1,6 @@
 package com.dogworld.dogdog.domain.member;
 
+import com.dogworld.dogdog.api.request.MemberRequest;
 import com.dogworld.dogdog.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 @Getter
@@ -79,4 +81,20 @@ public class Member extends BaseEntity {
     this.agreedMarketing = agreedMarketing;
     this.marketingAgreedAt = marketingAgreedAt;
   }
+
+  public static Member create(MemberRequest request, BCryptPasswordEncoder passwordEncoder) {
+    return Member.builder()
+        .username(request.getUsername())
+        .password(passwordEncoder.encode(request.getPassword()))
+        .name(request.getName())
+        .email(request.getEmail())
+        .phoneNumber(request.getPhoneNumber())
+        .role(request.getRole())
+        .agreedTerms(request.isAgreedTerms())
+        .agreedPrivacy(request.isAgreedPrivacy())
+        .agreedMarketing(request.isAgreedMarketing())
+        .marketingAgreedAt(request.isAgreedMarketing() ? LocalDateTime.now() : null)
+        .build();
+  }
+
 }
