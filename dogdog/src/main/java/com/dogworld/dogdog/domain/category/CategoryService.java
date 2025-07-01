@@ -29,17 +29,17 @@ public class CategoryService {
   @Transactional
   public CategoryResponse createCategory(CategoryRequest request) {
 
-    Category parent = getParentCategory(request);
+    Category parent = getParentCategory(request.getParentId());
 
     Category createdCategory = Category.create(request, parent);
     Category savedCategory = categoryRepository.save(createdCategory);
     return CategoryResponse.from(savedCategory);
   }
 
-  private Category getParentCategory(CategoryRequest request) {
-    if(request.getParentId() == null) return null;
+  private Category getParentCategory(Long categoryId) {
+    if(categoryId == null) return null;
 
-    return categoryRepository.findById(request.getParentId())
+    return categoryRepository.findById(categoryId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CATEGORY));
   }
 }
