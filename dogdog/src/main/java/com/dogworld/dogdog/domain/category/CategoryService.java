@@ -2,9 +2,15 @@ package com.dogworld.dogdog.domain.category;
 
 import com.dogworld.dogdog.api.category.request.CategoryRequest;
 import com.dogworld.dogdog.api.category.response.CategoryResponse;
+import com.dogworld.dogdog.domain.category.repository.CategoryRepository;
+import com.dogworld.dogdog.domain.category.repository.FlatCategoryDto;
 import com.dogworld.dogdog.global.error.code.ErrorCode;
 import com.dogworld.dogdog.global.error.exception.CustomException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,13 +23,43 @@ public class CategoryService {
 
   private final CategoryRepository categoryRepository;
 
-  // TODO: 트리 구조 조회 구현 예정
   public List<CategoryResponse> getAllCategories() {
     List<Category> categories = categoryRepository.findAll();
 
     return categories.stream()
         .map(CategoryResponse::from)
         .collect(Collectors.toList());
+  }
+
+  public List<CategoryResponse> getAllCategoriesHierarchy() {
+    List<FlatCategoryDto> flatList = categoryRepository.findAllFlat();
+
+    Map<Long, CategoryResponse> map = new HashMap<>();
+
+    for(FlatCategoryDto flatCategoryDto : flatList) {
+      CategoryResponse response = CategoryResponse.from(flatCategoryDto);
+      map.put(flatCategoryDto.getId(), response);
+    }
+
+    List<CategoryResponse> roots = new ArrayList<>();
+
+    for(FlatCategoryDto dto : flatList) {
+      CategoryResponse child = map.get(dto.getId());
+      Long parentId = dto.getParentId();
+
+      if(parentId == null) {
+        roots.add(child);
+      } else {
+        CategoryResponse parent = map.get(parentId);
+        if(parent != null) {
+          parent.getChildren().add(child);
+        }
+      }
+    }
+
+    sortTree(roots);
+
+    return roots;
   }
 
   @Transactional
@@ -41,6 +77,13 @@ public class CategoryService {
 
     return categoryRepository.findById(categoryId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CATEGORY));
+  }
+
+  private void sortTree(List<CategoryResponse> nodes) {
+    nodes.sort(Comparator.comparingInt(CategoryResponse::getSortOrder));
+    for(CategoryResponse node : nodes) {
+      sortTree(node.getChildren());
+    }
   }
 }
 

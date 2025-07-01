@@ -1,6 +1,7 @@
 package com.dogworld.dogdog.api.category.response;
 
 import com.dogworld.dogdog.domain.category.Category;
+import com.dogworld.dogdog.domain.category.repository.FlatCategoryDto;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,17 @@ public class CategoryResponse {
         .depth(category.getDepth())
         .sortOrder(category.getSortOrder())
         .active(category.getActive())
+        .children(new ArrayList<>())
+        .build();
+  }
+
+  public static CategoryResponse from(FlatCategoryDto dto) {
+    return CategoryResponse.builder()
+        .id(dto.getId())
+        .name(dto.getName())
+        .depth(dto.getDepth())
+        .sortOrder(dto.getSortOrder())
+        .active(dto.getActive())
         .children(new ArrayList<>())
         .build();
   }

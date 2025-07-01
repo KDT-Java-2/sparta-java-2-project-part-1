@@ -4,7 +4,7 @@ import com.dogworld.dogdog.api.product.request.ProductRequest;
 import com.dogworld.dogdog.api.product.request.ProductSearchCondition;
 import com.dogworld.dogdog.api.product.response.ProductResponse;
 import com.dogworld.dogdog.domain.category.Category;
-import com.dogworld.dogdog.domain.category.CategoryRepository;
+import com.dogworld.dogdog.domain.category.repository.CategoryRepository;
 import com.dogworld.dogdog.domain.product.repository.ProductQueryRepository;
 import com.dogworld.dogdog.domain.product.repository.ProductRepository;
 import com.dogworld.dogdog.global.error.code.ErrorCode;

@@ -26,6 +26,12 @@ public class CategoryController {
     return ResponseEntity.ok(ApiResponse.success(response));
   }
 
+  @GetMapping("/hierarchy")
+  public ResponseEntity<ApiResponse<List<CategoryResponse>>> getAllCategoriesHierarchy() {
+    List<CategoryResponse> response = categoryService.getAllCategoriesHierarchy();
+    return ResponseEntity.ok(ApiResponse.success(response));
+  }
+
   @PostMapping
   public ResponseEntity<ApiResponse<CategoryResponse>> createCategory(@RequestBody CategoryRequest request) {
     CategoryResponse response = categoryService.createCategory(request);
