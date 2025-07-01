@@ -60,8 +60,6 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository{
         .where(builder)
         .fetchOne();
 
-    System.out.println("builder: " + builder.toString());
-
     return new PageImpl<>(content, pageable, total != null ? total: 0L);
   }
 
