@@ -34,29 +34,8 @@ public class CategoryService {
   public List<CategoryResponse> getAllCategoriesHierarchy() {
     List<FlatCategoryDto> flatList = categoryRepository.findAllFlat();
 
-    Map<Long, CategoryResponse> map = new HashMap<>();
-
-    for(FlatCategoryDto flatCategoryDto : flatList) {
-      CategoryResponse response = CategoryResponse.from(flatCategoryDto);
-      map.put(flatCategoryDto.getId(), response);
-    }
-
-    List<CategoryResponse> roots = new ArrayList<>();
-
-    for(FlatCategoryDto dto : flatList) {
-      CategoryResponse child = map.get(dto.getId());
-      Long parentId = dto.getParentId();
-
-      if(parentId == null) {
-        roots.add(child);
-      } else {
-        CategoryResponse parent = map.get(parentId);
-        if(parent != null) {
-          parent.getChildren().add(child);
-        }
-      }
-    }
-
+    Map<Long, CategoryResponse> map = buildCategoryMap(flatList);
+    List<CategoryResponse> roots = buildCategoryTree(flatList, map);
     sortTree(roots);
 
     return roots;
@@ -72,11 +51,34 @@ public class CategoryService {
     return CategoryResponse.from(savedCategory);
   }
 
-  private Category getParentCategory(Long categoryId) {
-    if(categoryId == null) return null;
+  private Map<Long, CategoryResponse> buildCategoryMap(List<FlatCategoryDto> flatList) {
+    Map<Long, CategoryResponse> map = new HashMap<>();
 
-    return categoryRepository.findById(categoryId)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CATEGORY));
+    for(FlatCategoryDto flatCategoryDto : flatList) {
+      CategoryResponse response = CategoryResponse.from(flatCategoryDto);
+      map.put(flatCategoryDto.getId(), response);
+    }
+    return map;
+  }
+
+  private static List<CategoryResponse> buildCategoryTree(List<FlatCategoryDto> flatList,
+                                                            Map<Long, CategoryResponse> map) {
+    List<CategoryResponse> roots = new ArrayList<>();
+
+    for(FlatCategoryDto dto : flatList) {
+      CategoryResponse child = map.get(dto.getId());
+      Long parentId = dto.getParentId();
+
+      if(parentId == null) {
+        roots.add(child);
+      } else {
+        CategoryResponse parent = map.get(parentId);
+        if(parent != null) {
+          parent.getChildren().add(child);
+        }
+      }
+    }
+    return roots;
   }
 
   private void sortTree(List<CategoryResponse> nodes) {
@@ -84,6 +86,13 @@ public class CategoryService {
     for(CategoryResponse node : nodes) {
       sortTree(node.getChildren());
     }
+  }
+
+  private Category getParentCategory(Long categoryId) {
+    if(categoryId == null) return null;
+
+    return categoryRepository.findById(categoryId)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CATEGORY));
   }
 }
 
