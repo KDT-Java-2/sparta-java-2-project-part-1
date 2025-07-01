@@ -27,20 +27,18 @@ public class CategoryService {
 
   @Transactional
   public CategoryResponse createCategory(CategoryRequest request) {
-    Category parent = null;
 
-    parent = getParentCategory(request, parent);
+    Category parent = getParentCategory(request);
 
     Category createdCategory = Category.create(request, parent);
     Category savedCategory = categoryRepository.save(createdCategory);
     return CategoryResponse.from(savedCategory);
   }
 
-  private Category getParentCategory(CategoryRequest request, Category parent) {
-    if(request.getParentId() != null) {
-      parent = categoryRepository.findById(request.getParentId())
-          .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CATEGORY));
-    }
-    return parent;
+  private Category getParentCategory(CategoryRequest request) {
+    if(request.getParentId() == null) return null;
+
+    return categoryRepository.findById(request.getParentId())
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CATEGORY));
   }
 }
