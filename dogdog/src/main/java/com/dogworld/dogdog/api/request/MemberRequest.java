@@ -28,5 +28,4 @@ public class MemberRequest {
   private boolean agreedTerms;
   private boolean agreedPrivacy;
   private boolean agreedMarketing;
-  private LocalDateTime marketingAgreedAt;
 }
