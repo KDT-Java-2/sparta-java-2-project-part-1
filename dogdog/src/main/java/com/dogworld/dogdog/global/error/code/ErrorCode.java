@@ -7,7 +7,10 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
-    NO_FOUND_USER("NO_FOUND_USER", "존재하지 않는 멤버입니다.", HttpStatus.NOT_FOUND)
+    NOT_FOUND_USER("NOT_FOUND_USER", "존재하지 않는 멤버입니다.", HttpStatus.NOT_FOUND),
+    DUPLICATED_EMAIL("DUPLICATED_EMAIL", "이미 사용 중인 이메일입니다.", HttpStatus.CONFLICT),
+    DUPLICATED_USERNAME("DUPLICATED_USERNAME", "이미 사용 중인 아이디입니다.", HttpStatus.CONFLICT)
+
     ;
 
 
