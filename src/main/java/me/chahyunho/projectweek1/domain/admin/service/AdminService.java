@@ -18,7 +18,6 @@ import me.chahyunho.projectweek1.domain.product.repository.CategoryProductQueryR
 import me.chahyunho.projectweek1.domain.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 @RequiredArgsConstructor
@@ -31,14 +30,26 @@ public class AdminService {
   @Transactional
   public AdminProductResponse createAdminProduct(AdminProductRequest request) {
 
-    Category category = categoryRepository.findById(request.getCategoryId())
+    // 카테고리 조회
+    Category category = getCategory(request.getCategoryId());
+
+    // 상품 이름 중복 검증
+    validateAlreadyExistsData(request.getName());
+
+    // 상품 등록
+    return getAdminProductResponse(request, category);
+  }
+
+  // 카테고리 조회
+  private Category getCategory(Long categoryId) {
+    return categoryRepository.findById(categoryId)
         .orElseThrow(() -> new ServiceException(
             ServiceExceptionCode.NOT_FOUNT_CATEGORY));
+  }
 
-    if (productRepository.existsByName(request.getName())) {
-      throw new ServiceException(ServiceExceptionCode.ALREADY_EXISTS_DATA);
-    }
-
+  // 상품 등록
+  private AdminProductResponse getAdminProductResponse(AdminProductRequest request,
+      Category category) {
     Product product = productRepository.save(Product.builder()
         .name(request.getName())
         .description(request.getDescription())
@@ -50,14 +61,27 @@ public class AdminService {
     return AdminProductResponse.builder().productId(product.getId()).build();
   }
 
+  // 상품 이름 중복 검증
+  private void validateAlreadyExistsData(String name) {
+    if (productRepository.existsByName(name)) {
+      throw new ServiceException(ServiceExceptionCode.ALREADY_EXISTS_DATA);
+    }
+  }
+
   @Transactional
   public AdminProductUpdateResponse updateAdminProduct(Long productId,
       AdminProductRequest request) {
 
-    Category category = categoryRepository.findById(request.getCategoryId())
-        .orElseThrow(() -> new ServiceException(
-            ServiceExceptionCode.NOT_FOUNT_CATEGORY));
+    // 카테고리 조회
+    Category category = getCategory(request.getCategoryId());
 
+    // 상품 수정
+    return getAdminProductUpdateResponse(productId, request, category);
+  }
+
+  // 상품 수정
+  private AdminProductUpdateResponse getAdminProductUpdateResponse(Long productId,
+      AdminProductRequest request, Category category) {
     Product product = productRepository.findById(productId)
         .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUNT_DATA));
 
@@ -84,12 +108,17 @@ public class AdminService {
 
   // 카테고리 등록
   public AdminCategoryResponse createAdminCategory(AdminCategoryRequest request) {
-    Category parent = null;
-    if (request.getParentId() != null && 0 < request.getParentId().intValue()) {
-      parent = categoryRepository.findById(request.getParentId())
-          .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUNT_CATEGORY_PARENT));
-    }
 
+    // 부모 카테고리 조회
+    Category parent = getParentCategory(request);
+
+    // 카테고리 등록
+    return getAdminCategoryResponse(request, parent);
+  }
+
+  // 카테고리 등록
+  private AdminCategoryResponse getAdminCategoryResponse(AdminCategoryRequest request,
+      Category parent) {
     Category category = Category.builder()
         .name(request.getName())
         .description(request.getDescription())
@@ -101,25 +130,31 @@ public class AdminService {
     return AdminCategoryResponse.builder().id(sevedCategory.getId()).build();
   }
 
+  // 부모 카테고리 조회
+  private Category getParentCategory(AdminCategoryRequest request) {
+    Category parent = null;
+    if (request.getParentId() != null && 0 < request.getParentId().intValue()) {
+      parent = getCategory(request.getParentId());
+    }
+    return parent;
+  }
+
   // 카테고리 수정
   @Transactional
   public AdminCategoryUpdateResponse updateAdminCategory(Long categoryId,
       AdminCategoryRequest request) {
 
-    Category parent = null;
+    // 부모 카테고리 검증 및 조회
+    Category parent = validateAndGetParentCategory(categoryId, request);
 
-    // 부모 카테고리 검증
-    if (categoryId.longValue() == request.getParentId().longValue()) {
-      throw new ServiceException(ServiceExceptionCode.SELF_PARENT_NOT_ALLOWED);
-    }
+    // 카테고리 수정
+    return getAdminCategoryUpdateResponse(categoryId, request, parent);
+  }
 
-    if (0 < request.getParentId().intValue()) {
-      parent = categoryRepository.findById(request.getParentId())
-          .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUNT_CATEGORY_PARENT));
-    }
-
-    Category category = categoryRepository.findById(categoryId)
-        .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUNT_CATEGORY));
+  // 카테고리 수정
+  private AdminCategoryUpdateResponse getAdminCategoryUpdateResponse(Long categoryId,
+      AdminCategoryRequest request, Category parent) {
+    Category category = getCategory(categoryId);
 
     category.setName(request.getName());
     category.setParent(parent);
@@ -132,27 +167,50 @@ public class AdminService {
         .build();
   }
 
+  // 부모 카테고리 검증 및 조회
+  private Category validateAndGetParentCategory(Long categoryId, AdminCategoryRequest request) {
+    if (request.getParentId() != null && categoryId.longValue() == request.getParentId()
+        .longValue()) {
+      throw new ServiceException(ServiceExceptionCode.SELF_PARENT_NOT_ALLOWED);
+    }
+
+    if (request.getParentId() != null && 0 < request.getParentId().intValue()) {
+      return getCategory(request.getParentId());
+    }
+    return null;
+  }
+
   // 카테 고리 삭제
   @Transactional
-  public void deleteAdminCategory(@PathVariable Long categoryId) {
+  public void deleteAdminCategory(Long categoryId) {
 
-    Category category = categoryRepository.findById(categoryId)
-        .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUNT_CATEGORY));
+    // 카테고리 조회
+    Category categoryToDelete = getCategory(categoryId);
 
-    // 하위 카테고리 검증
-    if (!category.getChildren().isEmpty()) {
-      throw new ServiceException(ServiceExceptionCode.SUBCATEGORY_EXISTS);
-    }
+    // 하위 카테고리 존재 여부 검증
+    validateNoSubcategories(categoryToDelete);
 
-    List<CategoryProductDTO> findCategoryProducts = categoryProductQueryRepository.findCategoryProductsByCategoryId(
-        category.getId());
+    // 카테고리에 속한 상품 존재 여부 검증
+    validateNoAssociatedProducts(categoryToDelete);
 
-    // 카테고리 속한 상품 검증
-    if (!findCategoryProducts.isEmpty()) {
-      throw new ServiceException(ServiceExceptionCode.HAS_ASSOCIATED_PRODUCTS);
-    }
-
+    // 카테고리 삭제
     categoryRepository.deleteById(categoryId);
   }
 
+  // 하위 카테고리 존재 여부 검증
+  private void validateNoSubcategories(Category category) {
+    if (!category.getChildren().isEmpty()) { // getChildren()은 이미 초기화된 컬렉션이므로 NPE 걱정 없음
+      throw new ServiceException(ServiceExceptionCode.SUBCATEGORY_EXISTS);
+    }
+  }
+
+  // 카테고리에 속한 상품 존재 여부 검증
+  private void validateNoAssociatedProducts(Category category) {
+    List<CategoryProductDTO> findCategoryProducts = categoryProductQueryRepository.findCategoryProductsByCategoryId(
+        category.getId());
+
+    if (!findCategoryProducts.isEmpty()) {
+      throw new ServiceException(ServiceExceptionCode.HAS_ASSOCIATED_PRODUCTS);
+    }
+  }
 }
