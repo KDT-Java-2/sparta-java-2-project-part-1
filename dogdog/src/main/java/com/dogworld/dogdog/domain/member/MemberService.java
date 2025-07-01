@@ -2,7 +2,10 @@ package com.dogworld.dogdog.domain.member;
 
 import com.dogworld.dogdog.api.request.MemberRequest;
 import com.dogworld.dogdog.api.response.MemberResponse;
+import com.dogworld.dogdog.global.error.code.ErrorCode;
+import com.dogworld.dogdog.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,16 +20,22 @@ public class MemberService {
 
   @Transactional
   public MemberResponse createMember(MemberRequest request) {
+    // 유효성 검사
+    validationCreateMemberUsernameAndEmail(request);
+
     Member createdMember = Member.create(request, bCryptPasswordEncoder);
     Member savedMember = memberRepository.save(createdMember);
 
-    return MemberResponse.builder()
-        .id(savedMember.getId())
-        .username(savedMember.getUsername())
-        .email(savedMember.getEmail())
-        .name(savedMember.getName())
-        .build();
+    return MemberResponse.from(savedMember);
   }
 
+  private void validationCreateMemberUsernameAndEmail(MemberRequest request) {
+    if(memberRepository.existsByUsername(request.getUsername())) {
+      throw new CustomException(ErrorCode.DUPLICATED_USERNAME);
+    }
 
+    if(memberRepository.existsByEmail(request.getEmail())) {
+      throw new CustomException(ErrorCode.DUPLICATED_EMAIL);
+    }
+  }
 }
