@@ -11,12 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CategoryService {
 
   private final CategoryRepository categoryRepository;
 
+  // TODO: 트리 구조 조회 구현 예정
   public List<CategoryResponse> getAllCategories() {
     List<Category> categories = categoryRepository.findAll();
 
@@ -42,3 +43,6 @@ public class CategoryService {
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CATEGORY));
   }
 }
+
+
+
