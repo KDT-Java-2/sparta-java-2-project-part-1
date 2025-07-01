@@ -52,4 +52,11 @@ public class ProductService {
     return categoryRepository.findById(categoryId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CATEGORY));
   }
+
+  public ProductResponse getProductById(Long productId) {
+    Product product = productRepository.findById(productId)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
+
+    return ProductResponse.from(product);
+  }
 }
