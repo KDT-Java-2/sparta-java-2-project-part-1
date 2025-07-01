@@ -1,12 +1,12 @@
 package com.dogworld.dogdog.global.common;
 
-import com.querydsl.core.annotations.Config;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@Config
+@Configuration
 public class QueryDslConfig {
 
   @PersistenceContext
