@@ -1,5 +1,6 @@
 package com.dogworld.dogdog.api.response;
 
+import com.dogworld.dogdog.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,5 +14,12 @@ public class MemberResponse {
   private String name;
 
 
-
+  public static MemberResponse from(Member member) {
+    return MemberResponse.builder()
+        .id(member.getId())
+        .username(member.getUsername())
+        .email(member.getEmail())
+        .name(member.getName())
+        .build();
+  }
 }
