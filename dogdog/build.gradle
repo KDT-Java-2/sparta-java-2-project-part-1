@@ -41,16 +41,18 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	// QueryDSL JPA 라이브러리
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+
 	// 비밀번호 암호화 관련
 	implementation 'org.springframework.security:spring-security-crypto'
 
 	// flyway
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-mysql'
-
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	// rest doc
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
@@ -59,6 +61,13 @@ dependencies {
 	// mapstruct
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+	// QueryDSL 어노테이션 프로세서 (Q클래스 생성)
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+	annotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
@@ -69,4 +78,9 @@ tasks.named('test') {
 tasks.named('asciidoctor') {
 	inputs.dir snippetsDir
 	dependsOn test
+}
+
+// build.gradle 파일 하단에 추가
+tasks.named('compileJava') {
+	options.annotationProcessorPath = configurations.annotationProcessor
 }
