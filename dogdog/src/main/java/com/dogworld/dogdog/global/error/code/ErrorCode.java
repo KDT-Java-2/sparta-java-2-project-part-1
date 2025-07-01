@@ -1,0 +1,29 @@
+package com.dogworld.dogdog.global.error.code;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+
+@Getter
+@RequiredArgsConstructor
+public enum ErrorCode {
+
+    // == Member ==
+    NOT_FOUND_USER("존재하지 않는 멤버입니다.", HttpStatus.NOT_FOUND),
+    DUPLICATED_EMAIL("이미 사용 중인 이메일입니다.", HttpStatus.CONFLICT),
+    DUPLICATED_USERNAME("이미 사용 중인 아이디입니다.", HttpStatus.CONFLICT),
+
+    // == Product ==
+    NOT_FOUND_PRODUCT("존재하지 않는 상품입니다.", HttpStatus.NOT_FOUND),
+
+    // == Category ==
+    NOT_FOUND_CATEGORY("카테고리를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+
+    private final String message;
+    private final HttpStatus httpStatus;
+
+    public String getCode() {
+        return name();
+    }
+}
