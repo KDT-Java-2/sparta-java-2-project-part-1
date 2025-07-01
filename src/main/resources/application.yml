@@ -17,7 +17,7 @@ spring:
       # none: 아무 작업도 하지 않음 (운영 환경 추천)
       # create: 기존 테이블 삭제 후 다시 생성
       # update: 변경된 부분만 반영
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         # MySQL 8 버전에 맞는 Dialect(방언) 설정
@@ -44,6 +44,6 @@ server:
   port: 8080
 
 # (선택)Swagger UI 설정 (실제 라이브에서는 노출위험 방지하고자 false 권장)
-#springdoc:
-#  swagger-ui:
-#    enabled: true
+springdoc:
+  swagger-ui:
+    enabled: true

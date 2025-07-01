@@ -24,10 +24,10 @@ public class ProductControllerV2 {
   private final ProductService productService;
 
   //전체 조회
-  @GetMapping
-  public ApiResponse<List<ProductResponse>> getAll() {
-    return ApiResponse.success(productService.getAll());
-  }
+//  @GetMapping
+//  public ApiResponse<List<ProductResponse>> getAll() {
+//    return ApiResponse.success(productService.getAll());
+//  }
 
   //단일상품조회
   @GetMapping("/{id}")
