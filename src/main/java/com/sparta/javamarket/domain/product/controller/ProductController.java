@@ -2,6 +2,7 @@ package com.sparta.javamarket.domain.product.controller;
 
 import com.sparta.javamarket.common.response.ApiResponse;
 import com.sparta.javamarket.domain.product.dto.ProductResponse;
+import com.sparta.javamarket.domain.product.dto.ProductSearchRequest;
 import com.sparta.javamarket.domain.product.dto.ProductSearchResponse;
 import com.sparta.javamarket.domain.product.entity.Product;
 import com.sparta.javamarket.domain.product.mapper.ProductMapper;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,10 +34,9 @@ public class ProductController {
 
 
   @GetMapping
-  public ApiResponse<Page<ProductResponse>> getAllProduct() {
-    Pageable pageable = PageRequest.of(0, 10);
+  public ApiResponse<Page<ProductResponse>> getAllProduct(@RequestParam ProductSearchRequest productSearchRequest) {
 //    return ApiResponse.success(productService.getAllProducts());
-    return ApiResponse.success(productQueryRepository.findAllProducts(pageable));
+    return ApiResponse.success(productQueryRepository.findAllProducts(productSearchRequest));
   }
 
   @GetMapping("/{productId}")

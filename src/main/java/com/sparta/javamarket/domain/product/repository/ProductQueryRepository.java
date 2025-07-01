@@ -4,6 +4,7 @@ import static  com.sparta.javamarket.domain.product.entity.QProduct.product;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sparta.javamarket.domain.product.dto.ProductResponse;
+import com.sparta.javamarket.domain.product.dto.ProductSearchRequest;
 import com.sparta.javamarket.domain.product.dto.ProductSearchResponse;
 import com.sparta.javamarket.domain.product.dto.QProductResponse;
 import com.sparta.javamarket.domain.product.entity.Product;
@@ -12,6 +13,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +24,10 @@ public class ProductQueryRepository {
   private final JPAQueryFactory jpaQueryFactory;
   private final ProductMapper productMapper;
 
-  public Page<ProductResponse> findAllProducts(Pageable pageable) {
+  public Page<ProductResponse> findAllProducts(ProductSearchRequest productSearchRequest) {
+
+    Pageable pageable = PageRequest.of(productSearchRequest.getPage(), productSearchRequest.getSize());
+
     List<ProductResponse> products =  jpaQueryFactory.select(new QProductResponse(
         product.id,
         product.name,
