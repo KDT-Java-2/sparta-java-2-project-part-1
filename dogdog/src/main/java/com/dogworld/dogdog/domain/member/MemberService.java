@@ -5,7 +5,6 @@ import com.dogworld.dogdog.api.response.MemberResponse;
 import com.dogworld.dogdog.global.error.code.ErrorCode;
 import com.dogworld.dogdog.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +19,7 @@ public class MemberService {
 
   @Transactional
   public MemberResponse createMember(MemberRequest request) {
-    // 유효성 검사
-    validationCreateMemberUsernameAndEmail(request);
+    validateDuplicateUsernameAndEmail(request);
 
     Member createdMember = Member.create(request, bCryptPasswordEncoder);
     Member savedMember = memberRepository.save(createdMember);
@@ -29,7 +27,7 @@ public class MemberService {
     return MemberResponse.from(savedMember);
   }
 
-  private void validationCreateMemberUsernameAndEmail(MemberRequest request) {
+  private void validateDuplicateUsernameAndEmail(MemberRequest request) {
     if(memberRepository.existsByUsername(request.getUsername())) {
       throw new CustomException(ErrorCode.DUPLICATED_USERNAME);
     }
