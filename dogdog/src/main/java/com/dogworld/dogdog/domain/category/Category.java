@@ -1,5 +1,6 @@
 package com.dogworld.dogdog.domain.category;
 
+import com.dogworld.dogdog.api.category.request.CategoryRequest;
 import com.dogworld.dogdog.domain.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
@@ -46,5 +47,17 @@ public class Category extends BaseEntity {
     this.depth = depth;
     this.sortOrder = sortOrder;
     this.active = (active != null) ? active : false;
+  }
+
+  public static Category create(CategoryRequest request, Category parent) {
+    int depth = parent == null ? 0 : parent.getDepth() + 1;
+
+    return Category.builder()
+        .name(request.getName())
+        .parent(parent)
+        .depth(depth)
+        .sortOrder((request.getSortOrder() != null) ? request.getSortOrder() : 1)
+        .active(Boolean.TRUE.equals(request.getActive()))
+        .build();
   }
 }
