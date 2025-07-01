@@ -1,6 +1,7 @@
 package com.sparta.javamarket.domain.product.entity;
 
 
+import com.sparta.javamarket.domain.category.entity.Category;
 import com.sparta.javamarket.domain.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Builder.Default;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
@@ -27,6 +29,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Table
 @Entity
+@Getter
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
@@ -36,6 +39,12 @@ public class Product { // 상품
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
+
+//  @ManyToOne(fetch = FetchType.LAZY)
+//  @JoinColumn(name = "category_id")
+//  Category category;
+
+  Long categoryId;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
