@@ -1,6 +1,6 @@
 package com.dogworld.dogdog.domain.member;
 
-import com.dogworld.dogdog.api.request.MemberRequest;
+import com.dogworld.dogdog.api.member.request.MemberRequest;
 import com.dogworld.dogdog.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

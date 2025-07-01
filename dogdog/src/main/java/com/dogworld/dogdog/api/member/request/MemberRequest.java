@@ -1,27 +1,26 @@
-package com.dogworld.dogdog.api.request;
+package com.dogworld.dogdog.api.member.request;
 
 import com.dogworld.dogdog.domain.member.MemberRole;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
 public class MemberRequest {
 
-  @NotEmpty
+  @NotBlank
   private String username;
 
-  @NotEmpty
+  @NotBlank
   private String password;
 
-  @NotEmpty
+  @NotBlank
   private String name;
 
-  @NotEmpty @Email
+  @NotBlank @Email
   private String email;
 
-  @NotEmpty
+  @NotBlank
   private String phoneNumber;
 
   private MemberRole role;

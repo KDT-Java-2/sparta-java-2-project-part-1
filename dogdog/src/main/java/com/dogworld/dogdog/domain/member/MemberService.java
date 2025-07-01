@@ -1,7 +1,7 @@
 package com.dogworld.dogdog.domain.member;
 
-import com.dogworld.dogdog.api.request.MemberRequest;
-import com.dogworld.dogdog.api.response.MemberResponse;
+import com.dogworld.dogdog.api.member.request.MemberRequest;
+import com.dogworld.dogdog.api.member.response.MemberResponse;
 import com.dogworld.dogdog.global.error.code.ErrorCode;
 import com.dogworld.dogdog.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.dogworld.dogdog.api.response;
+package com.dogworld.dogdog.api.member.response;
 
 import com.dogworld.dogdog.domain.member.Member;
 import lombok.Builder;
