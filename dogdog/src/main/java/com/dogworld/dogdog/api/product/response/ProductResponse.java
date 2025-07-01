@@ -1,8 +1,7 @@
 package com.dogworld.dogdog.api.product.response;
 
-import com.dogworld.dogdog.domain.category.Category;
+import com.dogworld.dogdog.api.category.response.CategoryProductResponse;
 import com.dogworld.dogdog.domain.product.Product;
-import com.dogworld.dogdog.domain.product.ProductRepository;
 import com.dogworld.dogdog.domain.product.ProductStatus;
 import java.math.BigDecimal;
 import lombok.Builder;
@@ -17,7 +16,7 @@ public class ProductResponse {
   private String description;
   private BigDecimal price;
   private int stock;
-  private Category category;
+  private CategoryProductResponse category;
   private ProductStatus status;
   private String thumbnailUrl;
 
@@ -28,7 +27,7 @@ public class ProductResponse {
         .description(product.getDescription())
         .price(product.getPrice())
         .stock(product.getStock())
-        .category(product.getCategory())
+        .category(CategoryProductResponse.from(product.getCategory()))
         .status(product.getStatus())
         .thumbnailUrl(product.getThumbnailUrl())
         .build();
