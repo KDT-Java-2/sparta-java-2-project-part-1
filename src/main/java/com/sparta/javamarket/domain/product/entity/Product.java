@@ -47,6 +47,8 @@ public class Product { // 상품
   @Column
   String description;
 
+
+
   @Column
   BigDecimal price;
 
