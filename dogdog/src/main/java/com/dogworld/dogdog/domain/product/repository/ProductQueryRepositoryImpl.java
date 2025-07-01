@@ -6,6 +6,8 @@ import com.dogworld.dogdog.domain.product.Product;
 import com.dogworld.dogdog.domain.product.QProduct;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.math.BigDecimal;
@@ -28,39 +30,52 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository{
     QProduct product = QProduct.product;
     QCategory category = QCategory.category;
 
-    BooleanBuilder builder = new BooleanBuilder();
+    Predicate predicate = buildPredicate(condition);
+    List<Product> content = getContent(pageable, product, category, predicate);
+    Long total = getTotalCount(product, category, predicate);
 
-    if(condition.getCategory() != null) {
-      builder.and(product.category.id.eq(condition.getCategory()));
-    }
+    return new PageImpl<>(content, pageable, total != null ? total: 0L);
+  }
 
-    if(condition.getMinPrice() != null) {
-      builder.and(product.price.goe(BigDecimal.valueOf(condition.getMinPrice())));
-    }
+  private Predicate buildPredicate(ProductSearchCondition condition) {
+    return new BooleanBuilder()
+        .and(categoryEq(condition.getCategory()))
+        .and(priceGoe(condition.getMinPrice()))
+        .and(priceLoe(condition.getMaxPrice()));
+  }
 
-    if(condition.getMaxPrice() != null) {
-      builder.and(product.price.loe(BigDecimal.valueOf(condition.getMaxPrice())));
-    }
-
-    List<Product> content = queryFactory
+  private List<Product> getContent(Pageable pageable, QProduct product, QCategory category,
+      Predicate predicate) {
+    return queryFactory
         .selectFrom(product)
         .join(product.category, category)
         .fetchJoin()
-        .where(builder)
+        .where(predicate)
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
         .orderBy(getOrderSpecifier(pageable, product))
         .fetch();
+  }
 
-
-    Long total = queryFactory
+  private Long getTotalCount(QProduct product, QCategory category, Predicate predicate) {
+    return queryFactory
         .select(product.count())
         .from(product)
         .join(product.category, category)
-        .where(builder)
+        .where(predicate)
         .fetchOne();
+  }
 
-    return new PageImpl<>(content, pageable, total != null ? total: 0L);
+  private BooleanExpression categoryEq(Long categoryId) {
+    return categoryId != null ? QProduct.product.category.id.eq(categoryId) : null;
+  }
+
+  private BooleanExpression priceGoe(Integer price) {
+    return price != null ? QProduct.product.price.goe(BigDecimal.valueOf(price)) : null;
+  }
+
+  private BooleanExpression priceLoe(Integer price) {
+    return price != null ? QProduct.product.price.loe(BigDecimal.valueOf(price)) : null;
   }
 
   private OrderSpecifier<?> getOrderSpecifier(Pageable pageable, QProduct product) {
