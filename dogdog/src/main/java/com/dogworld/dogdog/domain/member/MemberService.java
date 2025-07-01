@@ -3,6 +3,7 @@ package com.dogworld.dogdog.domain.member;
 import com.dogworld.dogdog.api.request.MemberRequest;
 import com.dogworld.dogdog.api.response.MemberResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,22 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
   private final MemberRepository memberRepository;
+  private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
   @Transactional
   public MemberResponse createMember(MemberRequest request) {
-    Member createdMember = Member.builder()
-        .username(request.getUsername())
-        .password(request.getPassword())
-        .name(request.getName())
-        .email(request.getEmail())
-        .phoneNumber(request.getPhoneNumber())
-        .role(request.getRole())
-        .agreedTerms(request.isAgreedTerms())
-        .agreedPrivacy(request.isAgreedPrivacy())
-        .agreedMarketing(request.isAgreedMarketing())
-        .marketingAgreedAt(request.getMarketingAgreedAt())
-        .build();
-
+    Member createdMember = Member.create(request, bCryptPasswordEncoder);
     Member savedMember = memberRepository.save(createdMember);
 
     return MemberResponse.builder()
@@ -37,4 +27,6 @@ public class MemberService {
         .name(savedMember.getName())
         .build();
   }
+
+
 }
