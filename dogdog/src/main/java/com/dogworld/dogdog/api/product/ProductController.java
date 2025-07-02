@@ -48,11 +48,4 @@ public class ProductController {
     ProductResponse response = productService.getProductById(productId);
     return ResponseEntity.ok(ApiResponse.success(response));
   }
-
-  @PostMapping
-  public ResponseEntity<ApiResponse<ProductResponse>> createProduct(@RequestBody ProductRequest request) {
-    ProductResponse response =  productService.createProduct(request);
-    return ResponseEntity.ok(ApiResponse.success(response));
-  }
-
 }

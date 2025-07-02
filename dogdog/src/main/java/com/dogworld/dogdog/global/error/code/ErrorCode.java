@@ -16,6 +16,7 @@ public enum ErrorCode {
 
     // == Product ==
     NOT_FOUND_PRODUCT("존재하지 않는 상품입니다.", HttpStatus.NOT_FOUND),
+    DUPLICATED_PRODUCT_NAME("상품 이름이 중복입니다.", HttpStatus.BAD_REQUEST),
 
     // == Category ==
     NOT_FOUND_CATEGORY("카테고리를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);

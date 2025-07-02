@@ -71,7 +71,7 @@ public class Product extends BaseEntity {
     return Product.builder()
         .name(request.getName())
         .description(request.getDescription())
-        .price(request.getPrice())
+        .price(BigDecimal.valueOf(request.getPrice()))
         .stock(request.getStock())
         .category(category)
         .status(request.getStatus())

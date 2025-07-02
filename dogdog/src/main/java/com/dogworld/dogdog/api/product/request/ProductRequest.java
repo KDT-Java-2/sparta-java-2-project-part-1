@@ -2,9 +2,9 @@ package com.dogworld.dogdog.api.product.request;
 
 import com.dogworld.dogdog.domain.product.ProductStatus;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import java.math.BigDecimal;
 import lombok.Getter;
 
 @Getter
@@ -13,15 +13,19 @@ public class ProductRequest {
   @NotBlank
   private String name;
 
+  @NotBlank
   private String description;
 
-  @Positive
-  private BigDecimal price;
-
+  @NotNull
   @PositiveOrZero
-  private int stock;
+  private Integer price;
 
-  @NotBlank @Positive
+  @NotNull
+  @PositiveOrZero
+  private Integer stock;
+
+  @NotNull
+  @Positive
   private Long categoryId;
 
   private ProductStatus status;

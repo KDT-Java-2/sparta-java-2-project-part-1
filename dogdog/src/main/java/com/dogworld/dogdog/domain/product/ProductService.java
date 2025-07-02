@@ -41,16 +41,12 @@ public class ProductService {
 
   @Transactional
   public ProductResponse createProduct(ProductRequest request) {
-    Category category = getCategory(request.getCategoryId());
+    validateDuplicateName(request.getName());
 
+    Category category = getCategory(request.getCategoryId());
     Product createdProduct = Product.create(request, category);
     Product savedProduct = productRepository.save(createdProduct);
     return ProductResponse.from(savedProduct);
-  }
-
-  private Category getCategory(Long categoryId) {
-    return categoryRepository.findById(categoryId)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CATEGORY));
   }
 
   public ProductResponse getProductById(Long productId) {
@@ -59,4 +55,17 @@ public class ProductService {
 
     return ProductResponse.from(product);
   }
+
+  private void validateDuplicateName(String name) {
+    if(productRepository.existsByName(name)) {
+      throw new CustomException(ErrorCode.DUPLICATED_PRODUCT_NAME);
+    }
+  }
+
+  private Category getCategory(Long categoryId) {
+    return categoryRepository.findById(categoryId)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CATEGORY));
+  }
+
+
 }
