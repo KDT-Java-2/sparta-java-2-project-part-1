@@ -57,8 +57,9 @@ public class CategoryService {
 
   @Transactional
   public CategoryResponse updateCategory(Long categoryId, CategoryRequest request) {
+    validateNotSelfAsParent(categoryId, request.getParentId());
     Category category = getCategory(categoryId);
-    Category parentCategory = getParentCategory(category.getId(), request.getParentId());
+    Category parentCategory = getParentCategory(request.getParentId());
     category.update(request, parentCategory);
     return CategoryResponse.from(category);
   }
@@ -119,15 +120,12 @@ public class CategoryService {
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PARENT_CATEGORY));
   }
 
-  private Category getParentCategory(Long categoryId, Long categoryParentId) {
-    if(categoryParentId == null) return null;
+  private void validateNotSelfAsParent(Long categoryId, Long parentId) {
+    if(parentId == null) return;
 
-    if(Objects.equals(categoryId, categoryParentId)) {
+    if(Objects.equals(categoryId, parentId)) {
       throw new CustomException(ErrorCode.CANNOT_SET_SELF_AS_PARENT_CATEGORY);
     }
-
-    return categoryRepository.findById(categoryParentId)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PARENT_CATEGORY));
   }
 
   private void validateDeletable(Long categoryId) {
