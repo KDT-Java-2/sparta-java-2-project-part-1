@@ -7,6 +7,7 @@ import com.dogworld.dogdog.global.common.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,6 +33,12 @@ public class ProductAdminController {
                                                   @Valid @RequestBody ProductRequest request) {
     ProductResponse response = productService.updateProduct(productId, request);
     return ResponseEntity.ok(ApiResponse.success(response));
+  }
+
+  @DeleteMapping("/{productId}")
+  public ResponseEntity<ApiResponse<Void>> deleteProduct(@PathVariable Long productId) {
+    productService.deleteProduct(productId);
+    return ResponseEntity.ok(ApiResponse.success());
   }
 
 

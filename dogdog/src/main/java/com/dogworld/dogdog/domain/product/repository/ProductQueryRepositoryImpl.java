@@ -4,6 +4,9 @@ import com.dogworld.dogdog.api.product.request.ProductSearchCondition;
 import com.dogworld.dogdog.domain.category.QCategory;
 import com.dogworld.dogdog.domain.product.Product;
 import com.dogworld.dogdog.domain.product.QProduct;
+import com.dogworld.dogdog.domain.purchase.PurchaseStatus;
+import com.dogworld.dogdog.domain.purchase.QPurchase;
+import com.dogworld.dogdog.domain.purchaseproduct.QPurchaseProduct;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
@@ -35,6 +38,22 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository{
     Long total = getTotalCount(product, category, predicate);
 
     return new PageImpl<>(content, pageable, total != null ? total: 0L);
+  }
+
+  @Override
+  public boolean isIncludeInCompletedOrder(Long productId) {
+    QPurchase purchase = QPurchase.purchase;
+    QPurchaseProduct purchaseProduct = QPurchaseProduct.purchaseProduct;
+
+    return queryFactory
+        .selectOne()
+        .from(purchaseProduct)
+        .join(purchaseProduct.purchase, purchase)
+        .where(
+            purchaseProduct.product.id.eq(productId),
+            purchase.status.eq(PurchaseStatus.COMPLETED)
+        )
+        .fetchFirst() != null;
   }
 
   private Predicate buildPredicate(ProductSearchCondition condition) {

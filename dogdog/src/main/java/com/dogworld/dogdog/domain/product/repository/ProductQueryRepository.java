@@ -7,4 +7,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProductQueryRepository {
   Page<Product> search(ProductSearchCondition condition, Pageable pageable);
+  boolean isIncludeInCompletedOrder(Long productId);
 }

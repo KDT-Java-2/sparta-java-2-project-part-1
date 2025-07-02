@@ -7,6 +7,7 @@ import com.dogworld.dogdog.domain.category.Category;
 import com.dogworld.dogdog.domain.category.repository.CategoryRepository;
 import com.dogworld.dogdog.domain.product.repository.ProductQueryRepository;
 import com.dogworld.dogdog.domain.product.repository.ProductRepository;
+import com.dogworld.dogdog.global.common.QueryDslConfig;
 import com.dogworld.dogdog.global.error.code.ErrorCode;
 import com.dogworld.dogdog.global.error.exception.CustomException;
 import java.util.List;
@@ -25,6 +26,7 @@ public class ProductService {
   private final ProductRepository productRepository;
   private final ProductQueryRepository productQueryRepository;
   private final CategoryRepository categoryRepository;
+  private final QueryDslConfig queryDslConfig;
 
   public List<ProductResponse> getAllProducts() {
     List<Product> products = productRepository.findAll();
@@ -62,6 +64,16 @@ public class ProductService {
     return ProductResponse.from(product);
   }
 
+  @Transactional
+  public void deleteProduct(Long productId) {
+    Product product = getProduct(productId);
+
+    if(productQueryRepository.isIncludeInCompletedOrder(productId)) {
+      throw new CustomException(ErrorCode.PRODUCT_CANNOT_BE_DELETED);
+    }
+    productRepository.delete(product);
+  }
+
   private Product getProduct(Long productId) {
     return productRepository.findById(productId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
@@ -77,5 +89,6 @@ public class ProductService {
     return categoryRepository.findById(categoryId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CATEGORY));
   }
+
 
 }
