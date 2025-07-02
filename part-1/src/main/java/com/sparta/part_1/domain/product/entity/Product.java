@@ -60,10 +60,12 @@ public class Product {
   LocalDateTime updatedAt;
 
   @Builder
-  public Product(Integer stock, BigDecimal price, String description, String name) {
+  public Product(Integer stock, BigDecimal price, String description, String name,
+      Category category) {
     this.stock = stock;
     this.price = price;
     this.description = description;
     this.name = name;
+    this.category = category;
   }
 }

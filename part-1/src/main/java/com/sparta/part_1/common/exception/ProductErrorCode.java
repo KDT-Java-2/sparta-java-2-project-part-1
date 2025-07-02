@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 public enum ProductErrorCode {
 
   NOT_FOUND_PRODUCT_FOR_ID("상품 ID로 조회된 건이 0건입니다."),
-  ;
+  NOT_FOUND_CATEGORY("존재하지 않는 카테고리입니다.");
 
   final String message;
 
