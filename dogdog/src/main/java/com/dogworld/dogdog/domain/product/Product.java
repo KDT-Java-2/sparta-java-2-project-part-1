@@ -78,4 +78,14 @@ public class Product extends BaseEntity {
         .thumbnailUrl(request.getThumbnailUrl())
         .build();
   }
+
+  public void update(ProductRequest request, Category category) {
+    this.name = request.getName();
+    this.description = request.getDescription();
+    this.price = BigDecimal.valueOf(request.getPrice());
+    this.stock = request.getStock();
+    this.category = category;
+    this.status = request.getStatus();
+    this.thumbnailUrl = request.getThumbnailUrl();
+  }
 }

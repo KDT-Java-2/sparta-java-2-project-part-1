@@ -50,10 +50,21 @@ public class ProductService {
   }
 
   public ProductResponse getProductById(Long productId) {
-    Product product = productRepository.findById(productId)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
-
+    Product product = getProduct(productId);
     return ProductResponse.from(product);
+  }
+
+  @Transactional
+  public ProductResponse updateProduct(Long productId, ProductRequest request) {
+    Product product = getProduct(productId);
+    Category category = getCategory(request.getCategoryId());
+    product.update(request, category);
+    return ProductResponse.from(product);
+  }
+
+  private Product getProduct(Long productId) {
+    return productRepository.findById(productId)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
   }
 
   private void validateDuplicateName(String name) {
@@ -66,6 +77,5 @@ public class ProductService {
     return categoryRepository.findById(categoryId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CATEGORY));
   }
-
 
 }
