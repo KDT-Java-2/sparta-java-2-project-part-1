@@ -5,6 +5,7 @@ import com.dogworld.dogdog.api.category.response.CategoryCreateResponse;
 import com.dogworld.dogdog.api.category.response.CategoryResponse;
 import com.dogworld.dogdog.domain.category.repository.CategoryRepository;
 import com.dogworld.dogdog.domain.category.repository.FlatCategoryDto;
+import com.dogworld.dogdog.domain.product.repository.ProductRepository;
 import com.dogworld.dogdog.global.error.code.ErrorCode;
 import com.dogworld.dogdog.global.error.exception.CustomException;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CategoryService {
 
   private final CategoryRepository categoryRepository;
+  private final ProductRepository productRepository;
 
   public List<CategoryResponse> getAllCategories() {
     List<Category> categories = categoryRepository.findAll();
@@ -50,6 +53,21 @@ public class CategoryService {
     Category createdCategory = Category.create(request, parent);
     Category savedCategory = categoryRepository.save(createdCategory);
     return CategoryCreateResponse.from(savedCategory);
+  }
+
+  @Transactional
+  public CategoryResponse updateCategory(Long categoryId, CategoryRequest request) {
+    Category category = getCategory(categoryId);
+    Category parentCategory = getParentCategory(category.getId(), request.getParentId());
+    category.update(request, parentCategory);
+    return CategoryResponse.from(category);
+  }
+
+  @Transactional
+  public void deleteCategory(Long categoryId) {
+    Category category = getCategory(categoryId);
+    validateDeletable(categoryId);
+    categoryRepository.delete(category);
   }
 
   private Map<Long, CategoryResponse> buildCategoryMap(List<FlatCategoryDto> flatList) {
@@ -89,11 +107,37 @@ public class CategoryService {
     }
   }
 
-  private Category getParentCategory(Long categoryId) {
-    if(categoryId == null) return null;
-
+  private Category getCategory(Long categoryId) {
     return categoryRepository.findById(categoryId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CATEGORY));
+  }
+
+  private Category getParentCategory(Long categoryParentId) {
+    if(categoryParentId == null) return null;
+
+    return categoryRepository.findById(categoryParentId)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PARENT_CATEGORY));
+  }
+
+  private Category getParentCategory(Long categoryId, Long categoryParentId) {
+    if(categoryParentId == null) return null;
+
+    if(Objects.equals(categoryId, categoryParentId)) {
+      throw new CustomException(ErrorCode.CANNOT_SET_SELF_AS_PARENT_CATEGORY);
+    }
+
+    return categoryRepository.findById(categoryParentId)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PARENT_CATEGORY));
+  }
+
+  private void validateDeletable(Long categoryId) {
+    if(categoryRepository.existsByParentId(categoryId)) {
+      throw new CustomException(ErrorCode.CATEGORY_HAS_CHILDREN);
+    }
+
+    if(productRepository.existsByCategoryId(categoryId)) {
+      throw new CustomException(ErrorCode.CATEGORY_HAS_PRODUCTS);
+    }
   }
 }
 

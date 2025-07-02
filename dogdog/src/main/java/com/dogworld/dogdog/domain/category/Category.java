@@ -60,4 +60,12 @@ public class Category extends BaseEntity {
         .active(Boolean.TRUE.equals(request.getActive()))
         .build();
   }
+
+  public void update(CategoryRequest request, Category parent) {
+    this.name = request.getName();
+    this.parent = parent;
+    this.depth = parent.getDepth() + 1;
+    this.sortOrder = request.getSortOrder();
+    this.active = request.getActive();
+  }
 }

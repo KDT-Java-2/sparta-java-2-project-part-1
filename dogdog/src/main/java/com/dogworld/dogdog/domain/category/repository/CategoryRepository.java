@@ -11,4 +11,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
   @Query(value = "SELECT id, name, parent_id, depth, sort_order, active FROM category", nativeQuery = true)
   List<FlatCategoryDto> findAllFlat();
+
+  boolean existsByParentId(Long categoryId);
 }

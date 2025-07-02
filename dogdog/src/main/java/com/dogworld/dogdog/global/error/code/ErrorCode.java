@@ -19,7 +19,11 @@ public enum ErrorCode {
     PRODUCT_CANNOT_BE_DELETED("완료된 주문에 포함된 상품은 삭제할 수 없습니다.", HttpStatus.BAD_REQUEST),
 
     // == Category ==
-    NOT_FOUND_CATEGORY("카테고리를 찾을 수 없습니다.", HttpStatus.NOT_FOUND)
+    NOT_FOUND_CATEGORY("카테고리를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    NOT_FOUND_PARENT_CATEGORY("상위 카테고리를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    CANNOT_SET_SELF_AS_PARENT_CATEGORY("자기 자신을 부모 카테고리로 지정할 수 없습니다.", HttpStatus.BAD_REQUEST),
+    CATEGORY_HAS_CHILDREN("하위 카테고리가 존재하여 삭제할 수 없습니다.", HttpStatus.CONFLICT),
+    CATEGORY_HAS_PRODUCTS("카테고리에 상품이 존재하여 삭제할 수 없습니다.", HttpStatus.CONFLICT)
     ;
 
     private final String message;
