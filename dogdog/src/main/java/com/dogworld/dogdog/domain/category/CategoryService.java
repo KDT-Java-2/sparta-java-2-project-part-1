@@ -1,6 +1,7 @@
 package com.dogworld.dogdog.domain.category;
 
 import com.dogworld.dogdog.api.category.request.CategoryRequest;
+import com.dogworld.dogdog.api.category.response.CategoryCreateResponse;
 import com.dogworld.dogdog.api.category.response.CategoryResponse;
 import com.dogworld.dogdog.domain.category.repository.CategoryRepository;
 import com.dogworld.dogdog.domain.category.repository.FlatCategoryDto;
@@ -42,13 +43,13 @@ public class CategoryService {
   }
 
   @Transactional
-  public CategoryResponse createCategory(CategoryRequest request) {
+  public CategoryCreateResponse createCategory(CategoryRequest request) {
 
     Category parent = getParentCategory(request.getParentId());
 
     Category createdCategory = Category.create(request, parent);
     Category savedCategory = categoryRepository.save(createdCategory);
-    return CategoryResponse.from(savedCategory);
+    return CategoryCreateResponse.from(savedCategory);
   }
 
   private Map<Long, CategoryResponse> buildCategoryMap(List<FlatCategoryDto> flatList) {
