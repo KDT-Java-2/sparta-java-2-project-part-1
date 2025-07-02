@@ -8,19 +8,20 @@ import lombok.Getter;
 @Getter
 public class MemberRequest {
 
-  @NotBlank
+  @NotBlank(message = "{validation.member.username.required}")
   private String username;
 
-  @NotBlank
+  @NotBlank(message = "{validation.member.password.required}")
   private String password;
 
-  @NotBlank
+  @NotBlank(message = "{validation.member.name.required}")
   private String name;
 
-  @NotBlank @Email
+  @NotBlank(message = "{validation.member.email.required}")
+  @Email(message = "{validation.member.email.invalid}")
   private String email;
 
-  @NotBlank
+  @NotBlank(message = "{validation.member.phone.required}")
   private String phoneNumber;
 
   private MemberRole role;

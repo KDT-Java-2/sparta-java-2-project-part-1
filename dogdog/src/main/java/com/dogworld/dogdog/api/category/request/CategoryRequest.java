@@ -7,13 +7,13 @@ import lombok.Getter;
 @Getter
 public class CategoryRequest {
 
-  @NotBlank
+  @NotBlank(message = "{validation.category.name.required}")
   private String name;
 
-  @Positive
+  @Positive(message = "{validation.category.parentId.positive}")
   private Long parentId;
 
-  @Positive
+  @Positive(message = "{validation.category.sortOrder.positive}")
   private Integer sortOrder;
 
   private Boolean active;
