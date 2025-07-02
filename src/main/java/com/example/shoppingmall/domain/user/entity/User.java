@@ -31,6 +31,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import com.example.shoppingmall.common.util.FormatUtil;
 
 @Table(name = "user")
 @Entity
@@ -112,9 +113,10 @@ public class User {
     List<UserCoupon> userCoupons = new ArrayList<>();
 
     @Builder
-    public User(String name, String email, String passwordHash, String phone, Gender gender,
+    public User(String customerNumber, String name, String email, String passwordHash, String phone, Gender gender,
                 LocalDate birthDate, String profileImageUrl, LoginType loginType, UserStatus status,
                 UserRole role, LocalDateTime termsAgreedAt, LocalDateTime privacyAgreedAt, LocalDateTime marketingAgreedAt) {
+        this.customerNumber = customerNumber;
         this.name = name;
         this.email = email;
         this.passwordHash = passwordHash;
@@ -148,9 +150,22 @@ public class User {
     }
 
     @PrePersist
-    public void assignUuid() {
+    public void assignIdentifiers() {
+        assignUuid();
+        assignCustomerNumber();
+    }
+
+    private void assignUuid() {
         if (this.uuid == null) {
             this.uuid = UUID.randomUUID();
+        }
+    }
+
+    private void assignCustomerNumber() {
+        if (this.customerNumber == null) {
+            String datePart = FormatUtil.getTodayAsYYYYMMDD();
+            String randomPart = FormatUtil.getRandomNumberString(6);
+            this.customerNumber = "C" + datePart + randomPart;
         }
     }
 } 
