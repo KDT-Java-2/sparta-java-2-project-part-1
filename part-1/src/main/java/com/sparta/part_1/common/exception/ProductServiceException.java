@@ -10,18 +10,17 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductServiceException extends RuntimeException {
 
-    String code;
-    String message;
+  String code;
+  String message;
 
+  public ProductServiceException(ProductErrorCode code) {
+    super(code.getMessage());
+    this.code = code.name();
+    this.message = code.getMessage();
+  }
 
-    public ProductServiceException(ProductErrorCode code) {
-        super(code.getMessage());
-        this.code = code.name();
-        this.message = code.getMessage();
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
-    }
+  @Override
+  public String getMessage() {
+    return message;
+  }
 }
