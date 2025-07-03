@@ -7,7 +7,6 @@ import com.example.shoppingmall.domain.product.dto.ProductListResponse;
 import com.example.shoppingmall.domain.product.entity.Product;
 import com.example.shoppingmall.domain.product.mapper.ProductMapper;
 import com.example.shoppingmall.domain.product.repository.ProductQueryRepository;
-import com.example.shoppingmall.domain.product.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProductService {
 
-    private final ProductRepository productRepository;
     private final ProductQueryRepository productQueryRepository;
     private final ProductMapper productMapper;
 
