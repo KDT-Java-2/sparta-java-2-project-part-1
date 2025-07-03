@@ -1,22 +1,19 @@
 package com.example.shoppingmall.domain.category.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import com.example.shoppingmall.domain.category.dto.CategoryHierarchyResponse;
 import com.example.shoppingmall.domain.category.entity.Category;
 import com.example.shoppingmall.domain.category.repository.CategoryRepository;
 import com.example.shoppingmall.domain.product.entity.Product;
 import com.example.shoppingmall.domain.product.repository.ProductRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class CategoryServiceTest {
@@ -51,7 +48,10 @@ class CategoryServiceTest {
         Category vegetable = categoryRepository.save(new Category("야채", groceries));
         Category meat = categoryRepository.save(new Category("육류", groceries));
 
-        // 2-1-1. 육류 하위
+        // 2-1-1. 야채 하위
+        categoryRepository.save(new Category("쌈채소", vegetable));
+
+        // 2-1-2. 육류 하위
         categoryRepository.save(new Category("닭고기", meat));
         categoryRepository.save(new Category("돼지고기", meat));
         categoryRepository.save(new Category("소고기", meat));
@@ -124,4 +124,4 @@ class CategoryServiceTest {
         assertThat(meatChildren.get(1).getName()).isEqualTo("돼지고기");
         assertThat(meatChildren.get(2).getName()).isEqualTo("소고기");
     }
-} 
+}
