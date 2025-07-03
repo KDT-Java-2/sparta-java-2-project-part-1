@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,9 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     String description;
 
+    @Column(nullable = false, precision = 19, scale = 2)
+    BigDecimal price;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     Category category;
@@ -69,16 +73,23 @@ public class Product {
     public Product(
             String name,
             String description,
-            Category category
+            Category category,
+            BigDecimal price
     ) {
         this.name = name;
         this.description = description;
         this.category = category;
+        this.price = price;
     }
 
-    public void update(String name, String description, Category category) {
+    public void update(String name, String description, Category category, BigDecimal price) {
         this.name = name;
         this.description = description;
+        this.category = category;
+        this.price = price;
+    }
+
+    public void setCategory(Category category) {
         this.category = category;
     }
 } 
