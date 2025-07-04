@@ -2,9 +2,9 @@ package com.dogworld.dogdog.product.interfaces;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
+import com.dogworld.dogdog.product.application.ProductQueryService;
 import com.dogworld.dogdog.product.interfaces.dto.request.ProductSearchCondition;
 import com.dogworld.dogdog.product.interfaces.dto.response.ProductResponse;
-import com.dogworld.dogdog.product.application.ProductService;
 import com.dogworld.dogdog.global.common.response.ApiResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProductController {
 
-  private final ProductService productService;
+  private final ProductQueryService productQueryService;
 
   @GetMapping
   public ResponseEntity<ApiResponse<List<ProductResponse>>> getAllProducts() {
-    List<ProductResponse> products = productService.getAllProducts();
+    List<ProductResponse> products = productQueryService.getAllProducts();
     return ResponseEntity.ok(ApiResponse.success(products));
   }
 
@@ -35,13 +35,13 @@ public class ProductController {
   public ResponseEntity<ApiResponse<Page<ProductResponse>>> searchProducts(
       @ModelAttribute ProductSearchCondition condition,
       @PageableDefault(sort = "createdAt", direction = DESC) Pageable pageable) {
-    Page<ProductResponse> products = productService.searchProducts(condition, pageable);
+    Page<ProductResponse> products = productQueryService.searchProducts(condition, pageable);
     return ResponseEntity.ok(ApiResponse.success(products));
   }
 
   @GetMapping("/{productId}")
   public ResponseEntity<ApiResponse<ProductResponse>> getProductById(@PathVariable Long productId) {
-    ProductResponse response = productService.getProductById(productId);
+    ProductResponse response = productQueryService.getProductById(productId);
     return ResponseEntity.ok(ApiResponse.success(response));
   }
 }

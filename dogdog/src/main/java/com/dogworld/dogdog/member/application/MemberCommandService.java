@@ -1,25 +1,23 @@
 package com.dogworld.dogdog.member.application;
 
-import com.dogworld.dogdog.member.interfaces.dto.request.MemberRequest;
-import com.dogworld.dogdog.member.interfaces.dto.response.MemberResponse;
 import com.dogworld.dogdog.global.error.code.ErrorCode;
 import com.dogworld.dogdog.global.error.exception.CustomException;
 import com.dogworld.dogdog.member.domain.Member;
 import com.dogworld.dogdog.member.domain.repository.MemberRepository;
+import com.dogworld.dogdog.member.interfaces.dto.request.MemberRequest;
+import com.dogworld.dogdog.member.interfaces.dto.response.MemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
-public class MemberService {
-
+public class MemberCommandService {
   private final MemberRepository memberRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  @Transactional
   public MemberResponse createMember(MemberRequest request) {
     validateDuplicateUsernameAndEmail(request);
 

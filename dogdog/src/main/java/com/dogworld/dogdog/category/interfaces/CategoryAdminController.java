@@ -1,9 +1,9 @@
 package com.dogworld.dogdog.category.interfaces;
 
+import com.dogworld.dogdog.category.application.CategoryCommandService;
 import com.dogworld.dogdog.category.interfaces.dto.request.CategoryRequest;
 import com.dogworld.dogdog.category.interfaces.dto.response.CategoryCreateResponse;
 import com.dogworld.dogdog.category.interfaces.dto.response.CategoryResponse;
-import com.dogworld.dogdog.category.application.CategoryService;
 import com.dogworld.dogdog.global.common.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,24 +21,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/admin/categories")
 public class CategoryAdminController {
 
-  private final CategoryService categoryService;
+  private final CategoryCommandService categoryCommandService;
 
   @PostMapping
   public ResponseEntity<ApiResponse<CategoryCreateResponse>> createCategory(@Valid @RequestBody CategoryRequest request) {
-    CategoryCreateResponse response = categoryService.createCategory(request);
+    CategoryCreateResponse response = categoryCommandService.createCategory(request);
     return ResponseEntity.ok(ApiResponse.success(response));
   }
 
   @PutMapping("/{categoryId}")
   public ResponseEntity<ApiResponse<CategoryResponse>> updateCategory(@PathVariable Long categoryId,
       @Valid @RequestBody CategoryRequest request) {
-      CategoryResponse response = categoryService.updateCategory(categoryId, request);
+      CategoryResponse response = categoryCommandService.updateCategory(categoryId, request);
       return ResponseEntity.ok(ApiResponse.success(response));
   }
 
   @DeleteMapping("/{categoryId}")
   public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable Long categoryId) {
-    categoryService.deleteCategory(categoryId);
+    categoryCommandService.deleteCategory(categoryId);
     return ResponseEntity.ok(ApiResponse.success());
   }
 }
