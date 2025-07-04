@@ -45,6 +45,7 @@ public class User {
 
     //1(사용자) : N(다수구매)
     //기본 EAGER(즉시)라서 LAZY 변경
+    //mappedBy의 user는 Purchase쪽 ManyToOne 달아준 필드의 참조변수명을 가리킴
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<Purchase> purchases = new ArrayList<>();
 

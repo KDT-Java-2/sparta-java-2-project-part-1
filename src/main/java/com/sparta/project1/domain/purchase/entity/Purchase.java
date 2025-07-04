@@ -45,7 +45,7 @@ public class Purchase {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false) //Purchase 테이블에 User 테이블 id(pk) 참조하는 user_id 명칭의 왜래키 not null로 설정
     User user;
 
     @Builder
