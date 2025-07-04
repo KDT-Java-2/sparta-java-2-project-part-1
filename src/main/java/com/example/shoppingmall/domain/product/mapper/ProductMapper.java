@@ -6,9 +6,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import com.example.shoppingmall.domain.product.dto.ProductCreateRequest;
 import com.example.shoppingmall.domain.product.dto.ProductDetailResponse;
 import com.example.shoppingmall.domain.product.entity.Product;
 import com.example.shoppingmall.domain.product.entity.ProductImage;
+import com.example.shoppingmall.domain.product.dto.ProductCreateResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,5 +63,21 @@ public interface ProductMapper {
                         .stock(variant.getStock())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    Product fromCreateRequest(ProductCreateRequest request);
+
+    default ProductCreateResponse toCreateResponse(Product product) {
+        return new ProductCreateResponse(
+            product.getId(),
+            product.getName(),
+            product.getDescription(),
+            product.getPrice(),
+            getTotalStock(product.getVariants()),
+            product.getCategory() != null ? product.getCategory().getId() : null,
+            product.getCategory() != null ? product.getCategory().getName() : null,
+            toOptionDtoList(product.getVariants()),
+            getImageUrls(product.getImages())
+        );
     }
 }

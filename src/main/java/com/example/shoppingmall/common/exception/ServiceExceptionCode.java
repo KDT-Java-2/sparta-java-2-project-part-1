@@ -14,6 +14,7 @@ public enum ServiceExceptionCode {
     INSUFFICIENT_STOCK("상품의 재고가 부족합니다."),
     PRODUCT_ALREADY_DELETED("이미 삭제된 상품입니다."),
     INVALID_PRODUCT_STATUS("유효하지 않은 상품 상태입니다."),
+    DUPLICATE_PRODUCT_NAME("이미 존재하는 상품명입니다."),
 
     // 주문
     NOT_FOUND_ORDER("주문을 찾을 수 없습니다."),
