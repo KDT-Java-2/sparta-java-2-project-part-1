@@ -63,4 +63,9 @@ public class Category {
         this.name = name;
         this.parent = parent;
     }
+
+    public void updateInfo(String name, Category parent) {
+        this.name = name;
+        this.parent = parent;
+    }
 } 

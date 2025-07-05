@@ -33,7 +33,7 @@ public class ProductCreateRequest {
     public static class VariantRequest {
         BigDecimal price;
         Integer stock;
-        List<Integer> optionValueIndexes;
+        List<String> optionValues; // 인덱스 대신 실제 옵션 값으로 변경
     }
 
     @Getter

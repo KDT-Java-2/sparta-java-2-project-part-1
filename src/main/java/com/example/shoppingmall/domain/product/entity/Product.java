@@ -89,6 +89,12 @@ public class Product {
         this.price = price;
     }
 
+    public void updateBasicInfo(String name, String description, BigDecimal price) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
     public void setCategory(Category category) {
         this.category = category;
     }

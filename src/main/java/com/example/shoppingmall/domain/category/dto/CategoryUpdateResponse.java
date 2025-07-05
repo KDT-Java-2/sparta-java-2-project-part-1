@@ -1,14 +1,18 @@
 package com.example.shoppingmall.domain.category.dto;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryCreateRequest {
-    String name;      // 카테고리명 (필수)
-    Long parentId;    // 부모 카테고리 ID (선택, null이면 최상위)
+public class CategoryUpdateResponse {
+    Long categoryId;
+    String name;
+    Long parentId;
+    String parentName;
 } 

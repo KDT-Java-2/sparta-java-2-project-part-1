@@ -6,12 +6,14 @@ import org.springframework.web.bind.annotation.*;
 import com.example.shoppingmall.common.response.ApiResponse;
 import com.example.shoppingmall.domain.category.dto.CategoryCreateRequest;
 import com.example.shoppingmall.domain.category.dto.CategoryUpdateRequest;
+import com.example.shoppingmall.domain.category.dto.CategoryUpdateResponse;
 import com.example.shoppingmall.domain.category.service.CategoryService;
 import com.example.shoppingmall.domain.product.dto.ProductCreateRequest;
 import com.example.shoppingmall.domain.product.dto.ProductUpdateRequest;
 import com.example.shoppingmall.domain.product.service.ProductService;
 import com.example.shoppingmall.domain.product.dto.ProductCreateResponse;
 import com.example.shoppingmall.domain.product.dto.ProductDeleteResponse;
+import com.example.shoppingmall.domain.product.dto.ProductUpdateResponse;
 import com.example.shoppingmall.domain.category.dto.CategoryCreateResponse;
 import com.example.shoppingmall.domain.category.dto.CategoryDeleteResponse;
 
@@ -36,32 +38,37 @@ public class AdminController {
 
     // 상품 수정
     @PutMapping("/products/{productId}")
-    public ApiResponse<Void> updateProduct(@PathVariable Long productId, @Valid @RequestBody ProductUpdateRequest request) {
-        return ApiResponse.success(null);
+    public ApiResponse<ProductUpdateResponse> updateProduct(@PathVariable Long productId, @Valid @RequestBody ProductUpdateRequest request) {
+        ProductUpdateResponse response = productService.updateProduct(productId, request);
+        return ApiResponse.success(response);
     }
 
     // 상품 삭제
     @DeleteMapping("/products/{productId}")
     public ApiResponse<ProductDeleteResponse> deleteProduct(@PathVariable Long productId) {
-        return ApiResponse.success(null);
+        ProductDeleteResponse response = productService.deleteProduct(productId);
+        return ApiResponse.success(response);
     }
 
     // 카테고리 등록
     @PostMapping("/categories")
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<CategoryCreateResponse> createCategory(@Valid @RequestBody CategoryCreateRequest request) {
-        return ApiResponse.success(null);
+        CategoryCreateResponse response = categoryService.createCategory(request);
+        return ApiResponse.success(response);
     }
 
     // 카테고리 수정
     @PutMapping("/categories/{categoryId}")
-    public ApiResponse<Void> updateCategory(@PathVariable Long categoryId, @Valid @RequestBody CategoryUpdateRequest request) {
-        return ApiResponse.success(null);
+    public ApiResponse<CategoryUpdateResponse> updateCategory(@PathVariable Long categoryId, @Valid @RequestBody CategoryUpdateRequest request) {
+        CategoryUpdateResponse response = categoryService.updateCategory(categoryId, request);
+        return ApiResponse.success(response);
     }
 
     // 카테고리 삭제
     @DeleteMapping("/categories/{categoryId}")
     public ApiResponse<CategoryDeleteResponse> deleteCategory(@PathVariable Long categoryId) {
-        return ApiResponse.success(null);
+        CategoryDeleteResponse response = categoryService.deleteCategory(categoryId);
+        return ApiResponse.success(response);
     }
 }

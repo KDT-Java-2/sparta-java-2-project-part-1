@@ -11,6 +11,8 @@ import com.example.shoppingmall.domain.product.dto.ProductDetailResponse;
 import com.example.shoppingmall.domain.product.entity.Product;
 import com.example.shoppingmall.domain.product.entity.ProductImage;
 import com.example.shoppingmall.domain.product.dto.ProductCreateResponse;
+import com.example.shoppingmall.domain.product.dto.ProductUpdateRequest;
+import com.example.shoppingmall.domain.product.dto.ProductUpdateResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,6 +71,22 @@ public interface ProductMapper {
 
     default ProductCreateResponse toCreateResponse(Product product) {
         return new ProductCreateResponse(
+            product.getId(),
+            product.getName(),
+            product.getDescription(),
+            product.getPrice(),
+            getTotalStock(product.getVariants()),
+            product.getCategory() != null ? product.getCategory().getId() : null,
+            product.getCategory() != null ? product.getCategory().getName() : null,
+            toOptionDtoList(product.getVariants()),
+            getImageUrls(product.getImages())
+        );
+    }
+
+    Product fromUpdateRequest(ProductUpdateRequest request);
+
+    default ProductUpdateResponse toUpdateResponse(Product product) {
+        return new ProductUpdateResponse(
             product.getId(),
             product.getName(),
             product.getDescription(),

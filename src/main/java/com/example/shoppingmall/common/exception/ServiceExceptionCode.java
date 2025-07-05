@@ -45,9 +45,13 @@ public enum ServiceExceptionCode {
     CATEGORY_NOT_FOUND("카테고리를 찾을 수 없습니다."),
     UNCATEGORIZED_CATEGORY_NOT_FOUND("미분류 카테고리가 없습니다."),
     CATEGORY_HAS_CHILDREN("하위 카테고리가 있어 삭제할 수 없습니다."),
+    CATEGORY_HAS_PRODUCTS("카테고리에 상품이 있어 삭제할 수 없습니다."),
+    CATEGORY_CIRCULAR_REFERENCE("순환 참조는 허용되지 않습니다."),
 
     // 상품
     PRODUCT_NOT_FOUND("상품을 찾을 수 없습니다."),
+    INVALID_OPTION_VALUE("유효하지 않은 옵션 값입니다."),
+    PRODUCT_CANNOT_DELETE_HAS_COMPLETED_ORDERS("완료된 주문에 포함된 상품은 삭제할 수 없습니다."),
 
     // 장바구니
     CART_NOT_FOUND("장바구니를 찾을 수 없습니다."),

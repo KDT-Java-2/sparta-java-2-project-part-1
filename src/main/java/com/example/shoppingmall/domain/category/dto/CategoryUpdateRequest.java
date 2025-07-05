@@ -9,5 +9,6 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryUpdateRequest {
-    // 필드 내용은 추후 작성
+    String name;      // 카테고리명 (필수)
+    Long parentId;    // 부모 카테고리 ID (선택, null이면 최상위)
 } 
