@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,8 +35,11 @@ public class ProductController {
 
 
   @GetMapping
-  public ApiResponse<Page<ProductResponse>> getAllProduct(@RequestParam ProductSearchRequest productSearchRequest) {
+  public ApiResponse<Page<ProductResponse>> getAllProduct(@Valid @RequestBody ProductSearchRequest productSearchRequest) {
 //    return ApiResponse.success(productService.getAllProducts());
+
+    System.out.println("Finding all products for search request");
+    System.out.println("Search request parameters: " + productSearchRequest);
     return ApiResponse.success(productQueryRepository.findAllProducts(productSearchRequest));
   }
 
