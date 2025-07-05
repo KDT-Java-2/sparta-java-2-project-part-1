@@ -23,7 +23,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Table(name = "product_product")
+@Table(name = "purchase_product")
 @Entity
 @Getter
 @DynamicInsert
