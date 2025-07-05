@@ -21,22 +21,21 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
   private final ProductRepository productRepository;
-  private final ProductQueryRepository queryRepository;
+  private final ProductQueryRepository productQueryRepository;
+
   private final ProductPagedMapper productPagedMapper;
-  private final ProductDetailMapper detailMapper;
+  private final ProductDetailMapper productDetailMapper;
 
   public ProductSearchPagedResponse searchProducts(ProductSearchCondition condition) {
-
     Pageable pageable = PageRequest.of(condition.getPage(), condition.getSize());
-    Page<Product> page = queryRepository.search(condition, pageable);
-
+    Page<Product> page = productQueryRepository.search(condition, pageable);
     return productPagedMapper.toPagedResponse(page);
   }
 
   public ProductDetailResponse getProductDetail(Long productId) {
     Product product = productRepository.findById(productId)
-        .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_PRODUCT));
-    return detailMapper.toResponse(product);
+        .orElseThrow(() -> new ServiceException(ServiceExceptionCode.PRODUCT_NOT_FOUND));
+    return productDetailMapper.toResponse(product);
   }
 
 }

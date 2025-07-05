@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface ProductMapper {
+public interface ProductSearchMapper {
 
   // 엔티티 → 단일 DTO
   @Mapping(source = "id", target = "id")

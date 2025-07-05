@@ -1,4 +1,4 @@
-package com.js.commerce.domain.product.repository;
+package com.js.commerce.domain.category.repository;
 
 import com.js.commerce.domain.category.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;

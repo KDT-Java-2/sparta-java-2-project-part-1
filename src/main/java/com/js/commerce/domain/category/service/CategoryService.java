@@ -2,7 +2,7 @@ package com.js.commerce.domain.category.service;
 
 import com.js.commerce.domain.category.dto.CategoryHierarchyDto;
 import com.js.commerce.domain.category.entity.Category;
-import com.js.commerce.domain.product.repository.CategoryRepository;
+import com.js.commerce.domain.category.repository.CategoryRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
