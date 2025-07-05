@@ -1,0 +1,41 @@
+# === 운영에 반드시 필요한 파일은 제외하지 않음 ===
+!gradlew
+!gradlew.bat
+!gradle/wrapper/gradle-wrapper.properties
+!gradle/wrapper/gradle-wrapper.jar
+!settings.gradle
+!build.gradle
+!build.gradle.kts
+
+# === Gradle 캐시 및 빌드 결과물 ===
+.gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# === IntelliJ IDEA ===
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# === VS Code ===
+.vscode/
+
+# === Eclipse / Spring Tool Suite (STS) ===
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans/
+.sts4-cache/
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# === OS / 기타 ===
+.
