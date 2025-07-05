@@ -37,9 +37,6 @@ public class ProductController {
   @GetMapping
   public ApiResponse<Page<ProductResponse>> getAllProduct(@Valid @RequestBody ProductSearchRequest productSearchRequest) {
 //    return ApiResponse.success(productService.getAllProducts());
-
-    System.out.println("Finding all products for search request");
-    System.out.println("Search request parameters: " + productSearchRequest);
     return ApiResponse.success(productQueryRepository.findAllProducts(productSearchRequest));
   }
 

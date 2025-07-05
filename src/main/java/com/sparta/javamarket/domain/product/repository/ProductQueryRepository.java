@@ -31,7 +31,6 @@ public class ProductQueryRepository {
 
   public Page<ProductResponse> findAllProducts(ProductSearchRequest productSearchRequest) {
 
-    System.out.println("Finding all products for search request");
     Pageable pageable = PageRequest.of(productSearchRequest.getPage(), productSearchRequest.getSize());
 
     Integer minPrice = productSearchRequest.getMinPrice();
@@ -60,8 +59,6 @@ public class ProductQueryRepository {
         .from(product)
         .where()
         .fetchOne();
-
-    System.out.println("Found " + totalCount + " products for search request");
 
     return new PageImpl<>(products, pageable, totalCount);
 
