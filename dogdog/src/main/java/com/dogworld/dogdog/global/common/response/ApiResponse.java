@@ -17,11 +17,19 @@ public class ApiResponse<T> {
         this.error = error;
     }
 
+    public static <T> ApiResponse<T> success() {
+        return new ApiResponse<>(true, null, null);
+    }
+
     public static <T> ApiResponse<T> success(T message) {
         return new ApiResponse<>(true, message, null);
     }
 
     public static <T> ApiResponse<T> fail(ErrorResponse error) {
         return new ApiResponse<>(false, null, error);
+    }
+
+    public static <T> ApiResponse<T> fail(ErrorResponse error, T message) {
+        return new ApiResponse<>(false, message, error);
     }
 }
