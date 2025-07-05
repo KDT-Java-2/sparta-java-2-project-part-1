@@ -39,7 +39,7 @@ public class Product { // 상품
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
-
+//
 //  @ManyToOne(fetch = FetchType.LAZY)
 //  @JoinColumn(name = "category_id")
 //  Category category;
@@ -56,8 +56,6 @@ public class Product { // 상품
   @Column
   String description;
 
-
-
   @Column
   BigDecimal price;
 
@@ -72,8 +70,19 @@ public class Product { // 상품
   @UpdateTimestamp
   LocalDateTime updatedAt;
 
+//  @Builder
+//  public Product(User user, String name, String description, BigDecimal price, Integer stock) {
+//    this.user = user;
+//    this.name = name;
+//    this.description = description;
+//    this.price = price;
+//    this.stock = stock;
+//  }
+
   @Builder
-  public Product(User user, String name, String description, BigDecimal price, Integer stock) {
+  public Product(Long categoryId, User user, String name, String description, BigDecimal price,
+      Integer stock) {
+    this.categoryId = categoryId;
     this.user = user;
     this.name = name;
     this.description = description;
