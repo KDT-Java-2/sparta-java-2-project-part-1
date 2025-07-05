@@ -1,22 +1,17 @@
 package com.js.commerce.domain.product.dto;
 
-import java.math.BigDecimal;
 import lombok.AccessLevel;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
 @Getter
-@Builder
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductSearchResponse {
+public class CategoryDto {
 
   Long id;
 
   String name;
-
-  BigDecimal price;
-
-  Integer stock;
-
+  
 }

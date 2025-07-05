@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
 @Mapper(
-    componentModel = "spring",
-    uses = ProductMapper.class
+    componentModel = "spring", uses = ProductMapper.class
 )
 public abstract class ProductPagedMapper {
 
@@ -33,7 +32,5 @@ public abstract class ProductPagedMapper {
         .totalElements(page.getTotalElements())
         .build();
   }
-
-//  public abstract ProductSearchPagedResponse toPagedResponse(Page<Product> page);
 
 }

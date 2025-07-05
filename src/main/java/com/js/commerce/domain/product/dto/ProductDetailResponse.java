@@ -9,14 +9,18 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductSearchResponse {
+public class ProductDetailResponse {
 
   Long id;
 
   String name;
 
+  String description;
+
   BigDecimal price;
 
   Integer stock;
+
+  CategoryDto category;
 
 }
