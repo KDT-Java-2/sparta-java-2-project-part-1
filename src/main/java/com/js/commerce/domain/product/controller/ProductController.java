@@ -25,7 +25,7 @@ public class ProductController {
     return ApiResponse.success(productService.searchProducts(condition));
   }
 
-  @GetMapping
+  @GetMapping("/{productId}")
   public ApiResponse<ProductDetailResponse> getProductDetail(
       @PathVariable Long productId) {
     return ApiResponse.success(productService.getProductDetail(productId));

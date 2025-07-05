@@ -20,6 +20,7 @@ public class CategoryHierarchyDto {
 
   String name;
 
+  @Builder.Default
   List<CategoryHierarchyDto> children = new ArrayList<>();
 
 }
