@@ -1,0 +1,4 @@
+# swagger
+springdoc:
+  swagger-ui:
+    enabled: true

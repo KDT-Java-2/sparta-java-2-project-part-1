@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: jdbc:mysql://localhost:3307/spring_db?useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl  # 테이블/컬럼명 매핑 시 명시적 네이밍 유지
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: false
+        show_sql: true
+        query:
+          in_clause_parameter_padding: true # IN 절에서의 파라미터 포맷팅 (prod : false)
+        use_sql_comments: false # SQL 주석 사용 (prod : false), p6spy 사용시 이슈 발생
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+logging:
+  level:
+    root: DEBUG
+#    org.hibernate.SQL: DEBUG
+
