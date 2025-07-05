@@ -1,10 +1,12 @@
 package com.sparta.project1.domain.user.entity;
 
+import com.sparta.project1.domain.cart.entity.Cart;
 import com.sparta.project1.domain.purchase.entity.Purchase;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.flywaydb.core.internal.util.StringUtils;
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,10 +17,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Table(name = "user")
 @Entity
 @Getter
 @DynamicInsert
 @DynamicUpdate
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
 
@@ -36,11 +40,11 @@ public class User {
     String password;
 
     @CreationTimestamp
-    @Column(updatable = false, name = "create_at")
+    @Column(updatable = false, name = "created_at")
     LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
+    @Column(nullable = false, name = "updated_at")
     LocalDateTime updatedAt;
 
     //1(사용자) : N(다수구매)
@@ -48,6 +52,9 @@ public class User {
     //mappedBy의 user는 Purchase쪽 ManyToOne 달아준 필드의 참조변수명을 가리킴
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<Purchase> purchases = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Cart> carts = new ArrayList<>();
 
     @Builder
     public User(String name, String email) {
