@@ -89,4 +89,23 @@ public class Product { // 상품
     this.price = price;
     this.stock = stock;
   }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public void setPrice(BigDecimal price) {
+    this.price = price;
+  }
+
+  public void setStock(Integer stock) {
+    this.stock = stock;
+  }
+
+  public void setCategoryId(Long categoryId) {
+    this.categoryId = categoryId;
+  }
 }
