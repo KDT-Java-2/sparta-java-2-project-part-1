@@ -31,7 +31,7 @@ public class User {
     Long id;
 
     @Column(nullable = false, length = 50)
-    String name;
+    String username;
 
     @Column(nullable = false) //기본 길이 255
     String email;
@@ -57,14 +57,14 @@ public class User {
     private List<Cart> carts = new ArrayList<>();
 
     @Builder
-    public User(String name, String email) {
-        this.name = name;
+    public User(String username, String email) {
+        this.username = username;
         this.email = email;
     }
 
-    public void setName(String name) {
-        if (StringUtils.hasText(name)) {
-            this.name = name;
+    public void setName(String username) {
+        if (StringUtils.hasText(username)) {
+            this.username = username;
         }
     }
 
