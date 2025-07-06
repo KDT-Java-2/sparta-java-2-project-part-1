@@ -2,6 +2,7 @@ package com.sparta.commerce_project_01.domain.user.dto;
 
 import com.sparta.commerce_project_01.common.enums.UserRole;
 import com.sparta.commerce_project_01.common.enums.UserStatus;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,10 +18,5 @@ public class UserSearchResponse {
   String email;
   UserRole role;
   UserStatus status;
-  String cellPhone;
-  String acceptTermsAt;
-  String acceptPrivacyAt;
-  String acceptMarketingAt;
-  String lastLogin;
-  String createdAt;
+  LocalDateTime createdAt;
 }

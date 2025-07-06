@@ -10,8 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,8 +18,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Table
 @Entity
@@ -36,7 +36,6 @@ public class Product {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
 
-
   @Column(nullable = false)
   String name;
 
@@ -49,31 +48,24 @@ public class Product {
   @Column(nullable = false)
   Integer stock;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "category_id")
-  Category category;
-
   @Column
   String image;
 
   @Column
   boolean onSale = false;
 
-  @Column(updatable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "category_id")
+  Category category;
+
+
+  @Column(nullable = false, updatable = false)
+  @CreationTimestamp
   private LocalDateTime createdAt;
 
+  @Column(nullable = false)
+  @UpdateTimestamp
   private LocalDateTime updatedAt;
-
-  @PrePersist
-  public void onPrePersist() {
-    this.createdAt = LocalDateTime.now();
-    this.updatedAt = this.createdAt;
-  }
-
-  @PreUpdate
-  public void onPreUpdate() {
-    this.updatedAt = LocalDateTime.now();
-  }
 
   @Builder
   public Product(
@@ -90,8 +82,8 @@ public class Product {
     this.category = category;
   }
 
-  public void reduceStock(Integer stock) {
-    this.stock -= stock;
+  public void reduceStock(Integer quantity) {
+    this.stock -= quantity;
   }
 
   public void increaseStock(int quantity) {

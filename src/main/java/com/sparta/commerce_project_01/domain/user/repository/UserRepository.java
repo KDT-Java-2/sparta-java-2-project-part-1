@@ -21,14 +21,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
   // 특정 날짜 이후에 가입한 유저들을 이름 순으로 정렬하여 조회
   List<User> findByCreatedAtAfterOrderByNameAsc(LocalDateTime dateTime);
 
-  // 'role'이 'admin'인 유저의 수를 카운트
-  long countByRole(String role);
+  long countByName(String name);
 
   Optional<User> findByNameAndEmail(String name, String email);
 
   @Query("select u from User u where u.name = :name and u.email = :email")
-  Optional<User> findUser(String name, String email);
+  Optional<User> findUserByNameAndUser(String name, String email);
 
-  Optional<User> findUserById(Long id);
-
+  @Query("SELECT u FROM User u JOIN FETCH u.purchases")
+  List<User> findAllWithPurchases();
 }

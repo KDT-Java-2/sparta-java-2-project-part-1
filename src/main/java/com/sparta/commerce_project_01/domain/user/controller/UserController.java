@@ -1,21 +1,17 @@
 package com.sparta.commerce_project_01.domain.user.controller;
 
-import com.sparta.commerce_project_01.common.annotation.LogExecutionTime;
 import com.sparta.commerce_project_01.common.annotation.Loggable;
 import com.sparta.commerce_project_01.common.response.ApiResponse;
-import com.sparta.commerce_project_01.domain.product.service.ProductService;
 import com.sparta.commerce_project_01.domain.user.dto.UserCreateRequest;
 import com.sparta.commerce_project_01.domain.user.dto.UserResponse;
 import com.sparta.commerce_project_01.domain.user.dto.UserSearchResponse;
-import com.sparta.commerce_project_01.domain.user.dto.UserUpdateStatusRequest;
+import com.sparta.commerce_project_01.domain.user.dto.UserUpdateRequest;
 import com.sparta.commerce_project_01.domain.user.service.UserService;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,46 +20,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor // final로 선언된 변수들만 골라서 생성자 만들어줌
+@RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
 
   private final UserService userService;
-  private final ProductService productService;
-
-  @PostMapping
-  public ApiResponse<UserResponse> save(@Valid @RequestBody UserCreateRequest userRequest) {
-    return ApiResponse.success(userService.save(userRequest));
-  }
 
   @Loggable
-  @LogExecutionTime
-  @GetMapping // GET /api/users?email="abc@abc.com"
-  public ApiResponse<List<UserSearchResponse>> findAll() {
-    return ApiResponse.success(userService.searchAll());
+  @GetMapping
+  public ApiResponse<Page<UserSearchResponse>> findAll() {
+    return ApiResponse.success(userService.searchAllUser());
   }
 
-  @GetMapping("{userId}") // GET /api/users?email="abc@abc.com"
-  public ResponseEntity<UserResponse> findById(@PathVariable Long userId) {
-    return ResponseEntity.status(200).body(userService.getById(userId));
+  @GetMapping("/{userId}")
+  public ApiResponse<UserResponse> findById(@PathVariable Long userId) {
+    return ApiResponse.success(userService.getUserById(userId));
+  }
+
+  @PostMapping
+  public ApiResponse<Void> create(@Valid @RequestBody UserCreateRequest request) {
+    userService.create(request);
+    return ApiResponse.success();
   }
 
   @PutMapping("{userId}")
-  public ResponseEntity<UserResponse> update(@PathVariable Long userId,
-      @Valid @RequestBody UserCreateRequest userRequest) {
-    return ResponseEntity.ok(userService.update(userId, userRequest));
-  }
-
-  @PatchMapping("{userId}")
-  public ResponseEntity<UserResponse> updateStatus(@PathVariable Long userId,
-      @Valid @RequestBody UserUpdateStatusRequest userUpdateStatusRequest) {
-    return ResponseEntity.ok(userService.updateStatus(userId, userUpdateStatusRequest));
+  public ApiResponse<Void> update(@PathVariable Long userId,
+      @Valid @RequestBody UserUpdateRequest request) {
+    userService.update(userId, request);
+    return ApiResponse.success();
   }
 
   @DeleteMapping("{userId}")
-  public ResponseEntity<Void> delete(@PathVariable Long userId) {
+  public ApiResponse<Void> delete(@PathVariable Long userId) {
     userService.delete(userId);
-    // 204 No Content 상태코드 응답
-    return ResponseEntity.noContent().build();
+    return ApiResponse.success();
   }
+
 }

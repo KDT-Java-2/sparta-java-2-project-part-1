@@ -40,12 +40,15 @@ public class User {
   Long id;
 
   @Column(nullable = false, length = 50)
+  @Setter
   String name;
 
   @Column(nullable = false, length = 50)
+  @Setter
   String email;
 
   @Column(length = 20)
+  @Setter
   String cellPhone;
 
   @Column(nullable = false)
@@ -53,23 +56,20 @@ public class User {
   String passwordHash;
 
   @Column
-  Boolean isActive;
-
-  @Column
   @Setter
   LocalDateTime lastLogin;
 
   @Column
   @Setter
-  LocalDateTime acceptTermsAt;
+  boolean isAcceptTerms;
 
   @Column
   @Setter
-  LocalDateTime acceptPrivacyAt;
+  boolean isAcceptPrivacy;
 
   @Column
   @Setter
-  LocalDateTime acceptMarketingAt;
+  boolean isAcceptMarketing;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
@@ -95,11 +95,18 @@ public class User {
       String name,
       String email,
       String passwordHash,
-      UserRole role
+      String cellPhone,
+      boolean isAcceptTerms,
+      boolean isAcceptPrivacy,
+      boolean isAcceptMarketing
   ) {
     this.name = name;
     this.email = email;
     this.passwordHash = passwordHash;
-    this.role = role;
+    this.cellPhone = cellPhone;
+    this.isAcceptTerms = isAcceptTerms;
+    this.isAcceptPrivacy = isAcceptPrivacy;
+    this.isAcceptMarketing = isAcceptMarketing;
+
   }
 }

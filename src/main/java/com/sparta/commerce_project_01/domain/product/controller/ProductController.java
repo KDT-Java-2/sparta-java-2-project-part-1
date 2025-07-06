@@ -28,8 +28,10 @@ public class ProductController {
   private final CategoryProductQueryRepository categoryProductQueryRepository;
 
   @PostMapping
-  public ApiResponse<ProductResponse> save(@Valid @RequestBody ProductRequest productRequest) {
-    return ApiResponse.success(productService.save(productRequest));
+  public ApiResponse<Void> save(@Valid @RequestBody ProductRequest productRequest) {
+
+    productService.save(productRequest);
+    return ApiResponse.success();
   }
 
   @GetMapping

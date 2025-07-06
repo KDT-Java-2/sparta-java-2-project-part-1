@@ -23,13 +23,13 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
+@Table
 @Entity
 @Getter
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table
 public class PurchaseProduct {
 
   @Id
@@ -55,7 +55,7 @@ public class PurchaseProduct {
   LocalDateTime createdAt;
 
   @UpdateTimestamp
-  @Column
+  @Column(nullable = false)
   LocalDateTime updatedAt;
 
   @Builder

@@ -1,8 +1,13 @@
 package com.sparta.commerce_project_01.domain.category.controller;
 
 
+import com.sparta.commerce_project_01.common.response.ApiResponse;
+import com.sparta.commerce_project_01.domain.category.dto.CategoryRequest;
 import com.sparta.commerce_project_01.domain.category.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,4 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class CategoryController {
 
   private final CategoryService categoryService;
+
+  @PostMapping
+  public ApiResponse<Void> save(@Valid @RequestBody CategoryRequest request) {
+    categoryService.save(request);
+    return ApiResponse.success();
+  }
+
 }

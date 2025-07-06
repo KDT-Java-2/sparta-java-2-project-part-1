@@ -1,7 +1,7 @@
 package com.sparta.commerce_project_01.domain.user.dto;
 
-import com.sparta.commerce_project_01.common.enums.UserRole;
-import com.sparta.commerce_project_01.common.enums.UserStatus;
+import com.querydsl.core.annotations.QueryProjection;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,12 +15,21 @@ public class UserResponse {
   Long id;
   String name;
   String email;
-  UserRole role;
-  UserStatus status;
   String cellPhone;
-  String acceptTermsAt;
-  String acceptPrivacyAt;
-  String acceptMarketingAt;
-  String lastLogin;
-  String createdAt;
+  LocalDateTime createdAt;
+
+  @QueryProjection
+  public UserResponse(
+      Long id,
+      String name,
+      String email,
+      String cellPhone,
+      LocalDateTime createdAt
+  ) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+    this.cellPhone = cellPhone;
+    this.createdAt = createdAt;
+  }
 }

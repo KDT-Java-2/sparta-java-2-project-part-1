@@ -49,17 +49,18 @@ public class Purchase {
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
+  @Setter
   PurchaseStatus status;
 
   @Column(nullable = false)
   String shippingAddress;
 
-  @CreationTimestamp
   @Column(nullable = false, updatable = false)
+  @CreationTimestamp
   LocalDateTime createdAt;
 
-  @UpdateTimestamp
   @Column
+  @UpdateTimestamp
   LocalDateTime updatedAt;
 
   @Builder
@@ -68,10 +69,5 @@ public class Purchase {
     this.totalPrice = totalPrice;
     this.status = status;
     this.shippingAddress = shippingAddress;
-  }
-
-  public void setStatus(PurchaseStatus status) {
-    this.status = status;
-    this.updatedAt = LocalDateTime.now();
   }
 }

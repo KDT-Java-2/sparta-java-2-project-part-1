@@ -1,6 +1,5 @@
 package com.sparta.commerce_project_01.domain.user.dto;
 
-import com.sparta.commerce_project_01.common.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -24,15 +23,14 @@ public class UserCreateRequest {
   String email;
 
   String password;
-  UserRole role;
 
-  @Pattern(regexp = "\\d{10}$", message = "Phone number must be 10 digits")
+  @Pattern(regexp = "\\d{11}$", message = "Phone number must be 11 digit")
   String cellPhone;
 
   @Min(value = 18, message = "Age must be greater than 18")
   Integer age;
 
-  String acceptTermsAt;
-  String acceptPrivacyAt;
-  String acceptMarketingAt;
+  boolean isAcceptTerms;
+  boolean isAcceptPrivacy;
+  boolean isAcceptMarketing;
 }
