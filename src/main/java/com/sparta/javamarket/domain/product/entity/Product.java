@@ -44,8 +44,6 @@ public class Product { // 상품
   @JoinColumn(name = "category_id")
   Category category;
 
-//  Long categoryId;
-
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
   User user;
@@ -69,15 +67,6 @@ public class Product { // 상품
   @Column
   @UpdateTimestamp
   LocalDateTime updatedAt;
-
-//  @Builder
-//  public Product(User user, String name, String description, BigDecimal price, Integer stock) {
-//    this.user = user;
-//    this.name = name;
-//    this.description = description;
-//    this.price = price;
-//    this.stock = stock;
-//  }
 
   @Builder
   public Product(Category category, User user, String name, String description, BigDecimal price,
