@@ -39,7 +39,7 @@ public class AdminService {
     product.setDescription(request.getDescription());
     product.setPrice(request.getPrice());
     product.setStock(request.getStock());
-    product.setCategoryId(request.getCategoryId());
+//    product.setCategoryId(request.getCategoryId());
 
     return productMapper.toResponse(productRepository.save(product));
 

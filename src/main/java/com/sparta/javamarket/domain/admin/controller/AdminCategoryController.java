@@ -6,6 +6,7 @@ import com.sparta.javamarket.domain.admin.dto.AdminCategoryCreateResponse;
 import com.sparta.javamarket.domain.admin.service.AdminCategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,6 +29,12 @@ public class AdminCategoryController {
   @PutMapping("/{categoryId}")
   public ApiResponse<AdminCategoryCreateResponse> updateAdminCategory(@PathVariable Long categoryId,  @Valid @RequestBody AdminCategoryCreateRequest request) {
     return ApiResponse.success(adminCategoryService.adminUpdateCategory(categoryId, request));
+  }
+
+  @DeleteMapping("/{categoryId}")
+  public ApiResponse<Void> deleteAdminCategory(@PathVariable Long categoryId) {
+    adminCategoryService.adminDeleteCategory(categoryId);
+    return ApiResponse.success();
   }
 
 }

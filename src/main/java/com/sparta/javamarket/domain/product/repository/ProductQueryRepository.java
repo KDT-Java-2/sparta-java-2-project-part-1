@@ -46,7 +46,7 @@ public class ProductQueryRepository {
         ))
         .from(product)
         .where(
-            categoryContains(category),
+//            categoryContains(category),
             priceGoe(minPrice),
             priceLoe(maxPrice)
         )
@@ -80,9 +80,9 @@ public class ProductQueryRepository {
     return new OrderSpecifier<>(direction, pathBuilder.getString(sortField));
   }
 
-  private BooleanExpression categoryContains(Long category) {
-    return StringUtils.hasText(category.toString()) ? product.categoryId.eq(category) : null;
-  }
+//  private BooleanExpression categoryContains(Long category) {
+//    return StringUtils.hasText(category.toString()) ? product.categoryId.eq(category) : null;
+//  }
 
   private BooleanExpression priceGoe(Integer minPrice){
     return minPrice != null ? product.price.goe(minPrice) : null;

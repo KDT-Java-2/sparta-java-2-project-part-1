@@ -9,8 +9,10 @@ import com.sparta.javamarket.domain.admin.dto.AdminCreateResponse;
 import com.sparta.javamarket.domain.admin.mapper.AdminMapper;
 import com.sparta.javamarket.domain.category.entity.Category;
 import com.sparta.javamarket.domain.category.repository.CategoryRepository;
+import com.sparta.javamarket.domain.product.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class AdminCategoryService {
 
   private final CategoryRepository categoryRepository;
+  private final ProductRepository productRepository;
   private final AdminMapper adminMapper;
 
   @Transactional
@@ -51,7 +54,35 @@ public class AdminCategoryService {
     );
   }
 
-  public Category getCategory(Long parentId){
-    return categoryRepository.findById(parentId).orElseThrow(()-> new ServiceException(ServiceExceptionCode.NOT_FOUND_PARENT_CATEGORY));
+  @Transactional
+  public void adminDeleteCategory(Long categoryId) {
+    Boolean deleteChk = true;
+    Category category = getCategory(categoryId);
+
+    checkCategoryParent(category);
+
+    checkProductCategory(category);
+
+    categoryRepository.deleteById(categoryId);
   }
+
+  private void checkProductCategory(Category category) {
+    boolean hasProducts = productRepository.existsByCategory(category);
+    if (hasProducts) {
+      throw new ServiceException(ServiceExceptionCode.CATEGORY_HAS_PRODUCTS);
+    }
+  }
+
+  private void checkCategoryParent(Category category) {
+    boolean hasChildren = categoryRepository.existsByParent(category);
+    if (hasChildren) {
+      throw new ServiceException(ServiceExceptionCode.CATEGORY_HAS_CHILDREN);
+    }
+  }
+
+  public Category getCategory(Long parentId){
+    return categoryRepository.findById(parentId).orElseThrow(()-> new ServiceException(ServiceExceptionCode.NOT_FOUND_CATEGORY));
+  }
+
+
 }

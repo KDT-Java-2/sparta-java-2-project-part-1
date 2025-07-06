@@ -16,7 +16,9 @@ public enum ServiceExceptionCode {
   NOT_FOUND_CATEGORY("카테고리를 찾을 수 없습니다."),
   NOT_FOUND_PARENT_CATEGORY("부모 카테고리를 찾을 수 없습니다."),
   NOT_FOUND_DATA("DATA를 찾을 수 없습니다."),
-  INVALID_CATEGORY_PARENT("자기 자신을 부모로 지정할 수 없습니다.")
+  INVALID_CATEGORY_PARENT("자기 자신을 부모로 지정할 수 없습니다."),
+  CATEGORY_HAS_CHILDREN("하위 카테고리가 존재하여 삭제할 수 없습니다."),
+  CATEGORY_HAS_PRODUCTS("카테고리에 속한 상품이 존재하여 삭제할 수 없습니다.")
 
 
   ;

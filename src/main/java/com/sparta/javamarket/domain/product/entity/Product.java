@@ -39,12 +39,12 @@ public class Product { // 상품
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
-//
-//  @ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "category_id")
-//  Category category;
 
-  Long categoryId;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "category_id")
+  Category category;
+
+//  Long categoryId;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
@@ -80,9 +80,9 @@ public class Product { // 상품
 //  }
 
   @Builder
-  public Product(Long categoryId, User user, String name, String description, BigDecimal price,
+  public Product(Category category, User user, String name, String description, BigDecimal price,
       Integer stock) {
-    this.categoryId = categoryId;
+    this.category = category;
     this.user = user;
     this.name = name;
     this.description = description;
@@ -103,9 +103,5 @@ public class Product { // 상품
 
   public void setStock(Integer stock) {
     this.stock = stock;
-  }
-
-  public void setCategoryId(Long categoryId) {
-    this.categoryId = categoryId;
   }
 }
