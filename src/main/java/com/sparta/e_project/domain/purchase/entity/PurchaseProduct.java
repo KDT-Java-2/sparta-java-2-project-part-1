@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -39,13 +40,21 @@ public class PurchaseProduct {
   @JoinColumn(name = "product_id", nullable = false)
   Product product;
 
+  @Column(nullable = false)
+  Integer quantity;
+
+  @Column(nullable = false)
+  BigDecimal price;
+
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
   LocalDateTime createdAt;
 
   @Builder
-  public PurchaseProduct(Product product, Purchase purchase) {
-    this.product = product;
+  public PurchaseProduct(Purchase purchase, Product product, Integer quantity, BigDecimal price) {
     this.purchase = purchase;
+    this.product = product;
+    this.quantity = quantity;
+    this.price = price;
   }
 }

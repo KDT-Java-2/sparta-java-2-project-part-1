@@ -34,6 +34,9 @@ dependencies {
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // QueryDSL JPA 라이브러리
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 
     compileOnly 'org.projectlombok:lombok'
 
@@ -43,6 +46,10 @@ dependencies {
 
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    // QueryDSL 어노테이션 프로세서 (Q클래스 생성)
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -50,4 +57,9 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// build.gradle 파일 하단에 추가
+tasks.named('compileJava') {
+    options.annotationProcessorPath = configurations.annotationProcessor
 }
