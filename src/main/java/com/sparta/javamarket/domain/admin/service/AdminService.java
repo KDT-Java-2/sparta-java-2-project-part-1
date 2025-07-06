@@ -60,8 +60,12 @@ public class AdminService {
   @Transactional
   public void adminDeleteProduct(Long productId) {
     Product product = getProduct(productId);
+
+
     productRepository.delete(product);
   }
+
+
 
   private Product getProduct(Long productId){
     return productRepository.findById(productId)

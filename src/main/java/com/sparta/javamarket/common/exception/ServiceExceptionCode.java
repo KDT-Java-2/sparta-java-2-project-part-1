@@ -18,7 +18,8 @@ public enum ServiceExceptionCode {
   NOT_FOUND_DATA("DATA를 찾을 수 없습니다."),
   INVALID_CATEGORY_PARENT("자기 자신을 부모로 지정할 수 없습니다."),
   CATEGORY_HAS_CHILDREN("하위 카테고리가 존재하여 삭제할 수 없습니다."),
-  CATEGORY_HAS_PRODUCTS("카테고리에 속한 상품이 존재하여 삭제할 수 없습니다.")
+  CATEGORY_HAS_PRODUCTS("카테고리에 속한 상품이 존재하여 삭제할 수 없습니다."),
+  PRODUCT_HAS_COMPLETED_PURCHASE("해당 상품은 완료된 주문에 포함되어 있어 삭제할 수 없습니다.");
 
 
   ;
