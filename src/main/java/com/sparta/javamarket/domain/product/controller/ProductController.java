@@ -1,6 +1,7 @@
 package com.sparta.javamarket.domain.product.controller;
 
 import com.sparta.javamarket.common.response.ApiResponse;
+import com.sparta.javamarket.domain.product.dto.ProductCreateRequest;
 import com.sparta.javamarket.domain.product.dto.ProductResponse;
 import com.sparta.javamarket.domain.product.dto.ProductSearchRequest;
 import com.sparta.javamarket.domain.product.dto.ProductSearchResponse;
@@ -36,7 +37,6 @@ public class ProductController {
 
   @GetMapping
   public ApiResponse<Page<ProductResponse>> getAllProduct(@Valid @RequestBody ProductSearchRequest productSearchRequest) {
-//    return ApiResponse.success(productService.getAllProducts());
     return ApiResponse.success(productQueryRepository.findAllProducts(productSearchRequest));
   }
 
@@ -46,8 +46,8 @@ public class ProductController {
   }
 
   @PostMapping
-  public ApiResponse<ProductSearchResponse> createProduct(@Valid @RequestBody Product product) {
-    return ApiResponse.success();
+  public ApiResponse<ProductSearchResponse> createProduct(@Valid @RequestBody ProductCreateRequest request) {
+    return ApiResponse.success(productService.save(request));
   }
 
 
