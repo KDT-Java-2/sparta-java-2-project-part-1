@@ -6,6 +6,7 @@ import com.sparta.javamarket.domain.admin.service.AdminService;
 import com.sparta.javamarket.domain.product.dto.ProductSearchResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,4 +32,9 @@ public class AdminController {
     return ApiResponse.success(adminService.adminUpdateProduct(productId, adminCreateRequest));
   }
 
+  @DeleteMapping("/{productId}")
+  public ApiResponse<?> deleteAdminProducts(@PathVariable Long productId) {
+    adminService.adminDeleteProduct(productId);
+    return ApiResponse.success();
+  }
 }
