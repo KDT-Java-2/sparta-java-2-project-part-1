@@ -61,4 +61,8 @@ public class UserService {
   public List<UserSearchResponse> searchAll() {
     return null;
   }
+
+  public UserResponse getById(Long userId) {
+    return null;
+  }
 }

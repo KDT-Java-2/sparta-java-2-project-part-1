@@ -19,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -43,6 +44,7 @@ public class Purchase {
   User user;
 
   @Column
+  @Setter
   BigDecimal totalPrice;
 
   @Enumerated(EnumType.STRING)
@@ -66,5 +68,10 @@ public class Purchase {
     this.totalPrice = totalPrice;
     this.status = status;
     this.shippingAddress = shippingAddress;
+  }
+
+  public void setStatus(PurchaseStatus status) {
+    this.status = status;
+    this.updatedAt = LocalDateTime.now();
   }
 }

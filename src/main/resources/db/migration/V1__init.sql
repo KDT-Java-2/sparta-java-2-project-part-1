@@ -4,6 +4,8 @@ CREATE TABLE user (
     email VARCHAR(50) NOT NULL,
     cell_phone VARCHAR(20),
     password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(20) DEFAULT 'BASIC' COMMENT 'ADMIN, MANAGER, BASIC',
+    status VARCHAR(20) DEFAULT 'ACTIVE' COMMENT 'ACTIVE, INACTIVE, WITHDRAWN, SUSPENDED, DORMANT, BANNED',
 
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     last_login TIMESTAMP,
@@ -26,7 +28,6 @@ CREATE TABLE product (
      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
 -- category Table
 CREATE TABLE category (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -56,4 +57,40 @@ CREATE TABLE purchase_product ( -- 단수형으로 이름 변경
     price DECIMAL(10, 2) NOT NULL COMMENT '주문 시점의 상품 가격',
     created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
     updated_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
+);
+
+-- product Table
+CREATE TABLE cart (
+                      id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+                      user_id BIGINT NOT NULL,
+                      product_id BIGINT NOT NULL,
+                      quantity INT NOT NULL DEFAULT 1,
+                      price DECIMAL(10,2) NOT NULL,
+
+                      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- product Table
+CREATE TABLE refund (
+                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+                        purchase_id BIGINT NOT NULL,
+                        reason TEXT,
+                        status VARCHAR(20) NOT NULL DEFAULT 'PENDING' COMMENT 'PENDING, COMPLETED, CANCELED',
+
+                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- purchase_product Table
+CREATE TABLE cart_product ( -- 단수형으로 이름 변경
+                              id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                              cart_id BIGINT NOT NULL COMMENT '어떤 장바구니에 속하는지',
+                              product_id BIGINT NOT NULL COMMENT '어떤 상품인지',
+                              quantity INT NOT NULL,
+                              price DECIMAL(10, 2) NOT NULL COMMENT '장바구니 담는 시점의 상품 가격',
+                              created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
+                              updated_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
 );

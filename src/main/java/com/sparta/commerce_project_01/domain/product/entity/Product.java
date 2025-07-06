@@ -89,4 +89,12 @@ public class Product {
     this.stock = stock;
     this.category = category;
   }
+
+  public void reduceStock(Integer stock) {
+    this.stock -= stock;
+  }
+
+  public void increaseStock(int quantity) {
+    this.stock += quantity;
+  }
 }

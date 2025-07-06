@@ -1,6 +1,7 @@
 package com.sparta.commerce_project_01.domain.user.entity;
 
 import com.sparta.commerce_project_01.common.enums.UserRole;
+import com.sparta.commerce_project_01.common.enums.UserStatus;
 import com.sparta.commerce_project_01.domain.purchase.entity.Purchase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -73,6 +74,10 @@ public class User {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
   UserRole role;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 20)
+  UserStatus status;
 
   @Column(nullable = false, updatable = false)
   @CreationTimestamp

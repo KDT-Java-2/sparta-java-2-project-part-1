@@ -1,5 +1,7 @@
 package com.sparta.commerce_project_01.domain.user.controller;
 
+import com.sparta.commerce_project_01.common.annotation.LogExecutionTime;
+import com.sparta.commerce_project_01.common.annotation.Loggable;
 import com.sparta.commerce_project_01.common.response.ApiResponse;
 import com.sparta.commerce_project_01.domain.product.service.ProductService;
 import com.sparta.commerce_project_01.domain.user.dto.UserCreateRequest;
@@ -34,6 +36,8 @@ public class UserController {
     return ApiResponse.success(userService.save(userRequest));
   }
 
+  @Loggable
+  @LogExecutionTime
   @GetMapping // GET /api/users?email="abc@abc.com"
   public ApiResponse<List<UserSearchResponse>> findAll() {
     return ApiResponse.success(userService.searchAll());

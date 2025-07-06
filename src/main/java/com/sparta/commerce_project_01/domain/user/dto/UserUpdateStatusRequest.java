@@ -11,7 +11,5 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PACKAGE)
 public class UserUpdateStatusRequest {
 
-  String password_hash;
   String status;
-  UserRole role;
 }
