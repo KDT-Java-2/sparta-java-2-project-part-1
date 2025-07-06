@@ -62,5 +62,11 @@ public class Category {
       this.name = name;
     }
   }
+
+  public void setParent(Category parent) {
+    if(!ObjectUtils.isEmpty(parent)){
+      this.parent = parent;
+    }
+  }
 }
 
