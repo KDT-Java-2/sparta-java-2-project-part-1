@@ -47,7 +47,7 @@ public class ProductService {
   @Transactional
   public ProductSearchResponse save(ProductCreateRequest request) {
     Category category = categoryRepository.findById(request.getCategoryId())
-        .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_PRODUCT));
+        .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_CATEGORY));
 
     return productMapper.toResponse(productRepository.save(Product.builder()
         .category(category)

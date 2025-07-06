@@ -6,6 +6,8 @@ import com.sparta.javamarket.domain.admin.dto.AdminCreateRequest;
 import com.sparta.javamarket.domain.admin.dto.AdminCreateResponse;
 import com.sparta.javamarket.domain.admin.mapper.AdminMapper;
 import com.sparta.javamarket.domain.admin.repository.AdminRepository;
+import com.sparta.javamarket.domain.category.entity.Category;
+import com.sparta.javamarket.domain.category.repository.CategoryRepository;
 import com.sparta.javamarket.domain.product.dto.ProductSearchResponse;
 import com.sparta.javamarket.domain.product.entity.Product;
 import com.sparta.javamarket.domain.product.mapper.ProductMapper;
@@ -19,13 +21,23 @@ import org.springframework.stereotype.Service;
 public class AdminService {
 
   private final ProductRepository productRepository;
+  private final CategoryRepository categoryRepository;
   private final AdminMapper adminMapper;
   private final ProductMapper productMapper;
 
   @Transactional
   public AdminCreateResponse adminCreateProduct(AdminCreateRequest adminCreateRequest) {
 
-    Product createProduct = productRepository.save(adminMapper.toAdminCreateRequest(adminCreateRequest));
+    Category category = categoryRepository.findById(adminCreateRequest.getCategoryId())
+        .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_CATEGORY));
+
+    Product createProduct = productRepository.save(Product.builder()
+            .category(category)
+            .name(adminCreateRequest.getName())
+            .description(adminCreateRequest.getDescription())
+            .price(adminCreateRequest.getPrice())
+            .stock(adminCreateRequest.getStock())
+        .build());
 
     return adminMapper.toAdminCreateResponse(createProduct);
 

@@ -12,8 +12,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface AdminMapper {
 
-  Product toAdminCreateRequest(AdminCreateRequest adminCreateRequest);
-
   @Mapping(source = "id", target = "productId")
   AdminCreateResponse toAdminCreateResponse(Product product);
 
