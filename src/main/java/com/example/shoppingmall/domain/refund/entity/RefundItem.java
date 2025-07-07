@@ -16,59 +16,62 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-@Table
+@Table(name = "refund_item")
 @Entity
 @Getter
-@Setter
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RefundItem {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(nullable = false)
-  Refund refund;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    Refund refund;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(nullable = false)
-  PurchaseProduct purchaseProduct;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    PurchaseProduct purchaseProduct;
 
-  @Column(nullable = false)
-  Integer quantity = 1;
+    @Column(nullable = false, columnDefinition = "int default 1")
+    Integer quantity = 1;
 
-  @Column(nullable = false, precision = 19, scale = 2)
-  BigDecimal refundAmount;
+    @Column(nullable = false, precision = 19, scale = 2)
+    BigDecimal refundAmount;
 
-  @Column(length = 500)
-  String reason; // 개별 아이템 환불 사유
+    @Column(length = 500)
+    String reason; // 개별 아이템 환불 사유
 
-  @CreationTimestamp
-  @Column(nullable = false, updatable = false)
-  LocalDateTime createdAt;
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    LocalDateTime createdAt;
 
-  @Builder
-  public RefundItem(
-      Refund refund,
-      PurchaseProduct purchaseProduct,
-      Integer quantity,
-      BigDecimal refundAmount,
-      String reason
-  ) {
-    this.refund = refund;
-    this.purchaseProduct = purchaseProduct;
-    this.quantity = quantity;
-    this.refundAmount = refundAmount;
-    this.reason = reason;
-  }
+    @Builder
+    public RefundItem(
+            Refund refund,
+            PurchaseProduct purchaseProduct,
+            Integer quantity,
+            BigDecimal refundAmount,
+            String reason
+    ) {
+        this.refund = refund;
+        this.purchaseProduct = purchaseProduct;
+        this.quantity = quantity;
+        this.refundAmount = refundAmount;
+        this.reason = reason;
+    }
+
+    // 연관관계 편의 메서드
+    public void setRefund(Refund refund) {
+        this.refund = refund;
+    }
 } 

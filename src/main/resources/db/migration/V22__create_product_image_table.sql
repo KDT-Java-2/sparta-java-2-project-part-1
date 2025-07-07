@@ -1,0 +1,11 @@
+-- V22: 상품별 이미지 정보를 저장하는 테이블
+CREATE TABLE product_image (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '상품 이미지 고유 식별자',
+    product_id BIGINT NOT NULL COMMENT '상품 ID',
+    url VARCHAR(500) NOT NULL COMMENT '이미지 URL',
+    type VARCHAR(20) NOT NULL DEFAULT 'DETAIL' COMMENT '이미지 타입 (THUMBNAIL, DETAIL 등)',
+    sort_order INT NOT NULL DEFAULT 0 COMMENT '노출 순서',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '생성 시각',
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정 시각',
+    FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
+) COMMENT '상품별 이미지 관리'; 

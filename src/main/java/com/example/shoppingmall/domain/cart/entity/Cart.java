@@ -24,7 +24,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-@Table
+@Table(name = "cart")
 @Entity
 @Getter
 @DynamicInsert
@@ -33,47 +33,47 @@ import org.hibernate.annotations.DynamicUpdate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Cart {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(nullable = false)
-  User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    User user;
 
-  @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-  List<CartItem> cartItems = new ArrayList<>();
+    @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    List<CartItem> cartItems = new ArrayList<>();
 
-  @CreationTimestamp
-  @Column(nullable = false, updatable = false)
-  LocalDateTime createdAt;
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    LocalDateTime createdAt;
 
-  @Builder
-  public Cart(User user) {
-    this.user = user;
-  }
+    @Builder
+    public Cart(User user) {
+        this.user = user;
+    }
 
-  // 장바구니 아이템 추가
-  public void addCartItem(CartItem cartItem) {
-    this.cartItems.add(cartItem);
-    cartItem.setCart(this);
-  }
+    // 장바구니 아이템 추가
+    public void addCartItem(CartItem cartItem) {
+        this.cartItems.add(cartItem);
+        cartItem.setCart(this);
+    }
 
-  // 장바구니 아이템 제거
-  public void removeCartItem(CartItem cartItem) {
-    this.cartItems.remove(cartItem);
-    cartItem.setCart(null);
-  }
+    // 장바구니 아이템 제거
+    public void removeCartItem(CartItem cartItem) {
+        this.cartItems.remove(cartItem);
+        cartItem.setCart(null);
+    }
 
-  // 장바구니 비우기
-  public void clearCart() {
-    this.cartItems.clear();
-  }
+    // 장바구니 비우기
+    public void clearCart() {
+        this.cartItems.clear();
+    }
 
-  // 총 아이템 수
-  public int getTotalItemCount() {
-    return this.cartItems.stream()
-        .mapToInt(CartItem::getQuantity)
-        .sum();
-  }
+    // 총 아이템 수
+    public int getTotalItemCount() {
+        return this.cartItems.stream()
+                .mapToInt(CartItem::getQuantity)
+                .sum();
+    }
 } 
