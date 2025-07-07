@@ -7,6 +7,7 @@ import com.sparta.part_1.common.exception.CategoryErrorCode;
 import com.sparta.part_1.common.exception.CategoryException;
 import com.sparta.part_1.domain.category.dto.response.CategoryResponse;
 import com.sparta.part_1.domain.category.entity.Category;
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,5 +56,12 @@ public class CategoryQueryRepository {
     }
 
     return roots;
+  }
+
+  public Long findChildCategoryCount(@NotNull Long categoryId) {
+    return queryFactory.select(category.count())
+        .from(category)
+        .where(category.id.eq(categoryId))
+        .fetchOne();
   }
 }

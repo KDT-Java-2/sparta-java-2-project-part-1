@@ -22,6 +22,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.util.ObjectUtils;
 
 @Table
 @Entity
@@ -44,6 +45,9 @@ public class Category {
   @JsonBackReference
   Category parent;
 
+  @Column
+  String description;
+
   @Column(nullable = false, updatable = false)
   @CreationTimestamp
   LocalDateTime createdAt;
@@ -53,9 +57,12 @@ public class Category {
   LocalDateTime updatedAt;
 
   @Builder
-  public Category(String name) {
+  public Category(String name, String description, Category parent) {
     this.name = name;
+    this.description = description;
+    this.parent = parent;
   }
+
 
   @PrePersist
   public void onPrePersist() {
@@ -68,4 +75,19 @@ public class Category {
     this.updatedAt = LocalDateTime.now();
   }
 
+  // TODO : 좀 더 좋은 방법은 없을까?? 파라미터가 많아질수록 좋지 못한 코드의 정석이다.
+  public void update(String name, String description, Category parent) {
+    if (!ObjectUtils.isEmpty(name)) {
+      this.name = name;
+    }
+
+    if (!ObjectUtils.isEmpty(description)) {
+      this.description = description;
+    }
+
+    if (this.parent.getId() != parent.getId()) {
+      this.parent = parent;
+    }
+
+  }
 }
