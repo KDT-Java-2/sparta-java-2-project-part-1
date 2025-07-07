@@ -10,7 +10,7 @@ public class AdminCategoryService {
 
     private final AdminCategoryRepository adminCategoryRepository;
 
-    public Category findById(Long aLong) {
+    public Category findById(Long id) {
         return null;
     }
 
