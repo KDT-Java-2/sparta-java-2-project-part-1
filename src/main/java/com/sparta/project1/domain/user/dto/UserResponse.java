@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
 @Getter
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
 
@@ -23,10 +24,4 @@ public class UserResponse {
   @Size(min = 8, message = "비밀번호는 최소 8자리입니다.")
   @NotNull(message = "비밀번호는 필수입력입니다.")
   String password;
-
-  @Builder
-  public UserResponse(String email, String username) {
-    this.email = email;
-    this.username = username;
-  }
 }
