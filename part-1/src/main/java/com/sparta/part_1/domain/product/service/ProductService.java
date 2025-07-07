@@ -8,12 +8,14 @@ import com.sparta.part_1.domain.category.repository.CategoryRepository;
 import com.sparta.part_1.domain.product.dto.request.ProductRequest;
 import com.sparta.part_1.domain.product.dto.request.ProductSearchRequest;
 import com.sparta.part_1.domain.product.dto.response.ProductAddResponse;
+import com.sparta.part_1.domain.product.dto.response.ProductDeleteResponse;
 import com.sparta.part_1.domain.product.dto.response.ProductResponse;
 import com.sparta.part_1.domain.product.dto.response.ProductUpdateResponse;
 import com.sparta.part_1.domain.product.entity.Product;
 import com.sparta.part_1.domain.product.repository.ProductQueryRepository;
 import com.sparta.part_1.domain.product.repository.ProductRepository;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -102,4 +104,14 @@ public class ProductService {
     }
   }
 
+  public ProductDeleteResponse deleteProductProcess(@NotNull Long productId) {
+    Product product = productRepository.findById(productId)
+        .orElseThrow(() -> new ProductServiceException(ProductErrorCode.NOT_FOUND_PRODUCT_FOR_ID));
+
+    productRepository.delete(product);
+
+    return ProductDeleteResponse.builder()
+        .productId(productId)
+        .build();
+  }
 }
