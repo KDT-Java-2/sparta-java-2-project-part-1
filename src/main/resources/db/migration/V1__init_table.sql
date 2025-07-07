@@ -33,7 +33,7 @@ CREATE TABLE product (
  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- 연결 테이블: `purchase_item`
+
 CREATE TABLE purchase_product (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   purchase_id BIGINT NOT NULL,   -- FK: 어떤 주문에 속하는지

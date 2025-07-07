@@ -26,3 +26,17 @@ public class Cart {
   Long id;
 
 }
+/*
+CREATE TABLE cart
+(
+    id         BIGINT AUTO_INCREMENT NOT NULL,
+    user_id    BIGINT                NOT NULL,
+    product_id BIGINT                NOT NULL,
+    quantity   INT                   NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT pk_cart PRIMARY KEY (id)
+);
+ALTER TABLE cart ADD CONSTRAINT FK_CART_ON_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id);
+ALTER TABLE cart ADD CONSTRAINT FK_CART_ON_USER FOREIGN KEY (user_id) REFERENCES user (id);
+ */

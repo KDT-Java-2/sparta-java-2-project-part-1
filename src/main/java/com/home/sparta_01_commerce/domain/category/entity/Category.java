@@ -1,16 +1,25 @@
 package com.home.sparta_01_commerce.domain.category.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Table
 @Entity
@@ -24,4 +33,35 @@ public class Category {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
+
+  @Column(nullable = false)
+  String name;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "parent_id")
+  @JsonBackReference //jackson / 순환참조를 끊어주는 역할 /
+  Category parent;
+
+  @CreationTimestamp
+  @Column(nullable = false, updatable = false)
+  LocalDateTime createdAt;
+
+  @Column
+  @UpdateTimestamp
+  LocalDateTime updatedAt;
+
+  @Builder
+  public Category(String name, Category parent) {
+    this.name = name;
+    this.parent = parent;
+  }
 }
+/*
+CREATE TABLE category (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  parent_id BIGINT DEFAULT NULL, -- FK: 부모 카테고리의 id를 참조
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+ */
