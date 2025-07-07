@@ -1,9 +1,12 @@
 package com.sparta.commerce.domain.purchase.entity;
 
+import com.sparta.commerce.common.enums.PurchaseStatus;
 import com.sparta.commerce.domain.product.entity.Product;
 import com.sparta.commerce.domain.product.entity.ProductItem;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +24,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.util.ObjectUtils;
 
 @Table
 @Entity
@@ -41,21 +45,35 @@ public class PurchaseProduct {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "product_item_id", nullable = false)
-  private ProductItem productItem;
+  ProductItem productItem;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 20)
+  PurchaseStatus status;
 
   @Column(nullable = false)
-  private int quantity;
+  int quantity;
 
   @Column(nullable = false, precision = 10, scale = 2)
-  private BigDecimal price;
+  BigDecimal price;
 
   @Column(name = "created_at", updatable = false)
   @CreationTimestamp
   LocalDateTime createdAt;
 
   @Builder
-  public PurchaseProduct(Purchase purchase, ProductItem productItem) {
+  public PurchaseProduct(Purchase purchase, ProductItem productItem, PurchaseStatus status,
+      int quantity, BigDecimal price) {
     this.purchase = purchase;
     this.productItem = productItem;
+    this.status = status;
+    this.quantity = quantity;
+    this.price = price;
+  }
+
+  public void updateStatus(PurchaseStatus status) {
+    if (status != null) {
+      this.status = status;
+    }
   }
 }

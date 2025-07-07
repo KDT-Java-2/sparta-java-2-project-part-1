@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -28,19 +29,25 @@ import org.hibernate.annotations.DynamicUpdate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductItem {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "product_id", nullable = false)
-  private Product product;
+  Product product;
 
   @Column(nullable = false)
-  private BigDecimal price;
-
-  @Column(nullable = false)
-  private Integer stock;
+  Integer stock;
 
   @CreationTimestamp
-  private LocalDateTime createdAt;
+  LocalDateTime createdAt;
 
+  @Builder
+  public ProductItem(Product product, Integer stock) {
+    this.product = product;
+    this.stock = stock;
+  }
+
+  public void reduceStock(Integer stock) {
+    this.stock -= stock;
+  }
 }

@@ -27,33 +27,31 @@ import org.hibernate.annotations.DynamicUpdate;
 public class ProductImage {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "product_id", nullable = false)
-  private Product product;
+  Product product;
 
   @Column(name = "original_name", nullable = false, length = 500)
-  private String originalName;
+  String originalName;
 
   @Column(name = "saved_name", nullable = false, length = 500)
-  private String savedName;
+  String savedName;
 
   @Column(name = "image_url", nullable = false, length = 500)
-  private String imageUrl;
+  String imageUrl;
 
   @Column(name = "is_thumbnail")
-  private boolean isThumbnail = false;
+  boolean isThumbnail;
 
   @Builder
-  public ProductImage(Product product, String originalName, String savedName, String imageUrl) {
+  public ProductImage(Product product, String originalName, String savedName, String imageUrl,
+      boolean isThumbnail) {
     this.product = product;
     this.originalName = originalName;
     this.savedName = savedName;
     this.imageUrl = imageUrl;
-  }
-
-  public void updateIsThumbnail(boolean isThumbnail){
     this.isThumbnail = isThumbnail;
   }
 }

@@ -55,10 +55,6 @@ public class Purchase {
   @Column(name = "total_price", nullable = false, precision = 10, scale = 2)
   private BigDecimal totalPrice;
 
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false, length = 20)
-  PurchaseStatus status;
-
   @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
   List<PurchaseProduct> purchaseProducts = new ArrayList<>();
 
@@ -75,12 +71,6 @@ public class Purchase {
     this.user = user;
     this.address = address;
     this.totalPrice = totalPrice;
-  }
-
-  public void updateStatus(PurchaseStatus status) {
-    if (!ObjectUtils.isEmpty(status)) {
-      this.status = status;
-    }
   }
 
   /**

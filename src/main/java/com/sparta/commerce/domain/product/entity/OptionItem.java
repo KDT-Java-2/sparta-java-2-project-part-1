@@ -9,8 +9,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -37,7 +39,16 @@ public class OptionItem {
   @Column(nullable = false, length = 100)
   String value; // 예: 검정색, 260, M, L
 
+  @Column(name = "additional_price", nullable = false)
+  BigDecimal additionalPrice;
+
   @CreationTimestamp
   LocalDateTime createdAt;
 
+  @Builder
+  public OptionItem(OptionGroup optionGroup, String value, BigDecimal additionalPrice) {
+    this.optionGroup = optionGroup;
+    this.value = value;
+    this.additionalPrice = additionalPrice;
+  }
 }

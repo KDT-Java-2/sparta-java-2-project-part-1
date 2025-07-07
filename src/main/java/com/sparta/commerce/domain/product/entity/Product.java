@@ -37,39 +37,52 @@ import org.hibernate.mapping.ToOne;
 public class Product {
 
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "seller_id", nullable = false)
-  private Seller seller;
+  Seller seller;
 
   @Column(nullable = false)
-  private String name;
+  String name;
 
   @Column
-  private String brand;
+  String brand;
 
   @Lob
   @Column(nullable = false)
-  private String description;
+  String description;
+
+  @Column
+  BigDecimal basePrice;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "category_id")
-  private Category category;
+  Category category;
 
   @Column(name = "created_at", updatable = false)
   @CreationTimestamp
-  private LocalDateTime createdAt;
+  LocalDateTime createdAt;
 
   @Column(name = "updated_at")
   @UpdateTimestamp
-  private LocalDateTime updatedAt;
+  LocalDateTime updatedAt;
 
   @Builder
-  public Product(String name, String brand, String description, Category category) {
+  public Product(Seller seller, String name, String brand, String description, BigDecimal basePrice,
+      Category category) {
+    this.seller = seller;
     this.name = name;
     this.brand = brand;
     this.description = description;
+    this.basePrice = basePrice;
     this.category = category;
+  }
+
+  public void update(String name, String description, String brand, BigDecimal basePrice){
+    this.name = name;
+    this.description = description;
+    this.brand = brand;
+    this.basePrice = basePrice;
   }
 }

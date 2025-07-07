@@ -1,5 +1,6 @@
 package com.sparta.commerce.domain.user.entity;
 
+import com.sparta.commerce.common.enums.Gender;
 import com.sparta.commerce.common.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,10 +47,12 @@ public class User {
   @Column(name = "phone_number")
   private String phoneNumber;
 
+  @Column(name = "nickname")
   private String nickname;
 
-  @Column
-  private String gender;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private Gender gender;
 
   @Column(name = "birth_date")
   private LocalDate birthDate;
@@ -80,7 +83,7 @@ public class User {
 
   @Builder
   public User(String email, String encryptPassword, String phoneNumber, String nickname,
-      String gender, LocalDate birthDate, Role role, Boolean marketingAgree, Boolean isVerified) {
+      Gender gender, LocalDate birthDate, Role role, Boolean marketingAgree, Boolean isVerified) {
     this.email = email;
     this.encryptPassword = encryptPassword;
     this.phoneNumber = phoneNumber;

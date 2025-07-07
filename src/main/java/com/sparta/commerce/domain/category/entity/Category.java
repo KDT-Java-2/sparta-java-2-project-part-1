@@ -32,10 +32,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class Category {
 
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  Long id;
 
   @Column(nullable = false, length = 100)
-  private String name;
+  String name;
+
+  @Column(length = 500)
+  String description; // 선택
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "parent_id")
@@ -54,9 +57,26 @@ public class Category {
   LocalDateTime updatedAt;
 
   @Builder
-  public Category(String name, Category parent, int depth) {
+  public Category(String name, String description, Category parent, int depth) {
     this.name = name;
+    this.description = description;
     this.parent = parent;
     this.depth = depth;
+  }
+
+  public void updateParent(Category parent){
+    this.parent = parent;
+  }
+
+  public void updateDepth(int depth){
+    this.depth = depth;
+  }
+
+  public void updateName(String name){
+    this.name = name;
+  }
+
+  public void updateDescription(String description){
+    this.description = description;
   }
 }

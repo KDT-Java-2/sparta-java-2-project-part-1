@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,14 +26,19 @@ import org.hibernate.annotations.DynamicUpdate;
 public class ProductItemOption {
 
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "product_item_id", nullable = false)
-  private ProductItem productItem;
+  ProductItem productItem;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "option_item_id", nullable = false)
-  private OptionItem optionItem;
+  OptionItem optionItem;
 
+  @Builder
+  public ProductItemOption(ProductItem productItem, OptionItem optionItem) {
+    this.productItem = productItem;
+    this.optionItem = optionItem;
+  }
 }

@@ -2,9 +2,12 @@ package com.sparta.commerce.domain.product.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -26,6 +29,10 @@ public class OptionGroup {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    Product product;
+
     @Column(nullable = false, length = 100)
     String name; // 예: 색상, 사이즈, 종류
 
@@ -33,4 +40,8 @@ public class OptionGroup {
     @CreationTimestamp
     LocalDateTime createdAt;
 
+    public OptionGroup(Product product, String name) {
+        this.product = product;
+        this.name = name;
+    }
 }
