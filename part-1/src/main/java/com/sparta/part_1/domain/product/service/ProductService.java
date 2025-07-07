@@ -3,6 +3,8 @@ package com.sparta.part_1.domain.product.service;
 
 import com.sparta.part_1.common.exception.ProductErrorCode;
 import com.sparta.part_1.common.exception.ProductServiceException;
+import com.sparta.part_1.common.exception.PurchaseErrorCode;
+import com.sparta.part_1.common.exception.PurchaseServiceException;
 import com.sparta.part_1.domain.category.entity.Category;
 import com.sparta.part_1.domain.category.repository.CategoryRepository;
 import com.sparta.part_1.domain.product.dto.request.ProductRequest;
@@ -14,6 +16,7 @@ import com.sparta.part_1.domain.product.dto.response.ProductUpdateResponse;
 import com.sparta.part_1.domain.product.entity.Product;
 import com.sparta.part_1.domain.product.repository.ProductQueryRepository;
 import com.sparta.part_1.domain.product.repository.ProductRepository;
+import com.sparta.part_1.domain.purchase.repository.PurchaseQueryRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -29,6 +32,7 @@ public class ProductService {
   private final ProductRepository productRepository;
   private final ProductQueryRepository productQueryRepository;
   private final CategoryRepository categoryRepository;
+  private final PurchaseQueryRepository purchaseQueryRepository;
 
   public Page<ProductResponse> findProducts(ProductSearchRequest request, Pageable pageable) {
     return productQueryRepository.searchProductsPage(request, pageable);
@@ -107,6 +111,12 @@ public class ProductService {
   public ProductDeleteResponse deleteProductProcess(@NotNull Long productId) {
     Product product = productRepository.findById(productId)
         .orElseThrow(() -> new ProductServiceException(ProductErrorCode.NOT_FOUND_PRODUCT_FOR_ID));
+
+    Long completePurchaseCount = purchaseQueryRepository.getCompletePurchaseCount(productId);
+
+    if (completePurchaseCount == null || completePurchaseCount > 0) {
+      throw new PurchaseServiceException(PurchaseErrorCode.HAS_COMPLETION_PURCHASE);
+    }
 
     productRepository.delete(product);
 
