@@ -3,61 +3,77 @@ package com.sparta.bootcamp.shop.domain.user.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sparta.bootcamp.shop.domain.purchase.entity.Purchase;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Table(name = "users")
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Table(name = "user")
+@DynamicInsert
+@DynamicUpdate
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, length = 50)
-    private String username;
-
-    @Column(nullable = false, unique = true)
-    private String email;
+    Long id;
 
     @Column(nullable = false)
-    private String passwordHash;
+    String name;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Purchase> purchases = new ArrayList<>();
+    @Column(nullable = false)
+    String email;
 
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
+    @Column(nullable = false)
+    String passwordHash;
 
-    private LocalDateTime updatedAt;
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
+    LocalDateTime createdAt;
 
-    @PrePersist
-    public void onPrePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = this.createdAt;
+    @Column(nullable = false)
+    @UpdateTimestamp
+    LocalDateTime updatedAt;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    List<Purchase> purchases = new ArrayList<>();
+
+    @Builder
+    public User(
+            String name,
+            String email,
+            String passwordHash
+    ) {
+        this.name = name;
+        this.email = email;
+        this.passwordHash = passwordHash;
     }
 
-    @PreUpdate
-    public void onPreUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    public void setName(String name) {
+        if (StringUtils.hasText(name)) {
+            this.name = name;
+        }
     }
 
-    public static User create(String username, String email, String passwordHash) {
-        User user = new User();
-        user.username = username;
-        user.email = email;
-        user.passwordHash = passwordHash;
-        return user;
+    public void setEmail(String email) {
+        if (StringUtils.hasText(email)) {
+            this.email = email;
+        }
     }
 
+    public void setPasswordHash(String passwordHash) {
+        if (StringUtils.hasText(passwordHash)) {
+            this.passwordHash = passwordHash;
+        }
+    }
 
 }

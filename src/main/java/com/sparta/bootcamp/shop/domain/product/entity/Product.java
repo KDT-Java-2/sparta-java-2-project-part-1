@@ -1,7 +1,10 @@
 package com.sparta.bootcamp.shop.domain.product.entity;
 
+import com.sparta.bootcamp.shop.domain.category.entity.Category;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,47 +17,52 @@ import java.time.LocalDateTime;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
-    private String name;
-
-    @Column(columnDefinition = "TEXT")
-    private String description;
-
-    @Column(nullable = false)
-    private BigDecimal price;
-
-    @Column(nullable = false)
-    private int stock;
+    Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-    private Category category;
+    Category category;
 
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
+    @Column(nullable = false)
+    String name;
 
-    private LocalDateTime updatedAt;
+    @Column(columnDefinition = "TEXT")
+    String description;
 
-    @PrePersist
-    public void onPrePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = this.createdAt;
+    @Column(nullable = false)
+    BigDecimal price;
+
+    @Column(nullable = false)
+    Integer stock;
+
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
+    LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    @UpdateTimestamp
+    LocalDateTime updatedAt;
+
+    @Builder
+    public Product(
+            Category category,
+            String name,
+            String description,
+            BigDecimal price,
+            Integer stock
+    ) {
+        this.category = category;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
     }
 
-    @PreUpdate
-    public void onPreUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    public void reduceStock(Integer quantity) {
+        this.stock -= quantity;
     }
 
-    public static Product create(String name, String description, BigDecimal price, int stock, Category category) {
-        Product product = new Product();
-        product.name = name;
-        product.description = description;
-        product.price = price;
-        product.stock = stock;
-        product.category = category;
-        return product;
+    public void increaseStock(Integer quantity) {
+        this.stock += quantity;
     }
 }

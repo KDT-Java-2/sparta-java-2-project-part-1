@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "refund")
 public class Refund {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
