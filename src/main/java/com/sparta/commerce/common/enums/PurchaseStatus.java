@@ -1,5 +1,6 @@
 package com.sparta.commerce.common.enums;
 
+import java.util.EnumSet;
 import lombok.Getter;
 
 @Getter
@@ -16,5 +17,9 @@ public enum PurchaseStatus {
 
   PurchaseStatus(String description) {
     this.description = description;
+  }
+
+  public static EnumSet<PurchaseStatus> getDeletableStatuses() {
+    return EnumSet.of(CANCELED, RETURNED, REFUNDED);
   }
 }
