@@ -1,0 +1,182 @@
+### [상품 검색]
+POST http://localhost:8080/api/v1/products/search?page=0&size=10
+Content-Type: application/json
+
+{
+  "categoryId": 1,
+  "minPrice": 0,
+  "maxPrice": 99000,
+  "keyword": "브랜드",
+  "sort": "LATEST"
+}
+
+### [상품 단건 조회]
+GET http://localhost:8080/api/v1/products/2
+Accept: application/json
+
+### [상품 생성]
+POST http://localhost:8080/api/v1/products
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="product"
+Content-Type: application/json
+
+{
+  "name": "예시 상품명",
+  "brand": "브랜드A",
+  "description": "상품 상세 설명입니다.",
+  "categoryId": 1,
+  "basePrice": 10000,
+  "images": [
+    {
+      "originalName": "top_thumbnail.jpg",
+      "isThumbnail": true
+    },
+    {
+      "originalName": "top_thumbnail.jpg",
+      "isThumbnail": false
+    }
+  ],
+  "optionGroups": [
+    {
+      "key": "색상",
+      "values": [
+        { "item": "검정", "additionalPrice": 1000 },
+        { "item": "흰색", "additionalPrice": 0 }
+      ]
+    },
+    {
+      "key": "사이즈",
+      "values": [
+        { "item": "S", "additionalPrice": 0 },
+        { "item": "M", "additionalPrice": 500 },
+        { "item": "L", "additionalPrice": 1000 }
+      ]
+    }
+  ],
+  "productItems": [
+    {
+      "optionCombination": {
+        "색상": "검정",
+        "사이즈": "S"
+      },
+      "stock": 10
+    },
+    {
+      "optionCombination": {
+        "색상": "검정",
+        "사이즈": "M"
+      },
+      "stock": 15
+    },
+    {
+      "optionCombination": {
+        "색상": "흰색",
+        "사이즈": "L"
+      },
+      "stock": 5
+    }
+  ]
+}
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="top_thumbnail.jpg"
+Content-Type: image/jpeg
+
+< ./images/top_thumbnail.jpeg
+--boundary
+Content-Disposition: form-data; name="file"; filename="top.jpg"
+Content-Type: image/jpeg
+
+< ./images/top_thumbnail.jpeg
+--boundary--
+
+### [상품 수정]
+PUT http://localhost:8080/api/v1/products/11
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="product"
+Content-Type: application/json
+
+{
+  "name": "수정 상품명",
+  "brand": "브랜드B",
+  "description": "상품 수정 설명입니다.",
+  "categoryId": 1,
+  "basePrice": 90000,
+  "images": [
+    {
+      "originalName": "top_thumbnail.jpg",
+      "isThumbnail": true
+    },
+    {
+      "originalName": "top_thumbnail.jpg",
+      "isThumbnail": false
+    }
+  ],
+  "optionGroups": [
+    {
+      "key": "색상",
+      "values": [
+        { "item": "검정", "additionalPrice": 2000 },
+        { "item": "흰색", "additionalPrice": 0 },
+        { "item": "회색", "additionalPrice": 1000 }
+      ]
+    },
+    {
+      "key": "사이즈",
+      "values": [
+        { "item": "S", "additionalPrice": 0 },
+        { "item": "M", "additionalPrice": 500 },
+        { "item": "L", "additionalPrice": 1000 }
+      ]
+    }
+  ],
+  "productItems": [
+    {
+      "optionCombination": {
+        "색상": "검정",
+        "사이즈": "S"
+      },
+      "stock": 10
+    },
+    {
+      "optionCombination": {
+        "색상": "검정",
+        "사이즈": "M"
+      },
+      "stock": 15
+    },
+    {
+      "optionCombination": {
+        "색상": "흰색",
+        "사이즈": "L"
+      },
+      "stock": 5
+    },
+    {
+      "optionCombination": {
+        "색상": "회색",
+        "사이즈": "S"
+      },
+      "stock": 999
+    }
+  ]
+}
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="top_thumbnail.jpg"
+Content-Type: image/jpeg
+
+< ./images/top_thumbnail.jpeg
+--boundary
+Content-Disposition: form-data; name="file"; filename="top.jpg"
+Content-Type: image/jpeg
+
+< ./images/top_thumbnail.jpeg
+--boundary--
+
+### [상품 삭제]
+DELETE http://localhost:8080/api/v1/products/11
