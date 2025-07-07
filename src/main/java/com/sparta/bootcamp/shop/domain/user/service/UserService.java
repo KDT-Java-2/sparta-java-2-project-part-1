@@ -37,12 +37,22 @@ public class UserService {
     }
 
     @Transactional
-    public void create(UserCreateRequest request) {
-        userRepository.save(User.builder()
+    public UserResponse create(UserCreateRequest request) {
+        User findUser = userRepository.findByEmail(request.getEmail())
+                .orElseGet(() -> null);
+
+        if (findUser != null) {
+            throw new ServiceException(ServiceExceptionCode.DUPLICATED_EMAIL);
+        }
+
+        // TODO: 스프링 시큐리티 적용 후, 패스워드 암호화 적용 필요
+        User user = userRepository.save(User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
                 .passwordHash(request.getPassword())
                 .build());
+
+        return userMapper.toResponse(user);
     }
 
     @Transactional

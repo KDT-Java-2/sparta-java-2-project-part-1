@@ -1,5 +1,6 @@
 package com.sparta.bootcamp.shop.domain.user.mapper;
 
+import com.sparta.bootcamp.shop.domain.user.dto.UserResponse;
 import com.sparta.bootcamp.shop.domain.user.dto.UserSearchResponse;
 import com.sparta.bootcamp.shop.domain.user.entity.User;
 import org.mapstruct.Mapper;
@@ -9,7 +10,7 @@ public interface UserMapper {
 
   UserSearchResponse toSearch(User user);
 
-  //UserResponse toResponse(User user);
+  UserResponse toResponse(User user);
   //User toEntity(UserCreateRequest request);
 
 }

@@ -6,6 +6,7 @@ import com.sparta.bootcamp.shop.domain.user.dto.UserCreateRequest;
 import com.sparta.bootcamp.shop.domain.user.dto.UserResponse;
 import com.sparta.bootcamp.shop.domain.user.dto.UserSearchResponse;
 import com.sparta.bootcamp.shop.domain.user.dto.UserUpdateRequest;
+import com.sparta.bootcamp.shop.domain.user.entity.User;
 import com.sparta.bootcamp.shop.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,9 +39,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ApiResponse<Void> create(@Valid @RequestBody UserCreateRequest request) {
-        userService.create(request);
-        return ApiResponse.success();
+    public ApiResponse<UserResponse> create(@Valid @RequestBody UserCreateRequest request) {
+        return ApiResponse.success(userService.create(request));
     }
 
     @PutMapping("{userId}")
