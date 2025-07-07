@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -31,7 +30,7 @@ public class AdminCategoryController {
 
     @DeleteMapping("/api/admin/categories/{categoryId}")
     public ApiResponse<Void> removeCategory(@PathVariable Long categoryId){
-        return ApiResponse.success(adminCategoryFacade.(categoryId));
+        return ApiResponse.success(adminCategoryFacade.removeCategory(categoryId));
     }
 
 
