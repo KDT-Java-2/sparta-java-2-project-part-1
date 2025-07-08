@@ -13,6 +13,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
 
+  Long id;
+
   @Email(message = "이메일 주소가 유효하지 않습니다.")
   @NotNull(message = "이메일은 필수입력입니다.")
   String email;
@@ -23,4 +25,11 @@ public class UserResponse {
   @Size(min = 8, message = "비밀번호는 최소 8자리입니다.")
   @NotNull(message = "비밀번호는 필수입력입니다.")
   String password;
+
+  public UserResponse(Long id, String email, String username, String password) {
+    this.id = id;
+    this.email = email;
+    this.username = username;
+    this.password = password;
+  }
 }
