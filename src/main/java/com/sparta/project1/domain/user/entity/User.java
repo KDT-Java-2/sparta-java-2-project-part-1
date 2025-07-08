@@ -57,9 +57,10 @@ public class User {
     private List<Cart> carts = new ArrayList<>();
 
     @Builder
-    public User(String username, String email) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
+        this.password = password;
     }
 
     public void setName(String username) {
