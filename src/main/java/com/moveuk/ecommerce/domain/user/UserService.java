@@ -10,9 +10,10 @@ public class UserService {
     public final UserRepository userRepository;
     public final UserProfileRepository userProfileRepository;
 
-    public User joinUser(String email, String password) {
-        User user = User.builder().passwordHash(password).email(email).build();
-        return  userRepository.save(user);
+    public User joinUser(String email, String password, PasswordEncryptor passwordEncryptor) {
+        User user = User.create(email, password, passwordEncryptor);
+        userRepository.save(user);
+        return  user;
     }
 
     public UserProfile joinUserProfile(Long id, String username) {
@@ -20,6 +21,7 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다. id=" + id));
 
         UserProfile userProfile = UserProfile.builder().user(user).username(username).build();
-        return userProfileRepository.save(userProfile);
+        userProfileRepository.save(userProfile);
+        return userProfile;
     }
 }
