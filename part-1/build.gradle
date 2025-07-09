@@ -33,7 +33,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-undertow'
     // jackson validation 추가
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     // 데이터베이스 스키마 버전관리 라이브러리, Notion의 상세 설명 참조
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'

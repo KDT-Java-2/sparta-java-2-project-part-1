@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -40,4 +41,7 @@ public class UserJoinRequest {
   String phoneNumber;
 
 
+  public void hashPasssword(PasswordEncoder passwordEncoder) {
+    this.passwordHash = passwordEncoder.encode(passwordHash);
+  }
 }

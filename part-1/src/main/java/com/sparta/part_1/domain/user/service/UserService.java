@@ -11,6 +11,7 @@ import com.sparta.part_1.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,14 +22,17 @@ public class UserService {
   private final UserRepository userRepository;
   private final UserQueryRepository userQueryRepository;
   private final UserEntityMapper mapper;
+  private final PasswordEncoder passwordEncoder;
 
 
   @Transactional
   public UserJoinResponse join(UserJoinRequest dto) {
 
-    if (Boolean.TRUE.equals(hasSameEmail(dto.getEmail()))) {
+    if (hasSameEmail(dto.getEmail())) {
       throw new UserServiceException(UserErrorCode.HAS_SAME_USER_EMAIL);
     }
+
+    dto.hashPasssword(passwordEncoder);
 
     User save = userRepository.save(mapper.toUserEntity(dto));
 
