@@ -55,6 +55,27 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+def querydslDir = "$buildDir/generated/querydsl"
+
+// sourceSets 설정
+sourceSets {
+	main.java.srcDirs += [querydslDir]
+}
+
+// tasks 설정
+tasks.withType(JavaCompile) {
+	options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
+}
+
+tasks.named('compileJava') {
+	options.annotationProcessorPath = configurations.annotationProcessor
+}
+
+// clean 태스크 설정
+clean.doLast {
+	file(querydslDir).deleteDir()
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

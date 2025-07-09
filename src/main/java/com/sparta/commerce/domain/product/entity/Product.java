@@ -78,24 +78,6 @@ public class Product {
   LocalDateTime updatedAt;
 
   /**
-   * 상품 정보 (이름, 설명, 이미지 URL)를 업데이트하는 메서드
-   * @param newName 새로운 상품 이름
-   * @param newDescription 새로운 상품 설명
-   * @param newImageUrl 새로운 상품 이미지 URL
-   */
-  public void updateProductInfo(String newName, String newDescription, String newImageUrl) {
-    if (newName != null && !newName.trim().isEmpty()) {
-      this.name = newName;
-    }
-    if (newDescription != null && !newDescription.trim().isEmpty()) {
-      this.description = newDescription;
-    }
-    if (newImageUrl != null && !newImageUrl.trim().isEmpty()) {
-      this.imageUrl = newImageUrl;
-    }
-  }
-
-  /**
    * 상품 가격을 업데이트하는 메서드
    * @param newPrice 새로운 가격
    */
@@ -112,8 +94,6 @@ public class Product {
   public void increaseStock(Integer quantityToIncrease) {
     if (quantityToIncrease != null && quantityToIncrease > 0) {
       this.stock += quantityToIncrease;
-    } else {
-      throw new IllegalArgumentException("증가시킬 수량은 0보다 커야 합니다.");
     }
   }
 
@@ -123,12 +103,37 @@ public class Product {
    */
   public void decreaseStock(Integer quantityToDecrease) {
     if (quantityToDecrease != null && quantityToDecrease > 0) {
-      if (this.stock - quantityToDecrease < 0) {
-        throw new IllegalArgumentException("재고가 부족합니다.");
-      }
       this.stock -= quantityToDecrease;
-    } else {
-      throw new IllegalArgumentException("감소시킬 수량은 0보다 커야 합니다.");
+    }
+  }
+
+  public void setName (String name) {
+    if (name != null && !name.trim().isEmpty()) {
+      this.name = name;
+    }
+  }
+
+  public void updateStock(Integer stock) {
+    if (stock != null && stock >= 0) {
+      this.stock = stock;
+    }
+  }
+
+  public void setCategory(Category category) {
+    if (category != null) {
+      this.category = category;
+    }
+  }
+
+  public void setImageUrl(String imageUrl) {
+    if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+      this.imageUrl = imageUrl;
+    }
+  }
+
+  public void setDescription(String description) {
+    if (description != null && !description.trim().isEmpty()) {
+      this.description = description;
     }
   }
 }
