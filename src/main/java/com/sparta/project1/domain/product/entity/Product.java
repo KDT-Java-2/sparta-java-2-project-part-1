@@ -1,15 +1,9 @@
 package com.sparta.project1.domain.product.entity;
 
 import com.sparta.project1.domain.cart.entity.Cart;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.sparta.project1.domain.category.entity.Category;
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,6 +30,10 @@ public class Product {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "category_id")
+  Category category;
 
   @Column(nullable = false)
   private String name;
@@ -65,11 +63,13 @@ public class Product {
       String name,
       String description,
       BigDecimal price,
-      Integer stock
+      Integer stock,
+      Category category
   ) {
     this.name = name;
     this.description = description;
     this.price = price;
     this.stock = stock;
+    this.category = category;
   }
 }
