@@ -1,15 +1,15 @@
-package com.sparta.e_project.domain.product.dto;
+package com.sparta.e_project.domain.category.dto;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
 @Getter
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductRequest {
+public class CategoryResponse {
 
-  Long category;
-  Integer minPrice;
-  Integer maxPrice;
-
+  Long id;
+  String name;
 }
