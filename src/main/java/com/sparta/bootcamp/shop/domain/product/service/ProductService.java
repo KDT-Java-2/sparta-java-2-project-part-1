@@ -1,12 +1,10 @@
 package com.sparta.bootcamp.shop.domain.product.service;
 
-import java.util.List;
-
 import com.sparta.bootcamp.shop.common.exception.ServiceException;
 import com.sparta.bootcamp.shop.common.exception.ServiceExceptionCode;
+import com.sparta.bootcamp.shop.domain.category.dto.CategoryResponse;
 import com.sparta.bootcamp.shop.domain.category.entity.Category;
 import com.sparta.bootcamp.shop.domain.category.repository.CategoryRepository;
-import com.sparta.bootcamp.shop.domain.product.dto.CategoryResponse;
 import com.sparta.bootcamp.shop.domain.product.dto.ProductRequest;
 import com.sparta.bootcamp.shop.domain.product.dto.ProductResponse;
 import com.sparta.bootcamp.shop.domain.product.dto.ProductSearchRequest;

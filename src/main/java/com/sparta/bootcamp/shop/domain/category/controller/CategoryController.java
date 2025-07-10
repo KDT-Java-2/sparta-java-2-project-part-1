@@ -2,13 +2,13 @@ package com.sparta.bootcamp.shop.domain.category.controller;
 
 import com.sparta.bootcamp.shop.common.response.ApiResponse;
 import com.sparta.bootcamp.shop.domain.category.dto.CategoryRequest;
+import com.sparta.bootcamp.shop.domain.category.dto.CategoryResponse;
 import com.sparta.bootcamp.shop.domain.category.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,4 +23,8 @@ public class CategoryController {
         return ApiResponse.success();
     }
 
+    @GetMapping("/hierarchy")
+    public ApiResponse<List<CategoryResponse>> getAllCategories() {
+        return ApiResponse.success(categoryService.getCategoryTree());
+    }
 }

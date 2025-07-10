@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.querydsl.core.annotations.QueryProjection;
+import com.sparta.bootcamp.shop.domain.category.dto.CategoryResponse;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
