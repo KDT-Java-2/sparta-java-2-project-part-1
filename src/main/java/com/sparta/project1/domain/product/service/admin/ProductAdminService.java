@@ -56,4 +56,15 @@ public class ProductAdminService {
 
         return productAdminMapper.toResponse(product);
     }
+    
+    //상품삭제
+    @Transactional
+    public void productAdminDelete(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_PRODUCT));
+        
+        //삭제대상이 주문완료에 포함되어있는지 확인 후 있으면 삭제거부에러반환
+        
+        productRepository.delete(product);
+    }
 }

@@ -16,7 +16,8 @@ public enum ServiceExceptionCode {
     NOT_FOUND_PRODUCT("상품을 찾을 수 없습니다."),
     NOT_FOUND_CATEGORY("카테고리를 찾을 수 없습니다."),
     DUPLICATE_NAME("이미 존재하는 상품입니다."),
-    DUPLICATE_EMAIL("이미 가입된 이메일입니다.");
+    DUPLICATE_EMAIL("이미 가입된 이메일입니다."),
+    PRODUCT_ALREADY_ORDERED_CANNOT_BE_DELETED("주문완료된 상품은 삭제할수 없습니다.");
 
     final String message;
 }

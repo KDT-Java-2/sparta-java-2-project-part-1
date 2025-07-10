@@ -27,4 +27,10 @@ public class ProductAdminController {
         return ApiResponse.success(productAdminService.productAdminUpdate(productId, request));
     }
 
+    //상품삭제
+    @DeleteMapping("/products/{productId}")
+    public ApiResponse<Void> productDelete(@PathVariable("productId") Long productId) {
+        productAdminService.productAdminDelete(productId);
+        return ApiResponse.success();
+    }
 }
