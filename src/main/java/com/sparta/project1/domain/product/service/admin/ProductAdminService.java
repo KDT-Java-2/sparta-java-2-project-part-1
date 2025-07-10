@@ -9,12 +9,9 @@ import com.sparta.project1.domain.product.dto.admin.ProductAdminRegisterResponse
 import com.sparta.project1.domain.product.entity.Product;
 import com.sparta.project1.domain.product.mapper.ProductAdminMapper;
 import com.sparta.project1.domain.product.repository.ProductRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +22,9 @@ public class ProductAdminService {
     private final ProductAdminMapper productAdminMapper;
 
     @Transactional
-    public ProductAdminRegisterResponse productAdminRegister(@Valid @RequestBody ProductAdminRegisterRequest request) {
+    public ProductAdminRegisterResponse productAdminRegister(ProductAdminRegisterRequest request) {
         //상품명 중복검사
-        if(ObjectUtils.isEmpty(request.getName())) {
+        if(productRepository.findByName(request.getName()).isPresent()) {
             throw new ServiceException(ServiceExceptionCode.DUPLICATE_NAME);
         }
 
