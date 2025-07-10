@@ -23,7 +23,7 @@ public class ProductAdminService {
 
     @Transactional
     public ProductAdminRegisterResponse productAdminRegister(ProductAdminRegisterRequest request) {
-        //상품명 중복검사
+        //상품명 중복검사 : Optional 타입에서는 존재유무를 isEmpty()보다 isPresent() 사용권장
         if(productRepository.findByName(request.getName()).isPresent()) {
             throw new ServiceException(ServiceExceptionCode.DUPLICATE_NAME);
         }
