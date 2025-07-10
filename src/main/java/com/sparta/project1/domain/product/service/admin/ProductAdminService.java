@@ -45,4 +45,15 @@ public class ProductAdminService {
     }
 
     //상품수정
+    @Transactional
+    public ProductAdminResponse productAdminUpdate(Long productId, ProductAdminRequest request) {
+        //변경대상 ID 존재하는지 체크
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_PRODUCT));
+
+        //setter 처리로 별도 save 없이 변경감지로인한 update 수행
+        product.update(request.getName(), request.getDescription(), request.getPrice(), request.getStock());
+
+        return productAdminMapper.toResponse(product);
+    }
 }

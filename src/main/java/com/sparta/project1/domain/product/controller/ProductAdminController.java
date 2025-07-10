@@ -6,11 +6,7 @@ import com.sparta.project1.domain.product.dto.admin.ProductAdminResponse;
 import com.sparta.project1.domain.product.service.admin.ProductAdminService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,9 +16,15 @@ public class ProductAdminController {
     private final ProductAdminService productAdminService;
 
     //상품등록
-    @Transactional
     @PostMapping("/products")
     public ApiResponse<ProductAdminResponse> productRegister(@Valid @RequestBody ProductAdminRequest request) {
         return ApiResponse.success(productAdminService.productAdminRegister(request));
     }
+
+    //상품수정
+    @PutMapping("/products/{productId}")
+    public ApiResponse<ProductAdminResponse> productUpdate(@PathVariable("productId") Long productId, @Valid @RequestBody ProductAdminRequest request) {
+        return ApiResponse.success(productAdminService.productAdminUpdate(productId, request));
+    }
+
 }
