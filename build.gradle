@@ -1,0 +1,67 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.3'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id 'org.flywaydb.flyway' version '9.22.3'
+}
+
+
+flyway {
+	url = 'jdbc:mysql://localhost:3306/spring_db'
+	user = 'root'
+	password = '1234'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	dependencies {
+		// 기존 Tomcat 의존성 제외
+		implementation('org.springframework.boot:spring-boot-starter-web') {
+			exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+		}
+		// Undertow 의존성 추가
+		implementation 'org.springframework.boot:spring-boot-starter-undertow'
+	}
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-mysql' //postgress ㅅㅏ용한다면 그것으로 변경하면됨
+	implementation 'mysql:mysql-connector-java:8.0.33'
+
+	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	//annotationProcess는 꼭 마지막쪽으로 이동(롬복 -> 맵스트럭쳐)
+	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
