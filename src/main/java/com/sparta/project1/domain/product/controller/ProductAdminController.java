@@ -1,8 +1,8 @@
 package com.sparta.project1.domain.product.controller;
 
 import com.sparta.project1.common.response.ApiResponse;
-import com.sparta.project1.domain.product.dto.admin.ProductAdminRegisterRequest;
-import com.sparta.project1.domain.product.dto.admin.ProductAdminRegisterResponse;
+import com.sparta.project1.domain.product.dto.admin.ProductAdminRequest;
+import com.sparta.project1.domain.product.dto.admin.ProductAdminResponse;
 import com.sparta.project1.domain.product.service.admin.ProductAdminService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class ProductAdminController {
     //상품등록
     @Transactional
     @PostMapping("/products")
-    public ApiResponse<ProductAdminRegisterResponse> productRegister(@Valid @RequestBody ProductAdminRegisterRequest request) {
+    public ApiResponse<ProductAdminResponse> productRegister(@Valid @RequestBody ProductAdminRequest request) {
         return ApiResponse.success(productAdminService.productAdminRegister(request));
     }
 }

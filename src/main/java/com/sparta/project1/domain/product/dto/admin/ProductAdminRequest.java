@@ -1,6 +1,5 @@
 package com.sparta.project1.domain.product.dto.admin;
 
-import com.sparta.project1.domain.category.entity.Category;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -12,7 +11,7 @@ import java.math.BigDecimal;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductAdminRegisterRequest {
+public class ProductAdminRequest {
 
     //@NotNull은 빈문자열은 체크안하므로 입력안한것까지 체크는 NotBlank 쓰는데 문자열만 허용하니 다른자료형은 NotNull 쓰자
 

@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductAdminRegisterResponse {
+public class ProductAdminResponse {
 
     Long productId;
 }
