@@ -37,6 +37,8 @@ public class Category {
   @Column(nullable = false)
   String name;
 
+  String description;
+
   @JsonBackReference
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "parent_id")
@@ -53,9 +55,11 @@ public class Category {
   @Builder
   public Category(
       String name,
+      String description,
       Category parent
   ) {
     this.name = name;
+    this.description = description;
     this.parent = parent;
   }
 }
