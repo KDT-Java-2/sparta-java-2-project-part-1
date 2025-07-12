@@ -10,7 +10,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
+
 
 @Service
 @RequiredArgsConstructor
@@ -18,29 +19,35 @@ public class CategoryService {
 
   private final CategoryRepository categoryRepository;
 
-  public List<Category> getAllCategories(){
+  public List<CategoryResponse> getCategoryHierarchy() {
     List<Category> categories = categoryRepository.findAll();
-//
-//    Map<Integer, CategoryResponse> resultCategoryMap = categories.stream()
-//        .collect(Collectors.toMap(
-//            Category::getId,
-//            category -> new CategoryResponse(category.getId(), category.getName(), categoryRepository.findAllById(category.getParent()))
-//        ));
-//
-//    Map<Integer, CategoryResponse> categoryMapResponse = new HashMap();
-//
-//    for (Category category : categories) {
-//      System.out.println("@name@ : " + category.getName() + " / parent : " + category.getParent());
-//      Integer i = 1;
-//
-//
-//      if(!StringUtils.isEmpty(category.getParent())) {
-//        List<Category> childCategory = categoryRepository.findAllById(category.getParent().getId());
-//        for(Category child : childCategory) {
-//          System.out.println("@child name@ : " + child.getName() + " / "  + child.getId());
-//        }
-//      }
-//    }
-    return categories;
+    Map<Long, CategoryResponse> categoryResponseMap = new HashMap<>();
+
+    for (Category category : categories) {
+      CategoryResponse response = CategoryResponse.builder()
+          .id(category.getId())
+          .name(category.getName())
+          .children(new ArrayList<>())
+          .build();
+
+      categoryResponseMap.put(category.getId(), response);
+    }
+    List<CategoryResponse> root = new ArrayList<>();
+    for(Category category : categories) {
+      CategoryResponse categoryResponse = categoryResponseMap.get(category.getId());
+
+      if(ObjectUtils.isEmpty(category.getParent())){
+        root.add(categoryResponse);
+      }else{
+        CategoryResponse parentResponse = categoryResponseMap.get(category.getParent().getId());
+        if(ObjectUtils.isEmpty(parentResponse)){
+          parentResponse.getChildren().add(categoryResponse);
+        }
+      }
+    }
+
+    return root;
+
   }
+
 }

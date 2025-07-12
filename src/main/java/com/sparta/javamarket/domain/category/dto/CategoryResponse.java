@@ -10,11 +10,8 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryResponse {
-  private Long id;
-  private String name;
-  private List<CategoryResponse> children;
+  Long id;
+  String name;
+  List<CategoryResponse> children;
 
-  public void addChild(CategoryResponse child) {
-    this.children.add(child);
-  }
 }
