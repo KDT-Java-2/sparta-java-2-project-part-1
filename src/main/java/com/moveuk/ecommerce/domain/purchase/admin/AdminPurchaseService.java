@@ -1,5 +1,6 @@
 package com.moveuk.ecommerce.domain.purchase.admin;
 
+import com.moveuk.ecommerce.domain.product.Product;
 import com.moveuk.ecommerce.domain.purchase.PurchaseItem;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -13,5 +14,9 @@ public class AdminPurchaseService {
 
     public PurchaseItem findById(Long id) {
         return adminPurchaseRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Purchase item not found"));
+    }
+
+    public boolean existsByProductAndPurchaseStatus(Product product, String completed){
+        return  adminPurchaseRepository.existsByProductAndPurchaseStatus(product, completed);
     }
 }

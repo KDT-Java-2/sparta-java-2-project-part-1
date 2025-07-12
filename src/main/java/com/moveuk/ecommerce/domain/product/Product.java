@@ -60,4 +60,16 @@ public class Product {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
+    public void updateDetail(String name, String description, BigDecimal bigDecimal, Category category) {
+        this.name = name;
+        this.description = description;
+        this.price = bigDecimal;
+        this.category = category;
+    }
+
+    public void removeProduct() {
+        this.deletedYn = "Y";
+        this.deletedAt = LocalDateTime.now();
+    }
 }

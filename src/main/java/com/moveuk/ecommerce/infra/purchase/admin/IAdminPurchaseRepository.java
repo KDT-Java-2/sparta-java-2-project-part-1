@@ -1,5 +1,6 @@
 package com.moveuk.ecommerce.infra.purchase.admin;
 
+import com.moveuk.ecommerce.domain.product.Product;
 import com.moveuk.ecommerce.domain.purchase.PurchaseItem;
 import com.moveuk.ecommerce.domain.purchase.admin.AdminPurchaseRepository;
 import com.moveuk.ecommerce.infra.purchase.JpaPurchaseRepository;
@@ -17,5 +18,10 @@ public class IAdminPurchaseRepository implements AdminPurchaseRepository {
     @Override
     public Optional<PurchaseItem> findById(Long id) {
         return jpaPurchaseRepository.findPurchaseItemByProductId(id);
+    }
+
+    @Override
+    public boolean existsByProductAndPurchaseStatus(Product product, String completed) {
+        return jpaPurchaseRepository.existsByProductAndPurchase_Status(product, completed);
     }
 }

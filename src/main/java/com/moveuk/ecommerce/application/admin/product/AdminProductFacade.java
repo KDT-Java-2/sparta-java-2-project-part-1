@@ -7,8 +7,9 @@ import com.moveuk.ecommerce.domain.category.admin.AdminCategoryService;
 import com.moveuk.ecommerce.domain.product.Product;
 import com.moveuk.ecommerce.domain.product.ProductInventory;
 import com.moveuk.ecommerce.domain.product.admin.AdminProductService;
-import com.moveuk.ecommerce.domain.purchase.PurchaseItem;
 import com.moveuk.ecommerce.domain.purchase.admin.AdminPurchaseService;
+import com.moveuk.ecommerce.support.EcommerceErrorCode;
+import com.moveuk.ecommerce.support.EcommerceException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,15 +48,14 @@ public class AdminProductFacade {
         return new AdminProductResult.ProductRegisterV1(product.getId());
     }
 
+    @Transactional
     public AdminProductResult.ProductRegisterV2 updateProduct(AdminProductInfo.ProductRegisterV2 productRegisterV2) {
         Category category = adminCategoryService.findById(productRegisterV2.categoryId());
 
-        Product product = Product.builder()
-                .id(productRegisterV2.productId())
-                .name(productRegisterV2.name())
-                .description(productRegisterV2.description())
-                .category(category)
-                .price(BigDecimal.valueOf(productRegisterV2.price())).build();
+        Product product = adminProductService.findById(productRegisterV2.productId());
+
+        product.updateDetail(productRegisterV2.name(), productRegisterV2.description()
+                ,BigDecimal.valueOf(productRegisterV2.price()), category);
 
         adminProductService.updateProduct(product);
 
@@ -65,7 +65,6 @@ public class AdminProductFacade {
                 .build();
 
         adminProductService.updateProductInventory(productInventory);
-
 
         return new AdminProductResult.ProductRegisterV2(
                 product.getId()
@@ -77,14 +76,22 @@ public class AdminProductFacade {
         );
     }
 
+    @Transactional
     public Void removeProduct(Long productId) {
+
         Product product = adminProductService.findById(productId);
 
-        //TODO 주문 테이블에서 주문완료 상태인 상품의 아이디가 존재하면 예외 터트리기
-        PurchaseItem purchaseItem = adminPurchaseService.findById(product.getId());
+        boolean exists = adminPurchaseService.existsByProductAndPurchaseStatus(product, "COMPLETED");
 
-        String status = adminProductService.isPurchaseStatus(purchaseItem);
+        if (exists) {
+            throw new EcommerceException(EcommerceErrorCode.PRODUCT_ALREADY_PURCHASED);
+        }
+
+        product.removeProduct();
+
+        adminProductService.updateProduct(product);
 
         return null;
+
     }
 }
