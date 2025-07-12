@@ -12,6 +12,8 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -36,5 +38,29 @@ public class CategoryService {
         .build());
 
     return categoryMapper.toResponse(saved);
+  }
+
+  @Transactional
+  public Category update(Long categoryId, CategoryRequest request) {
+    Category category = categoryRepository.findById(categoryId)
+            .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_CATEGORY));
+
+    Category parentId = null; //최상위카테고리는 null로 구분하기에 null도 셋팅되어야한다.
+
+    //parentId 존재 시 부모카테고리 조회
+    if(!ObjectUtils.isEmpty(request.getParentId())) {
+      parentId = categoryRepository.findById(request.getParentId())
+              .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_CATEGORY));
+    }
+
+    if(Objects.equals(request.getParentId(), categoryId)) {
+      throw new IllegalArgumentException("자기자신을 부모로 지정할수 없습니다.");
+    }
+
+    category.setName(request.getName());
+    category.setDescription(request.getDescription());
+    category.setParent(parentId);
+
+    return category;
   }
 }

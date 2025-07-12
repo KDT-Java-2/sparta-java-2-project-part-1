@@ -62,4 +62,16 @@ public class Category {
     this.description = description;
     this.parent = parent;
   }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public void setParent(Category parent) {
+    this.parent = parent;
+  }
 }
