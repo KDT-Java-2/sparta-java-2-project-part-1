@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -32,21 +34,21 @@ public class CategoryService {
 
       categoryResponseMap.put(category.getId(), response);
     }
-    List<CategoryResponse> root = new ArrayList<>();
+
+    List<CategoryResponse> rootCategories = new ArrayList<>();
     for(Category category : categories) {
       CategoryResponse categoryResponse = categoryResponseMap.get(category.getId());
-
       if(ObjectUtils.isEmpty(category.getParent())){
-        root.add(categoryResponse);
+        rootCategories.add(categoryResponse);
       }else{
         CategoryResponse parentResponse = categoryResponseMap.get(category.getParent().getId());
-        if(ObjectUtils.isEmpty(parentResponse)){
+        if(!ObjectUtils.isEmpty(parentResponse)){
           parentResponse.getChildren().add(categoryResponse);
         }
       }
     }
 
-    return root;
+    return rootCategories;
 
   }
 
