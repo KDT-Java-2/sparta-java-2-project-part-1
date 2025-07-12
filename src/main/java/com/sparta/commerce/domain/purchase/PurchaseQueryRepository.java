@@ -19,7 +19,7 @@ public class PurchaseQueryRepository {
         .from(purchaseProduct)
         .join(purchaseProduct.purchase, purchase)
         .where(purchaseProduct.product.id.eq(productId)
-//            .and(purchase.status.eq(purchaseStatus))
+            .and(purchase.status.eq(purchaseStatus))
         )
         .fetchFirst() != null;
   }

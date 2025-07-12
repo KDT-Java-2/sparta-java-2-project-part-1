@@ -103,7 +103,7 @@ public class AdminProductService {
       throw new ServiceException(ServiceExceptionCode.CANNOT_DELETE_PRODUCT_WITH_ORDERS);
     }
 
-    // productRepository.delete(product);
+     productRepository.delete(product);
   }
 
 }

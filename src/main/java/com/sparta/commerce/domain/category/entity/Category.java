@@ -36,9 +36,11 @@ public class Category {
   @Builder
   public Category(
       String name,
+      String description,
       Category parent,
       Integer depth) {
     this.name = name;
+    this.description = description;
     this.parent = parent;
     // depth가 null이거나 음수일 경우 기본값 0으로 설정
     this.depth = (depth != null && depth >= 0) ? depth : 0;
@@ -46,6 +48,9 @@ public class Category {
 
   @Column(nullable = false, length = 50)
   String name; // 카테고리 이름
+
+  @Column
+  String description; // 카테고리 설명, 선택적 필드
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "parent_id")
@@ -84,5 +89,18 @@ public class Category {
     } else {
       this.depth = 0; // 최상위 카테고리인 경우
     }
+  }
+
+  public void setName(String name) {
+    if (name != null && !name.trim().isEmpty()) {
+      this.name = name;
+    }
+  }
+
+  public void setDescription(String description) {
+    if(description != null && !description.trim().isEmpty()) {
+      this.description = description;
+    }
+
   }
 }
