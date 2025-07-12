@@ -63,4 +63,12 @@ public class CategoryService {
 
     return category;
   }
+
+  @Transactional
+  public void delete(Long categoryId) {
+    Category category = categoryRepository.findById(categoryId)
+            .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_CATEGORY));
+
+    categoryRepository.delete(category);
+  }
 }

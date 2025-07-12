@@ -27,4 +27,11 @@ public class CategoryController {
   public ApiResponse<Category> update(@PathVariable Long categoryId, @Valid @RequestBody CategoryRequest request) {
     return ApiResponse.success(categoryService.update(categoryId, request));
   }
+
+  //삭제
+  @DeleteMapping("/{categoryId}")
+  public ApiResponse<Void> delete(@PathVariable Long categoryId) {
+    categoryService.delete(categoryId);
+    return ApiResponse.success();
+  }
 }
