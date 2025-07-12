@@ -17,12 +17,6 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @PostMapping
-    public ApiResponse<Void> save(@Valid @RequestBody CategoryRequest request) {
-        categoryService.save(request);
-        return ApiResponse.success();
-    }
-
     @GetMapping("/hierarchy")
     public ApiResponse<List<CategoryResponse>> getAllCategories() {
         return ApiResponse.success(categoryService.getCategoryTree());

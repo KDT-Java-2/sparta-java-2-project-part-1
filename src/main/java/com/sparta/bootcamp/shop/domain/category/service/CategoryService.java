@@ -1,5 +1,7 @@
 package com.sparta.bootcamp.shop.domain.category.service;
 
+import com.sparta.bootcamp.shop.common.exception.ServiceException;
+import com.sparta.bootcamp.shop.common.exception.ServiceExceptionCode;
 import com.sparta.bootcamp.shop.domain.category.dto.CategoryRequest;
 import com.sparta.bootcamp.shop.domain.category.dto.CategoryResponse;
 import com.sparta.bootcamp.shop.domain.category.entity.Category;
@@ -18,14 +20,6 @@ import java.util.Map;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-
-    @Transactional
-    public void save(CategoryRequest request) {
-        categoryRepository.save(Category.builder()
-                .name(request.getName())
-                .build());
-    }
-
 
     public List<CategoryResponse> getCategoryTree() {
         List<Category> categories = categoryRepository.findAll();

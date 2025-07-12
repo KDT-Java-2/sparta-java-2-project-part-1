@@ -10,6 +10,6 @@ public class CategoryRequest {
 
   String name;
 
-  Long categoryId;
+  Long parentId;
 
 }
