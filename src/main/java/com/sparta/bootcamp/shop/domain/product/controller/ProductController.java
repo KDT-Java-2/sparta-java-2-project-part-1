@@ -31,16 +31,4 @@ public class ProductController {
         return ApiResponse.success(productService.getAll(searchRequest, pageable));
     }
 
-    @GetMapping("/{id}")
-    public ApiResponse<ProductResponse> getById(@PathVariable Long id) {
-        return ApiResponse.success(productService.getById(id));
-    }
-
-    @PostMapping
-    public ApiResponse<Void> create(@Valid @RequestBody ProductRequest request) {
-        productService.save(request);
-        return ApiResponse.success();
-    }
-
-
 }

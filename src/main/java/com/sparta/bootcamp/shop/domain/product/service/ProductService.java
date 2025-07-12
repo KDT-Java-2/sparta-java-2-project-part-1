@@ -57,18 +57,4 @@ public class ProductService {
                 .build();
     }
 
-    @Transactional
-    public void save(ProductRequest request) {
-        Category category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_PRODUCT));
-
-        productRepository.save(Product.builder()
-                .category(category)
-                .name(request.getName())
-                .description(request.getDescription())
-                .price(request.getPrice())
-                .stock(request.getStock())
-                .build());
-    }
-
 }
