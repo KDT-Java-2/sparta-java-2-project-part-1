@@ -44,6 +44,9 @@ public class Category {
   @JoinColumn(name = "parent_id")
   Category parent;
 
+  @OneToMany(mappedBy = "parent")
+  private List<Category> children = new ArrayList<>();
+
   @CreationTimestamp
   @Column(updatable = false, name = "created_at")
   LocalDateTime createdAt;

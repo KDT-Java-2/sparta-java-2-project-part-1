@@ -2,11 +2,16 @@ package com.sparta.project1.domain.category.service;
 
 import com.sparta.project1.common.exception.ServiceException;
 import com.sparta.project1.common.exception.ServiceExceptionCode;
+import com.sparta.project1.domain.category.dto.CategoryHierarchyResponse;
 import com.sparta.project1.domain.category.dto.CategoryRequest;
 import com.sparta.project1.domain.category.dto.CategoryResponse;
 import com.sparta.project1.domain.category.entity.Category;
 import com.sparta.project1.domain.category.mapper.CategoryMapper;
 import com.sparta.project1.domain.category.repository.CategoryRepository;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
@@ -70,5 +75,34 @@ public class CategoryService {
             .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_CATEGORY));
 
     categoryRepository.delete(category);
+  }
+
+  //계층구조 전체조회
+  public List<CategoryHierarchyResponse> findAllHierarchy() {
+    List<Category> hierarchy = categoryRepository.findAllHierarchy();
+
+    //root 초기화
+    List<CategoryHierarchyResponse> root = new ArrayList<>();
+
+    Map<Long, CategoryHierarchyResponse> params = new HashMap<>();
+    for(Category category : hierarchy) {
+      params.put(category.getId(), new CategoryHierarchyResponse(category.getId(), category.getName()));
+    }
+
+    for(Category item : hierarchy) {
+      CategoryHierarchyResponse child = params.get(item.getId());
+
+      //최상위
+      if(item.getParent() == null) {
+        root.add(child);
+      }
+      else {
+        CategoryHierarchyResponse parent = params.get(item.getParent().getId());
+        parent.getChildren().add(child);
+      }
+    }
+
+    //최상위 루트에 자식(자기 부모 id 기준) 구성후 반환
+    return root;
   }
 }
