@@ -6,10 +6,7 @@ import com.sparta.bootcamp.shop.domain.category.service.AdminCategoryService;
 import com.sparta.bootcamp.shop.domain.category.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,4 +20,17 @@ public class AdminCategoryController {
         adminCategoryService.save(request);
         return ApiResponse.success();
     }
+
+    @PutMapping("{categoryId}")
+    public ApiResponse<Void> edit(@PathVariable Long categoryId, @Valid @RequestBody CategoryRequest request) {
+        adminCategoryService.edit(categoryId, request);
+        return ApiResponse.success();
+    }
+
+    @DeleteMapping("{categoryId}")
+    public ApiResponse<Void> delete(@PathVariable Long categoryId) {
+        adminCategoryService.delete(categoryId);
+        return ApiResponse.success();
+    }
+
 }
