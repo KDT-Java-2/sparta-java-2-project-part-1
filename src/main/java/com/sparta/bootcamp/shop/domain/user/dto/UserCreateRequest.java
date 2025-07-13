@@ -17,7 +17,7 @@ public class UserCreateRequest {
     @Email
     String email;
 
-    @Pattern(regexp = "^\\d{10}$", message = "Phone number must be 10 digits")
+    @NotNull
     String password;
 
 }
