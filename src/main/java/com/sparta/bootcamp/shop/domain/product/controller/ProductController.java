@@ -12,6 +12,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,8 +28,14 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ApiResponse<Page<ProductResponse>> getAll(ProductSearchRequest searchRequest, Pageable pageable) {
+    public ApiResponse<Page<ProductResponse>> getAll(ProductSearchRequest searchRequest,  @PageableDefault(page = 0, size = 20) Pageable pageable) {
         return ApiResponse.success(productService.getAll(searchRequest, pageable));
     }
+
+    @GetMapping("/{productId}")
+    public ApiResponse<ProductResponse> get(@PathVariable Long productId) {
+        return ApiResponse.success(productService.getById(productId));
+    }
+
 
 }
