@@ -20,6 +20,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.util.StringUtils;
 
 @Table
 @Entity
@@ -42,6 +43,9 @@ public class Category {
   @JsonBackReference
   Category parent;
 
+  @Column
+  String description;
+
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
   LocalDateTime createdAt;
@@ -51,8 +55,30 @@ public class Category {
   LocalDateTime updatedAt;
 
   @Builder
-  public Category(String name, Category parent) {
+  public Category(String name, Category parent, String description) {
     this.name = name;
     this.parent = parent;
+    this.description = description;
   }
+
+  public void setName(String name) {
+    if (StringUtils.hasText(name)) {
+      this.name = name;
+    }
+  }
+
+  public void setParent(Category parent) {
+    if (!StringUtils.isEmpty(parent)) {
+      this.parent = parent;
+    } else {
+      this.parent = null;
+    }
+  }
+
+  public void setDescription(String description) {
+    if (StringUtils.hasText(description)) {
+      this.description = description;
+    }
+  }
+
 }

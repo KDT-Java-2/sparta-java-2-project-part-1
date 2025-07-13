@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -45,13 +46,14 @@ public class Product {
   @Column
   String description;
 
-  @Column(nullable = false)
+  @Column(nullable = false, columnDefinition = "DECIMAL(10,2) CHECK (price >= 0)")
   BigDecimal price;
 
-  @Column(nullable = false)
+  @Column(nullable = false, columnDefinition = "INTEGER CHECK (stock >= 0)")
   Integer stock;
 
-  @Column
+  @Column(nullable = false)
+  @ColumnDefault("true")
   Boolean isActive;
 
   @Column(nullable = false, updatable = false)
@@ -63,12 +65,23 @@ public class Product {
   LocalDateTime updatedAt;
 
   @Builder
-  public Product(Category category, String name, String description, BigDecimal price, Integer stock) {
+  public Product(Category category, String name, String description, BigDecimal price, Integer stock, Boolean isActive) {
     this.category = category;
     this.name = name;
     this.description = description;
     this.price = price;
     this.stock = stock;
+    this.isActive = isActive != null ? isActive : true;
   }
+
+  public void updateProduct(Category category, String name, String description, BigDecimal price, Integer stock, Boolean isActive) {
+    this.category = category;
+    this.name = name;
+    this.description = description;
+    this.price = price;
+    this.stock = stock;
+    this.isActive = isActive != null ? isActive : this.isActive;
+  }
+
 }
 
