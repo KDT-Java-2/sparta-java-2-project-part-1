@@ -1,19 +1,21 @@
 package com.sparta.project1.domain.product.dto;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
-
 @Getter
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductResponse {
-    String name;
+public class ProductSearchRequest {
+    Long categoryId;
 
-    BigDecimal price;
+    Integer minPrice;
 
-    Integer stock;
+    Integer maxPrice;
+
+    Integer page;
+
+    Integer size;
+
+    String sortBy;
 }
