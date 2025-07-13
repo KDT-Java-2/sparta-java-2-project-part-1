@@ -22,11 +22,11 @@ public class ProductRequest {
     String description;
 
     @NotNull
-    @Positive // 값을 양수로만 제한
+    @Positive
     BigDecimal price;
 
     @NotNull
-    @PositiveOrZero // 값을 양수로 혹은 0으로 제한
+    @PositiveOrZero
     Integer stock;
 
 }
