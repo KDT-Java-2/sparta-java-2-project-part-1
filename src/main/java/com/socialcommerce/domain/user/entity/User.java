@@ -2,14 +2,17 @@ package com.socialcommerce.domain.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.socialcommerce.domain.cart.entity.Cart;
+import com.socialcommerce.domain.purchase.entity.Purchase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -43,12 +46,17 @@ public class User {
   String email;
   // 카멜표기로 제대로 되어있으면 언더바를 대문자로 인식한다. 그래서 JPA 에서 알아서 인식해주므로 생략가능하다.
   //@Column(name = "password_hash")
-  @Column
+  @Column(nullable = false)
   String passwordHash;
 
+  // 1:N
   @OneToMany(mappedBy = "user")
   @JsonManagedReference
   List<Cart> carts;
+
+  // User 가 여러개의 Purchase 를 가지고 있다 = 1:N 관계
+  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+  List<Purchase> purchases = new ArrayList<>();
 
   @Column(nullable = false, updatable = false)  // updatable = false 수정 불가능
   @CreationTimestamp  // CURRENT_TIMESTAMP 와 동일
