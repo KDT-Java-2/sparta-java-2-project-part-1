@@ -28,6 +28,7 @@ public class Category {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
+    @Setter
     private Category parent;
 
     @Builder.Default
@@ -67,5 +68,17 @@ public class Category {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+
+    public void updateDetail(String name, String description, Category newParent) {
+        this.name = name;
+        this.description = description;
+        this.parent = newParent;
+    }
+
+    public void removeCategory() {
+        this.deletedYn = "Y";
+        this.deletedAt = LocalDateTime.now();
     }
 }

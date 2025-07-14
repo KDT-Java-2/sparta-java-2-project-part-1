@@ -1,7 +1,6 @@
 package com.moveuk.ecommerce.domain.user;
 
 
-import com.moveuk.ecommerce.domain.balance.UserBalance;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -57,5 +56,16 @@ public class User {
         this.updatedAt = LocalDateTime.now();
     }
 
+
+    public static User create(String email, String rawPassword, PasswordEncryptor encryptor) {
+        return User.builder()
+                .email(email)
+                .passwordHash(encryptor.encrypt(rawPassword)) // 🔒 암호화 여기서 강제
+                .build();
+    }
+
+    public boolean isPasswordMatch(String rawPassword, PasswordEncryptor encryptor) {
+        return encryptor.matches(rawPassword, this.passwordHash);
+    }
 
 }
