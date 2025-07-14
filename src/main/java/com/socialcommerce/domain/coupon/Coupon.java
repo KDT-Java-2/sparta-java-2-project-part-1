@@ -1,4 +1,4 @@
-package com.socialcommerce.domain.domain.coupon;
+package com.socialcommerce.domain.coupon;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

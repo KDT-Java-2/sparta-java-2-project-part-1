@@ -1,6 +1,6 @@
-package com.socialcommerce.domain.domain.user.repository;
+package com.socialcommerce.domain.user.repository;
 
-import com.socialcommerce.domain.domain.user.entity.User;
+import com.socialcommerce.domain.user.entity.User;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

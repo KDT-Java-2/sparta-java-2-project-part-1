@@ -1,7 +1,7 @@
-package com.socialcommerce.domain.domain.purchase.repository;
+package com.socialcommerce.domain.purchase.repository;
 
 
-import com.socialcommerce.domain.domain.purchase.entity.Purchase;
+import com.socialcommerce.domain.purchase.entity.Purchase;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

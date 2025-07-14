@@ -1,4 +1,4 @@
-package com.socialcommerce.domain.global.config;
+package com.socialcommerce.global.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;

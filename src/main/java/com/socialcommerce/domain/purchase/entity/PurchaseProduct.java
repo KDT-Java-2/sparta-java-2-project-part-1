@@ -1,7 +1,7 @@
-package com.socialcommerce.domain.domain.purchase.entity;
+package com.socialcommerce.domain.purchase.entity;
 
-import com.socialcommerce.domain.domain.product.entity.Product;
-import com.socialcommerce.domain.domain.refund.entity.Refund;
+import com.socialcommerce.domain.product.entity.Product;
+import com.socialcommerce.domain.refund.entity.Refund;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

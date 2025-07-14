@@ -1,7 +1,7 @@
-package com.socialcommerce.domain.domain.coupon;
+package com.socialcommerce.domain.coupon;
 
-import com.socialcommerce.domain.domain.purchase.entity.Purchase;
-import com.socialcommerce.domain.domain.user.entity.User;
+import com.socialcommerce.domain.purchase.entity.Purchase;
+import com.socialcommerce.domain.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

@@ -1,4 +1,4 @@
-package com.socialcommerce.domain.common.enums;
+package com.socialcommerce.common.enums;
 
 public enum RefundStatus{
     REQUESTED,
