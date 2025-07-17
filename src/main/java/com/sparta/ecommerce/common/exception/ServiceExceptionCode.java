@@ -1,0 +1,18 @@
+package com.sparta.ecommerce.common.exception;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.experimental.FieldDefaults;
+
+@Getter
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public enum ServiceExceptionCode {
+
+  NOT_FOUND_USER("유저를 찾을 수 없습니다."),
+  DUPLICATE_USER_EMAIL("사용중인 이메일입니다."),
+  ;
+
+  final String message;
+}
