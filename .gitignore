@@ -1,0 +1,71 @@
+# ============================
+# 📝 문서 및 도움말 파일
+# ============================
+HELP.md
+
+# ============================
+# ⚙️ Gradle 관련 파일
+# ============================
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# ============================
+# 🌱 STS (Spring Tool Suite)
+# ============================
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# ============================
+# 💡 IntelliJ IDEA (인텔리제이 IDE)
+# ============================
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# ============================
+# 🛠️ NetBeans (넷빈즈 IDE)
+# ============================
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# ============================
+# 🧪 VS Code (비주얼 스튜디오 코드)
+# ============================
+.vscode/
+
+# ============================
+# 🍎 macOS (맥 운영체제)
+# ============================
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# macOS에서 생성되는 리소스 포크
+._*
+
+# macOS Finder 태그 및 캐시
+.Spotlight-V100
+.Trashes
+
+# ============================
+# 🔐 민감한 설정 파일
+# ============================
+**/application-secret.yml
