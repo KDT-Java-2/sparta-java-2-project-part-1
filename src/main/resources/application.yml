@@ -24,6 +24,19 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
         highlight_sql: true
+        jdbc:
+          # (필수) 한번에 묶어서 보낼 SQL 문의 개수. 50~1000 사이 값이 권장됨.
+          batch_size: 1000
+        order_inserts: true
+        # (권장) UPDATE 문을 최적화하기 위해 재정렬
+        order_updates: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: # 비밀번호가 없다면 비워둡니다.
+      # timeout: 1s
+      # database: 0
 
 # 로깅 레벨 설정
 logging:
@@ -40,3 +53,17 @@ logging:
 # 내장 웹 서버 설정
 server:
   port: 8080
+  servlet:
+    session:
+      cookie:
+        http-only: true
+
+# HikariCP 커넥션 풀 현황을 보는 Spring Boot 표준 방법
+# http://localhost:8080/actuator/metrics  -> 메트릭정보
+# http://localhost:8080/actuator/metrics/hikaricp.connections -> 커넥션상태정보
+# 다른건 찾아보세용.
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

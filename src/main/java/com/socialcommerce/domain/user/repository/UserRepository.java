@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
 
   Optional<User> findByNameAndEmail(String name, String email);
-//
+
 //  // find 와 get 의 차이점은 get 은 반드시있고, find 는 있을수도 없을수도 있다로 정의된다.
 //  @Query("SELECT u FROM User u WHERE u.name = :name AND u.email = :email")
 //  // JPQL 이라고 하는 쿼리, MySQL 이 아님, Java 내부에서 쓰이는 것인가봄
