@@ -1,0 +1,12 @@
+CREATE TABLE product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    category_id BIGINT,
+    description TEXT,
+    price DECIMAL(19, 2),
+    stock INT,
+    image_url VARCHAR(255),
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
+);
