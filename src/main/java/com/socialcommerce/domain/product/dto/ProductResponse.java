@@ -2,6 +2,7 @@ package com.socialcommerce.domain.product.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.socialcommerce.domain.category.entity.Category;
 import jakarta.persistence.Column;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductResponse {
   Long id;
-  Long categoryId;
+  Category category;
   String name;
   String description;
   BigDecimal price;

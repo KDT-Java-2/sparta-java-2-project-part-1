@@ -1,8 +1,12 @@
 package com.socialcommerce.domain.product.service;
 
+import com.socialcommerce.common.exception.ServiceException;
+import com.socialcommerce.common.exception.ServiceExceptionCode;
 import com.socialcommerce.domain.product.dto.ProductResponse;
+import com.socialcommerce.domain.product.entity.Product;
 import com.socialcommerce.domain.product.mapper.ProductMapper;
 import com.socialcommerce.domain.product.repository.ProductQueryRepository;
+import com.socialcommerce.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 public class ProductService {
 
   private final ProductQueryRepository productQueryRepository;
+  private final ProductRepository productRepository;
   private final ProductMapper productMapper;
 
   public Page<ProductResponse> searchProducts(
@@ -36,4 +41,20 @@ public class ProductService {
     Direction direction = sort.length > 1 && sort[1].equalsIgnoreCase("asc") ? Direction.ASC : Direction.DESC;
     return PageRequest.of(page, size, Sort.by(direction, sort[0]));
   }
+
+  public ProductResponse findProduct(Long productId){
+
+    Product product = productRepository.findById(productId)
+        .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_PRODUCT));
+
+    return ProductResponse.builder()
+        .id(product.getId())
+        .name(product.getName())
+        .description(product.getDescription())
+        .price(product.getPrice())
+        .stock(product.getStock())
+        .category(product.getCategory())
+        .build();
+  }
+
 }
