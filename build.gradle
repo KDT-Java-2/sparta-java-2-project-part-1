@@ -26,11 +26,21 @@ repositories {
 dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web') {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+        // 별도의 SLF4J 추가 없이 LoggerFactory 등 바로 사용 가능!
     }
     implementation 'org.springframework.boot:spring-boot-starter-undertow'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Spring Security 프레임워크를 통합하기 위한 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // Spring Session과 Redis를 연동하기 위한 의존성
+    // 이 의존성을 추가하면 Redis를 세션 저장소로 사용할 수 있도록 Spring Session이 자동 구성됩니다.
+    implementation 'org.springframework.session:spring-session-data-redis'
+    // Spring Data Redis: Redis 클라이언트를 추상화하고 Spring의 데이터 접근 계층과 통합합니다.
+    // 내부적으로 Lettuce(기본) 또는 Jedis 클라이언트를 사용합니다.
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 
@@ -38,16 +48,30 @@ dependencies {
     implementation 'org.flywaydb:flyway-mysql'
 
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    implementation 'org.jetbrains:annotations:24.0.0'
+
+    // QueryDSL JPA 라이브러리
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 
     runtimeOnly 'com.mysql:mysql-connector-j'
 
+    // Jedis 클라이언트 (Redis와 통신하기 위한 라이브러리)
+    implementation 'redis.clients:jedis:4.3.1'
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     compileOnly 'org.projectlombok:lombok'
-
+    // annotationProcessor 은 implementation~ 와 lombok 보다 아래로 가야한다.
     annotationProcessor 'org.projectlombok:lombok'
+    // Mapstruct 도 lombok 보다 아래에 있어야한다.
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    // QueryDSL 어노테이션 프로세서 (Q클래스 생성)
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.rest-assured:rest-assured:5.4.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.12.0' // 최신 버전 사용 권장
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
