@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-  // PK(id)로 검색 (JpaRepository가 이미 제공)
-  @NotNull Optional<Product> findById(@NotNull Long id);
+  Optional<Product> findById(@NotNull Long id);
 }
