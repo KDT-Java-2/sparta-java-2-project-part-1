@@ -2,7 +2,12 @@ package com.socialcommerce.global.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import com.socialcommerce.common.utils.HashUtil;
 import com.socialcommerce.global.filter.AuthenticationFilter;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.Base64;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -64,5 +69,10 @@ public class SecurityConfig {
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  public HashUtil hashUtil(@Value("${security.hash-salt}") String salt) {
+    return new HashUtil(salt);
   }
 }

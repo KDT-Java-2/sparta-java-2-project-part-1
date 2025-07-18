@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class ExceptionLoggingAspect {
 
   // Pointcut: Service 계층의 모든 메서드를 대상으로 지정
-  @Pointcut("execution(* com.sparta.java_02.domain..service..*(..))")
+  @Pointcut("execution(* com.socialcommerce.domain..service..*(..))")
   private void allServiceMethods() {
   }
 

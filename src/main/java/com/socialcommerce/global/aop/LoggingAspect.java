@@ -42,25 +42,25 @@ public class LoggingAspect {
 //  }
 
   // 1. execution: `api` 패키지 내의 모든 메서드 실행 전에 적용
-  @Before("execution(* com.sparta.java_02.domain..controller..*(..))")
+  @Before("execution(* com.socialcommerce.domain..controller..*(..))")
   public void logBeforeApiExecution() {
     log.info("[API-execution] API 메서드 실행 전 로그");
   }
 
   // 2. within: `domain` 패키지 내의 모든 메서드 실행 전에 적용
-  @Before("within(com.sparta.java_02.domain..*)")
+  @Before("within(com.socialcommerce.domain..*)")
   public void logBeforeWithin() {
     log.info("[within] domain 패키지 내부 메서드 실행 전 로그");
   }
 
   // 3. @annotation: @Loggable 어노테이션이 붙은 메서드 실행 전에만 적용
-  @Before("@annotation(com.sparta.java_02.common.annotation.Loggable)")
+  @Before("@annotation(com.socialcommerce.common.annotation.Loggable)")
   public void logBeforeAnnotation() {
     log.info("[@annotation] @Loggable 어노테이션 적용된 메서드 실행 전 로그");
   }
 
   // 4. JoinPoint 활용: 메서드의 상세 정보 로깅
-  @Before("execution(* com.sparta.java_02.domain..*(..))")
+  @Before("execution(* com.socialcommerce.domain..*(..))")
   public void logMethodDetails(JoinPoint joinPoint) {
     log.info("실행된 메서드 이름: {}", joinPoint.getSignature().getName());
     Object[] args = joinPoint.getArgs();

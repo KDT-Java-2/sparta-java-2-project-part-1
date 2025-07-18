@@ -67,3 +67,7 @@ management:
     web:
       exposure:
         include: '*'
+
+# 임시 테스트용
+security:
+  hash-salt: 5f8d!Lkz*2AqG3jR1SxZ9t1e7B!uQrWd
