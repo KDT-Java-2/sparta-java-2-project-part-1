@@ -24,7 +24,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.util.StringUtils;
 
 @Entity
-@Table(name = "category")
+@Table
 @Getter
 @NoArgsConstructor
 @DynamicInsert
@@ -60,7 +60,7 @@ public class Category {
 
   @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
   List<Product> products;
-  
+
   public void setName(String name) {
     if (StringUtils.hasText(name)) {
       this.name = name;
