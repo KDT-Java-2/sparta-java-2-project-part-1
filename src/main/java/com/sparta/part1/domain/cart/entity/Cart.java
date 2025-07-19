@@ -22,7 +22,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "cart")
+@Table
 @Getter
 @NoArgsConstructor
 @DynamicInsert
