@@ -1,6 +1,7 @@
 package com.sparta.ecommerce.domain.product.entity;
 
 import com.sparta.ecommerce.domain.category.entity.Category;
+import com.sparta.ecommerce.domain.product.dto.ProductCreateRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -79,5 +80,19 @@ public class Product {
     this.stock = stock;
     this.imageUrl = imageUrl;
     this.isActive = isActive;
+  }
+
+  public void update(ProductCreateRequest request, Category category) {
+    this.productNm = request.getName();
+    this.category = category;
+    this.description = request.getDescription();
+    this.price = request.getPrice();
+    this.stock = request.getStock();
+    if (request.getImageUrl() != null) {
+      this.imageUrl = request.getImageUrl();
+    }
+    if (request.getIsActive() != null) {
+      this.isActive = request.getIsActive();
+    }
   }
 }

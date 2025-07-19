@@ -1,5 +1,6 @@
 package com.sparta.ecommerce.domain.product.dto;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 import lombok.AccessLevel;
@@ -10,21 +11,24 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductRequest {
+public class ProductCreateRequest {
 
+  @NotNull
   Long categoryId;
 
+  @NotNull
   String name;
 
+  @NotNull
   String description;
 
-  @Positive // 값을 양수로만 제한
-  BigDecimal minPrice;
+  @Positive
+  BigDecimal price;
 
   @Positive
-  BigDecimal maxPrice;
+  Integer stock;
 
-  int page;
-  int size;
-  String sortBy;
+  String imageUrl;
+
+  Boolean isActive;
 }
