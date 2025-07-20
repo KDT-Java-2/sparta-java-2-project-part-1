@@ -2,6 +2,7 @@ package com.sparta.ecommerce.domain.category.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sparta.ecommerce.domain.category.dto.CategoryCreateRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -46,6 +47,9 @@ public class Category {
   @Column(nullable = false, length = 50)
   private String categoryNm;
 
+  @Column(length = 255)
+  private String description;
+
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
   LocalDateTime createdAt;
@@ -58,8 +62,15 @@ public class Category {
   private List<Category> children = new ArrayList<>();
 
   @Builder
-  public Category(Category parent, String categoryNm) {
+  public Category(Category parent, String categoryNm, String description) {
     this.parent = parent;
     this.categoryNm = categoryNm;
+    this.description = description;
+  }
+
+  public void update(CategoryCreateRequest request, Category parent) {
+    this.categoryNm = request.getName();
+    this.description = request.getDescription();
+    this.parent = parent;
   }
 }

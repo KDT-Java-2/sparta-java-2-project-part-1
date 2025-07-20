@@ -82,7 +82,7 @@ public class ProductService {
         .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_PRODUCT));
 
     if (purchaseRepository.existsProductInCompletedPurchase(product.getId())) {
-      throw new ServiceException(ServiceExceptionCode.EXISTS_COMPLETE_PURCHASE);
+      throw new ServiceException(ServiceExceptionCode.EXISTS_ORDERED_PRODUCT);
     }
 
     productRepository.delete(product);

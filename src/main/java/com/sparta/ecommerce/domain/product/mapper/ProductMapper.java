@@ -12,8 +12,10 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
 
+  @Mapping(source = "request.description", target = "description")
   @Mapping(source = "request.name", target = "productNm")
   @Mapping(source = "category", target = "category")
+  @Mapping(target = "discountPrice", ignore = true)
   Product toEntity(ProductCreateRequest request, Category category);
 
   @Mapping(source = "categoryNm", target = "name")

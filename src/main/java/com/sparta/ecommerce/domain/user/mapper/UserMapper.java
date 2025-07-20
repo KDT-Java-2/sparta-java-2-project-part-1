@@ -19,6 +19,8 @@ public interface UserMapper {
 
   @Mapping(source = "username", target = "userNm")
   @Mapping(source = "password", target = "passwordHash", qualifiedByName = "encodePassword")
+  @Mapping(target = "userStatus", ignore = true)
+  @Mapping(target = "lastLoginAt", ignore = true)
   User toEntity(UserCreateRequest request);
 
   @Named("encodePassword")
