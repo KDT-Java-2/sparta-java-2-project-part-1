@@ -113,4 +113,7 @@ public class Purchase {
     }
   }
 
+
+  /* PR 위한 주석 */
+
 }
