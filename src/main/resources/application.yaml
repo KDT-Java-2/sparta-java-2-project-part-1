@@ -20,7 +20,10 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
         highlight_sql: true
-
+  data:
+    redis:
+      host: localhost
+      port: 6379
 logging:
   level:
     org.hibernate.SQL: DEBUG
