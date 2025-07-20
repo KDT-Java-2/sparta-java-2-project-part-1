@@ -2,6 +2,7 @@ package com.sparta.ecommerce.domain.product.service;
 
 import com.sparta.ecommerce.common.exception.ServiceException;
 import com.sparta.ecommerce.common.exception.ServiceExceptionCode;
+import com.sparta.ecommerce.common.response.PageResponse;
 import com.sparta.ecommerce.domain.category.entity.Category;
 import com.sparta.ecommerce.domain.category.repository.CategoryRepository;
 import com.sparta.ecommerce.domain.product.dto.ProductCreateRequest;
@@ -30,10 +31,13 @@ public class ProductService {
   private final PurchaseRepository purchaseRepository;
   private final ProductQueryRepository productQueryRepository;
 
-  public Page<ProductListResponse> getProductPageList(ProductSearchRequest request,
+  public PageResponse<ProductListResponse> getProductPageList(ProductSearchRequest request,
       Pageable pageable) {
-    return productQueryRepository.findProductList(request, pageable);
+
+    Page<ProductListResponse> page = productQueryRepository.findProductList(request, pageable);
+    return PageResponse.from(page);
   }
+
 
   public ProductInfoResponse getById(Long id) {
     Product product = productRepository.findWithCategoryById(id)
