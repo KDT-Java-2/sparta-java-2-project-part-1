@@ -52,6 +52,8 @@ public class UserService {
                 .passwordHash(request.getPassword())
                 .build());
 
+        userRepository.save(user);
+
         return userMapper.toResponse(user);
     }
 

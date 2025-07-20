@@ -19,19 +19,24 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     Category category;
 
+    @Setter
     @Column(nullable = false)
     String name;
 
+    @Setter
     @Column(columnDefinition = "TEXT")
     String description;
 
+    @Setter
     @Column(nullable = false)
     BigDecimal price;
 
+    @Setter
     @Column(nullable = false)
     Integer stock;
 
