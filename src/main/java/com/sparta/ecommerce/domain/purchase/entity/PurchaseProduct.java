@@ -28,7 +28,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PurchaseProdcut {
+public class PurchaseProduct {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,9 +51,9 @@ public class PurchaseProdcut {
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
   LocalDateTime createdAt;
-  
+
   @Builder
-  public PurchaseProdcut(Purchase purchase, Product product, Integer quantity, BigDecimal price) {
+  public PurchaseProduct(Purchase purchase, Product product, Integer quantity, BigDecimal price) {
     this.purchase = purchase;
     this.product = product;
     this.quantity = quantity;
