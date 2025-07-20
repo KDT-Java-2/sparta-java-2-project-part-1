@@ -23,14 +23,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Table
+@Table(name = "refund")
 @Entity
 @Getter
 @DynamicInsert
@@ -39,65 +38,68 @@ import org.hibernate.annotations.UpdateTimestamp;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Refund {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(nullable = false, unique = true)
-  Purchase purchase;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, unique = true)
+    Purchase purchase;
 
-  @Column(nullable = false, length = 500)
-  String reason;
+    @Column(nullable = false, length = 500)
+    String reason;
 
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false, length = 20)
-  @Setter
-  RefundStatus status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    RefundStatus status;
 
-  @Column(nullable = false, precision = 19, scale = 2)
-  BigDecimal refundAmount;
+    @Column(nullable = false, precision = 19, scale = 2)
+    BigDecimal refundAmount;
 
-  @OneToMany(mappedBy = "refund", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-  List<RefundItem> refundItems = new ArrayList<>();
+    @OneToMany(mappedBy = "refund", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    List<RefundItem> refundItems = new ArrayList<>();
 
-  @CreationTimestamp
-  @Column(nullable = false, updatable = false)
-  LocalDateTime createdAt;
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    LocalDateTime createdAt;
 
-  @UpdateTimestamp
-  @Column
-  LocalDateTime updatedAt;
+    @UpdateTimestamp
+    @Column
+    LocalDateTime updatedAt;
 
-  @Builder
-  public Refund(
-      Purchase purchase,
-      String reason,
-      RefundStatus status,
-      BigDecimal refundAmount
-  ) {
-    this.purchase = purchase;
-    this.reason = reason;
-    this.status = status;
-    this.refundAmount = refundAmount;
-  }
+    @Builder
+    public Refund(
+            Purchase purchase,
+            String reason,
+            RefundStatus status,
+            BigDecimal refundAmount
+    ) {
+        this.purchase = purchase;
+        this.reason = reason;
+        this.status = status;
+        this.refundAmount = refundAmount;
+    }
 
-  // 환불 아이템 추가
-  public void addRefundItem(RefundItem refundItem) {
-    this.refundItems.add(refundItem);
-    refundItem.setRefund(this);
-  }
+    public void updateStatus(RefundStatus status) {
+        this.status = status;
+    }
 
-  // 환불 아이템 제거
-  public void removeRefundItem(RefundItem refundItem) {
-    this.refundItems.remove(refundItem);
-    refundItem.setRefund(null);
-  }
+    // 환불 아이템 추가
+    public void addRefundItem(RefundItem refundItem) {
+        this.refundItems.add(refundItem);
+        refundItem.setRefund(this);
+    }
 
-  // 총 환불 금액 계산
-  public BigDecimal calculateTotalRefundAmount() {
-    return this.refundItems.stream()
-        .map(RefundItem::getRefundAmount)
-        .reduce(BigDecimal.ZERO, BigDecimal::add);
-  }
+    // 환불 아이템 제거
+    public void removeRefundItem(RefundItem refundItem) {
+        this.refundItems.remove(refundItem);
+        refundItem.setRefund(null);
+    }
+
+    // 총 환불 금액 계산
+    public BigDecimal calculateTotalRefundAmount() {
+        return this.refundItems.stream()
+                .map(RefundItem::getRefundAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 } 

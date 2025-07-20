@@ -6,93 +6,131 @@ import com.example.shoppingmall.common.enums.UserRole;
 import com.example.shoppingmall.common.enums.UserStatus;
 import com.example.shoppingmall.domain.cart.entity.Cart;
 import com.example.shoppingmall.domain.purchase.entity.Purchase;
-import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import com.example.shoppingmall.common.util.FormatUtil;
 
-@Entity
 @Table(name = "user")
+@Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
-    @Column(name = "name", nullable = false, length = 50)
-    private String name;
+    @Column(columnDefinition = "BINARY(16)", nullable = false, updatable = false, unique = true)
+    UUID uuid;
 
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @Column(length = 20, unique = true)
+    String customerNumber;
 
-    @Column(name = "password_hash", nullable = false)
-    private String passwordHash;
+    @Column(nullable = false, length = 20)
+    String name;
 
-    @Column(name = "phone", nullable = false, length = 20)
-    private String phone;
+    @Column(nullable = false, unique = true, length = 50)
+    String email;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "gender")
-    private Gender gender;
+    @Column(nullable = false, length = 255)
+    String passwordHash;
 
-    @Column(name = "birth_date")
-    private LocalDate birthDate;
-
-    @Column(name = "profile_image_url", length = 500)
-    private String profileImageUrl;
+    @Column(nullable = false, length = 20)
+    String phone;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "login_type")
-    private LoginType loginType = LoginType.EMAIL;
+    Gender gender;
+
+    LocalDate birthDate;
+
+    @Column(length = 500)
+    String profileImageUrl;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private UserStatus status = UserStatus.ACTIVE;
+    @ColumnDefault("'EMAIL'")
+    LoginType loginType = LoginType.EMAIL;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private UserRole role = UserRole.USER;
+    @ColumnDefault("'ACTIVE'")
+    UserStatus status = UserStatus.ACTIVE;
 
-    @Column(name = "last_login_at")
-    private LocalDateTime lastLoginAt;
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'USER'")
+    UserRole role = UserRole.USER;
 
-    @Column(name = "terms_agreed_at", nullable = false)
-    private LocalDateTime termsAgreedAt;
+    LocalDateTime lastLoginAt;
 
-    @Column(name = "privacy_agreed_at", nullable = false)
-    private LocalDateTime privacyAgreedAt;
+    @Column(nullable = false)
+    LocalDateTime termsAgreedAt;
 
-    @Column(name = "marketing_agreed_at")
-    private LocalDateTime marketingAgreedAt;
+    @Column(nullable = false)
+    LocalDateTime privacyAgreedAt;
 
-    @Column(name = "is_email_verified")
-    private Boolean isEmailVerified = false;
+    LocalDateTime marketingAgreedAt;
 
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    @ColumnDefault("false")
+    Boolean isEmailVerified = false;
 
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    LocalDateTime updatedAt;
 
     // 연관관계 매핑
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Cart> carts = new ArrayList<>();
+    List<Cart> carts = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Purchase> purchases = new ArrayList<>();
+    List<Purchase> purchases = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<UserCoupon> userCoupons = new ArrayList<>();
+
+    @Builder
+    public User(String customerNumber, String name, String email, String passwordHash, String phone, Gender gender,
+                LocalDate birthDate, String profileImageUrl, LoginType loginType, UserStatus status,
+                UserRole role, LocalDateTime termsAgreedAt, LocalDateTime privacyAgreedAt, LocalDateTime marketingAgreedAt) {
+        this.customerNumber = customerNumber;
+        this.name = name;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.phone = phone;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.profileImageUrl = profileImageUrl;
+        this.loginType = loginType != null ? loginType : LoginType.EMAIL;
+        this.status = status != null ? status : UserStatus.ACTIVE;
+        this.role = role != null ? role : UserRole.USER;
+        this.termsAgreedAt = termsAgreedAt;
+        this.privacyAgreedAt = privacyAgreedAt;
+        this.marketingAgreedAt = marketingAgreedAt;
+    }
 
     // 역할 확인 메서드들
     public boolean isUser() {
@@ -109,5 +147,25 @@ public class User {
 
     public boolean hasAdminRole() {
         return this.role == UserRole.PRODUCT_ADMIN || this.role == UserRole.SUPER_ADMIN;
+    }
+
+    @PrePersist
+    public void assignIdentifiers() {
+        assignUuid();
+        assignCustomerNumber();
+    }
+
+    private void assignUuid() {
+        if (this.uuid == null) {
+            this.uuid = UUID.randomUUID();
+        }
+    }
+
+    private void assignCustomerNumber() {
+        if (this.customerNumber == null) {
+            String datePart = FormatUtil.getTodayAsYYYYMMDD();
+            String randomPart = FormatUtil.getRandomNumberString(6);
+            this.customerNumber = "C" + datePart + randomPart;
+        }
     }
 } 

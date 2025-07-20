@@ -1,6 +1,6 @@
 package com.example.shoppingmall.domain.purchase.entity;
 
-import com.example.shoppingmall.domain.product.entity.Product;
+import com.example.shoppingmall.domain.product.entity.ProductVariant;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,7 +21,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-@Table
+@Table(name = "purchase_product")
 @Entity
 @Getter
 @DynamicInsert
@@ -30,38 +30,38 @@ import org.hibernate.annotations.DynamicUpdate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PurchaseProduct {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "purchase", nullable = false)
-  Purchase purchase;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "purchase_id")
+    Purchase purchase;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "product", nullable = false)
-  Product product;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_variant_id")
+    ProductVariant productVariant;
 
-  @Column(nullable = false)
-  Integer quantity;
+    @Column(nullable = false, columnDefinition = "int default 1")
+    Integer quantity;
 
-  @Column(nullable = false, precision = 19, scale = 2)
-  BigDecimal priceAtPurchase;
+    @Column(nullable = false, precision = 19, scale = 2)
+    BigDecimal priceAtPurchase;
 
-  @CreationTimestamp
-  @Column(nullable = false, updatable = false)
-  LocalDateTime createdAt;
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    LocalDateTime createdAt;
 
-  @Builder
-  public PurchaseProduct(
-      Purchase purchase,
-      Product product,
-      Integer quantity,
-      BigDecimal priceAtPurchase
-  ) {
-    this.purchase = purchase;
-    this.product = product;
-    this.quantity = quantity;
-    this.priceAtPurchase = priceAtPurchase;
-  }
+    @Builder
+    public PurchaseProduct(
+            Purchase purchase,
+            ProductVariant productVariant,
+            Integer quantity,
+            BigDecimal priceAtPurchase
+    ) {
+        this.purchase = purchase;
+        this.productVariant = productVariant;
+        this.quantity = quantity;
+        this.priceAtPurchase = priceAtPurchase;
+    }
 } 

@@ -1,8 +1,7 @@
 package com.example.shoppingmall.domain.product.entity;
 
-import com.example.shoppingmall.domain.cart.entity.CartItem;
 import com.example.shoppingmall.domain.category.entity.Category;
-import com.example.shoppingmall.domain.purchase.entity.PurchaseProduct;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,7 +26,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Table
+@Table(name = "product")
 @Entity
 @Getter
 @DynamicInsert
@@ -36,52 +35,67 @@ import org.hibernate.annotations.UpdateTimestamp;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
-  @Column
-  String name;
+    @Column
+    String name;
 
-  @Column(columnDefinition = "TEXT")
-  String description;
+    @Column(columnDefinition = "TEXT")
+    String description;
 
-  @Column(precision = 19, scale = 2)
-  BigDecimal price;
+    @Column(nullable = false, precision = 19, scale = 2)
+    BigDecimal price;
 
-  @Column
-  Integer stock;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    Category category;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn
-  Category category;
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ProductOptionGroup> optionGroups = new ArrayList<>();
 
-  @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-  List<CartItem> cartItems = new ArrayList<>();
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ProductVariant> variants = new ArrayList<>();
 
-  @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-  List<PurchaseProduct> purchaseProducts = new ArrayList<>();
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ProductImage> images = new ArrayList<>();
 
-  @CreationTimestamp
-  @Column(nullable = false, updatable = false)
-  LocalDateTime createdAt;
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    LocalDateTime createdAt;
 
-  @UpdateTimestamp
-  @Column
-  LocalDateTime updatedAt;
+    @UpdateTimestamp
+    @Column
+    LocalDateTime updatedAt;
 
-  @Builder
-  public Product(
-      String name,
-      String description,
-      BigDecimal price,
-      Integer stock,
-      Category category
-  ) {
-    this.name = name;
-    this.description = description;
-    this.price = price;
-    this.stock = stock;
-    this.category = category;
-  }
+    @Builder
+    public Product(
+            String name,
+            String description,
+            Category category,
+            BigDecimal price
+    ) {
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.price = price;
+    }
+
+    public void update(String name, String description, Category category, BigDecimal price) {
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.price = price;
+    }
+
+    public void updateBasicInfo(String name, String description, BigDecimal price) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 } 
