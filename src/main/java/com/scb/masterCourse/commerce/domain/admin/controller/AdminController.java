@@ -6,6 +6,7 @@ import com.scb.masterCourse.commerce.domain.admin.dto.AdminProductResponse;
 import com.scb.masterCourse.commerce.domain.admin.service.AdminService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,5 +32,13 @@ public class AdminController {
         @Valid @RequestBody AdminProductRequest request
     ) {
         return ApiResponse.success(adminService.updateProduct(productId, request));
+    }
+
+    @DeleteMapping("/products/{productId}")
+    public ApiResponse<Void> deleteProductByAdmin(@PathVariable Long productId) {
+
+        adminService.deleteProduct(productId);
+
+        return ApiResponse.success();
     }
 }

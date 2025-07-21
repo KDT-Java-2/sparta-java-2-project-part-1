@@ -6,6 +6,7 @@ import com.scb.masterCourse.commerce.common.exception.ServiceExceptionCode;
 import com.scb.masterCourse.commerce.domain.admin.dto.AdminProductRequest;
 import com.scb.masterCourse.commerce.domain.admin.dto.AdminProductResponse;
 import com.scb.masterCourse.commerce.domain.admin.mapper.AdminProductMapper;
+import com.scb.masterCourse.commerce.domain.admin.repository.AdminProductQueryRepository;
 import com.scb.masterCourse.commerce.domain.brand.entity.Brand;
 import com.scb.masterCourse.commerce.domain.brand.repository.BrandRepository;
 import com.scb.masterCourse.commerce.domain.category.entity.Category;
@@ -27,6 +28,8 @@ public class AdminService {
     private final CategoryRepository categoryRepository;
 
     private final AdminProductMapper adminProductMapper;
+
+    private final AdminProductQueryRepository adminProductQueryRepository;
 
     @Transactional
     public AdminProductResponse createProduct(@Valid AdminProductRequest request) {
@@ -72,6 +75,19 @@ public class AdminService {
             request.getStock());
 
         return adminProductMapper.toResponse(product);
+    }
+
+    @Transactional
+    public void deleteProduct(Long productId) {
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_PRODUCT));
+
+        boolean hasCompleted = adminProductQueryRepository.countCompletedPurchasesByProductId(productId) > 0;
+        if (hasCompleted) {
+            throw new ServiceException(ServiceExceptionCode.CANNOT_DELETE_COMPLETED_PRODUCT);
+        }
+
+        productRepository.delete(product);
     }
 
 
