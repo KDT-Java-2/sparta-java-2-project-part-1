@@ -1,0 +1,7 @@
+CREATE TABLE cart (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL COMMENT '어떤 회원인지',
+    product_id BIGINT NOT NULL COMMENT '어떤 상품인지',
+    quantity INT NOT NULL,
+    created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6)
+);
