@@ -47,4 +47,12 @@ public class AdminController {
     public ApiResponse<Long> createCategory(@Valid @RequestBody AdminCategoryRequest request) {
         return ApiResponse.success(adminService.createCategory(request));
     }
+    
+    @PutMapping("/categories/{categoryId}")
+    public ApiResponse<AdminCategoryResponse> updateCategory(
+        @PathVariable Long categoryId,
+        @Valid @RequestBody AdminCategoryRequest request
+    ) {
+        return ApiResponse.success(adminService.updateCategory(categoryId, request));
+    }
 }

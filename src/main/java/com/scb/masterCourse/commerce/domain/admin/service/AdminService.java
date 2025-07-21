@@ -4,6 +4,7 @@ import com.scb.masterCourse.commerce.common.enums.ProductStatus;
 import com.scb.masterCourse.commerce.common.exception.ServiceException;
 import com.scb.masterCourse.commerce.common.exception.ServiceExceptionCode;
 import com.scb.masterCourse.commerce.domain.admin.dto.AdminCategoryRequest;
+import com.scb.masterCourse.commerce.domain.admin.dto.AdminCategoryResponse;
 import com.scb.masterCourse.commerce.domain.admin.dto.AdminProductRequest;
 import com.scb.masterCourse.commerce.domain.admin.dto.AdminProductResponse;
 import com.scb.masterCourse.commerce.domain.admin.mapper.AdminProductMapper;
@@ -16,9 +17,11 @@ import com.scb.masterCourse.commerce.domain.product.entity.Product;
 import com.scb.masterCourse.commerce.domain.product.repository.ProductRepository;
 import jakarta.validation.Valid;
 import java.math.BigDecimal;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -103,6 +106,30 @@ public class AdminService {
 
         return categoryRepository.save(category)
             .getId();
+    }
+
+    @Transactional
+    public AdminCategoryResponse updateCategory(Long categoryId, AdminCategoryRequest request) {
+        Category category = getCategoryOrThrow(categoryId);
+
+        if (ObjectUtils.isEmpty(category)) {
+            throw new ServiceException(ServiceExceptionCode.NOT_FOUND_CATEGORY);
+        }
+
+        if (category.getId()
+            .equals(request.getParentId())) {
+            throw new ServiceException(ServiceExceptionCode.INVALID_SELF_PARENT);
+        }
+
+        Category parent = request.getParentId() != null ? getCategoryOrThrow(request.getParentId()) : null;
+
+        category.update(request.getName(), parent);
+
+        return AdminCategoryResponse.builder()
+            .categoryId(category.getId())
+            .name(category.getName())
+            .parentName(Objects.isNull(parent) ? null : parent.getName())
+            .build();
     }
 
 

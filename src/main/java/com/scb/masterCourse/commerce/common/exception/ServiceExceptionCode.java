@@ -20,6 +20,8 @@ public enum ServiceExceptionCode {
     DUPLICATE_PRODUCT_NAME("중복된 상품명이 존재합니다."),
 
     CANNOT_DELETE_COMPLETED_PRODUCT("결제 완료된 주문은 삭제할 수 없습니다."),
+
+    INVALID_SELF_PARENT("자기 자신을 부모로 지정할 수 없습니다."),
     ;
 
     final String message;
