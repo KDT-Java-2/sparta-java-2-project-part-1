@@ -19,7 +19,9 @@ public enum ServiceExceptionCode {
   CANNOT_CANCEL("취소 불가능한 상태입니다."),
   OUT_OF_STOCK_PRODUCT("재고 수량을 넘었습니다."),
   FAILED_SOFT_DELETE("비활성화 실패"),
-  DUPLICATED_CATEGORY("카테고리 중복");
+  DUPLICATED_CATEGORY("카테고리 중복"),
+  INVALID_PRICE("가격은 음수일 수 없습니다."),
+  DUPLICATED_PRODUCT("등록상품 중복");
   // ... 다른 예외 코드들
 
   final String message;

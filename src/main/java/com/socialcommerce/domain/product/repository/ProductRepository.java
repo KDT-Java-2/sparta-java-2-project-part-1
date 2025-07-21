@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
   Optional<Product> findById(@NotNull Long id);
+
+  Optional<Product> findByName(@NotNull String name);
 }
