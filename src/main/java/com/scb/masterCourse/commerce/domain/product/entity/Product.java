@@ -1,10 +1,13 @@
 package com.scb.masterCourse.commerce.domain.product.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.scb.masterCourse.commerce.common.enums.ProductStatus;
 import com.scb.masterCourse.commerce.domain.brand.entity.Brand;
 import com.scb.masterCourse.commerce.domain.category.entity.Category;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -62,6 +65,10 @@ public class Product {
     @Column
     String thumbnailUrl;
 
+    @Column(length = 20)
+    @Enumerated(EnumType.STRING)
+    ProductStatus status;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     LocalDateTime createdAt;
@@ -78,7 +85,8 @@ public class Product {
         String description,
         BigDecimal price,
         Integer stock,
-        String thumbnailUrl
+        String thumbnailUrl,
+        ProductStatus status
     ) {
         this.brand = brand;
         this.category = category;
@@ -87,5 +95,6 @@ public class Product {
         this.price = price;
         this.stock = stock;
         this.thumbnailUrl = thumbnailUrl;
+        this.status = status;
     }
 }
