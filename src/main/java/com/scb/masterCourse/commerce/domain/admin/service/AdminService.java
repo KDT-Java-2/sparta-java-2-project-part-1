@@ -3,6 +3,7 @@ package com.scb.masterCourse.commerce.domain.admin.service;
 import com.scb.masterCourse.commerce.common.enums.ProductStatus;
 import com.scb.masterCourse.commerce.common.exception.ServiceException;
 import com.scb.masterCourse.commerce.common.exception.ServiceExceptionCode;
+import com.scb.masterCourse.commerce.domain.admin.dto.AdminCategoryRequest;
 import com.scb.masterCourse.commerce.domain.admin.dto.AdminProductRequest;
 import com.scb.masterCourse.commerce.domain.admin.dto.AdminProductResponse;
 import com.scb.masterCourse.commerce.domain.admin.mapper.AdminProductMapper;
@@ -88,6 +89,20 @@ public class AdminService {
         }
 
         productRepository.delete(product);
+    }
+
+    @Transactional
+    public Long createCategory(AdminCategoryRequest request) {
+        Category parent = request.getParentId() == null ? null :
+            getCategoryOrThrow(request.getParentId());
+
+        Category category = Category.builder()
+            .name(request.getName())
+            .parent(parent)
+            .build();
+
+        return categoryRepository.save(category)
+            .getId();
     }
 
 

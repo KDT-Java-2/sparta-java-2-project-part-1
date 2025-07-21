@@ -1,6 +1,7 @@
 package com.scb.masterCourse.commerce.domain.admin.controller;
 
 import com.scb.masterCourse.commerce.common.response.ApiResponse;
+import com.scb.masterCourse.commerce.domain.admin.dto.AdminCategoryRequest;
 import com.scb.masterCourse.commerce.domain.admin.dto.AdminProductRequest;
 import com.scb.masterCourse.commerce.domain.admin.dto.AdminProductResponse;
 import com.scb.masterCourse.commerce.domain.admin.service.AdminService;
@@ -40,5 +41,10 @@ public class AdminController {
         adminService.deleteProduct(productId);
 
         return ApiResponse.success();
+    }
+
+    @PostMapping("/categories")
+    public ApiResponse<Long> createCategory(@Valid @RequestBody AdminCategoryRequest request) {
+        return ApiResponse.success(adminService.createCategory(request));
     }
 }
