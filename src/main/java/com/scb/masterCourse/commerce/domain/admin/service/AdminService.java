@@ -132,6 +132,23 @@ public class AdminService {
             .build();
     }
 
+    @Transactional
+    public void deleteCategory(Long categoryId) {
+        Category category = getCategoryOrThrow(categoryId);
+
+        boolean hasChildren = categoryRepository.existsByParent(category);
+        if (hasChildren) {
+            throw new ServiceException(ServiceExceptionCode.HAS_CHILD_CATEGORY);
+        }
+
+        boolean hasProduct = productRepository.existsByCategory(category);
+        if (hasProduct) {
+            throw new ServiceException(ServiceExceptionCode.HAS_PRODUCTS);
+        }
+
+        categoryRepository.delete(category);
+    }
+
 
     private Brand getBrandOrThrow(Long brandId) {
         return brandRepository.findById(brandId)
