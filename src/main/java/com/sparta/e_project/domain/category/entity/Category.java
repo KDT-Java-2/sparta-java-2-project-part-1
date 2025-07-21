@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,6 +20,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.util.ObjectUtils;
 
 @Entity
 @Table(name = "category")
@@ -36,6 +38,9 @@ public class Category {
   @Column(nullable = false)
   String name;
 
+  @Column
+  String description;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "parent_id")
   @JsonBackReference
@@ -49,5 +54,21 @@ public class Category {
   @Column
   LocalDateTime updatedAt;
 
+  public void putCategory(String name, String description, Category parent) {
+    if (!ObjectUtils.isEmpty(name)) {
+      this.name = name;
+    }
+    if (!ObjectUtils.isEmpty(description)) {
+      this.description = description;
+    }
+    // Handle parent explicitly, allowing it to be set to null
+    this.parent = parent;
+  }
 
+  @Builder
+  public Category(String name, String description, Category parent) {
+    this.name = name;
+    this.description = description;
+    this.parent = parent;
+  }
 }

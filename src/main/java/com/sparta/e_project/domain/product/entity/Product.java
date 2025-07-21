@@ -21,6 +21,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Table(name = "product")
@@ -59,11 +61,32 @@ public class Product {
   @Column
   LocalDateTime updatedAt;
 
+  public void putProduct(String name, String description, BigDecimal price, Integer stock,
+      Category category) {
+    if (!ObjectUtils.isEmpty(name)) {
+      this.name = name;
+    }
+    if (!StringUtils.isEmpty(description)) {
+      this.description = description;
+    }
+    if (!ObjectUtils.isEmpty(price)) {
+      this.price = price;
+    }
+    if (!ObjectUtils.isEmpty(stock)) {
+      this.stock = stock;
+    }
+    if (!ObjectUtils.isEmpty(category)) {
+      this.category = category;
+    }
+  }
+
   @Builder
-  public Product(String name, String description, BigDecimal price, Integer stock) {
-    this.name = name;
-    this.description = description;
-    this.price = price;
+  public Product(Integer stock, BigDecimal price, String description, String name,
+      Category category) {
     this.stock = stock;
+    this.price = price;
+    this.description = description;
+    this.name = name;
+    this.category = category;
   }
 }
