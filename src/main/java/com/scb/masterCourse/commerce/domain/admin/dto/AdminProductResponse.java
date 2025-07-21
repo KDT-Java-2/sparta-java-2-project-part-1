@@ -11,4 +11,18 @@ import lombok.experimental.FieldDefaults;
 public class AdminProductResponse {
 
     Long productId;
+
+    String productName;
+
+    String brandName;
+
+    String categoryName;
+
+    String description;
+
+    Integer price;
+
+    Integer stock;
+
+    String status;
 }
