@@ -53,6 +53,27 @@ public class AdminService {
         return adminProductMapper.toResponse(savedProduct);
     }
 
+    @Transactional
+    public AdminProductResponse updateProduct(Long productId, @Valid AdminProductRequest request) {
+
+        boolean isDuplicate = productRepository.existsByNameAndIdNot(request.getName(), productId);
+        if (isDuplicate) {
+            throw new ServiceException(ServiceExceptionCode.DUPLICATE_PRODUCT_NAME);
+        }
+
+        Brand brand = getBrandOrThrow(request.getBrandId());
+
+        Category category = getCategoryOrThrow(request.getCategoryId());
+
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_PRODUCT));
+
+        product.update(request.getName(), brand, category, request.getDescription(), request.getPrice(),
+            request.getStock());
+
+        return adminProductMapper.toResponse(product);
+    }
+
 
     private Brand getBrandOrThrow(Long brandId) {
         return brandRepository.findById(brandId)

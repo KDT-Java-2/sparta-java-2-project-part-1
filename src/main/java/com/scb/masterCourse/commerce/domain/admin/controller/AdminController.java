@@ -6,7 +6,9 @@ import com.scb.masterCourse.commerce.domain.admin.dto.AdminProductResponse;
 import com.scb.masterCourse.commerce.domain.admin.service.AdminService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,5 +23,13 @@ public class AdminController {
     @PostMapping("/products")
     public ApiResponse<AdminProductResponse> createProduct(@Valid @RequestBody AdminProductRequest request) {
         return ApiResponse.success(adminService.createProduct(request));
+    }
+
+    @PutMapping("/products/{productId}")
+    public ApiResponse<AdminProductResponse> updateProduct(
+        @PathVariable Long productId,
+        @Valid @RequestBody AdminProductRequest request
+    ) {
+        return ApiResponse.success(adminService.updateProduct(productId, request));
     }
 }
