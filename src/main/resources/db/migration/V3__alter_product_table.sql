@@ -1,0 +1,2 @@
+ALTER TABLE `product`
+    ADD COLUMN `status` VARCHAR(20) DEFAULT 'ON_SALE';
