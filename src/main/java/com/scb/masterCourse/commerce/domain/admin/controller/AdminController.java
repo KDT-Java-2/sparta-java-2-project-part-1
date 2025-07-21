@@ -1,0 +1,25 @@
+package com.scb.masterCourse.commerce.domain.admin.controller;
+
+import com.scb.masterCourse.commerce.common.response.ApiResponse;
+import com.scb.masterCourse.commerce.domain.admin.dto.AdminProductRequest;
+import com.scb.masterCourse.commerce.domain.admin.dto.AdminProductResponse;
+import com.scb.masterCourse.commerce.domain.admin.service.AdminService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/admin")
+public class AdminController {
+
+    private final AdminService adminService;
+
+    @PostMapping("/products")
+    public ApiResponse<AdminProductResponse> createProduct(@Valid @RequestBody AdminProductRequest request) {
+        return ApiResponse.success(adminService.createProduct(request));
+    }
+}
