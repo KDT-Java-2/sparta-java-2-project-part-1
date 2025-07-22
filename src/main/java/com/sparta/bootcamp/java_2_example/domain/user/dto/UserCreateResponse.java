@@ -17,7 +17,6 @@ public class UserCreateResponse {
 
   String username;
 
-  @QueryProjection
   public UserCreateResponse(
       Long id,
       String email,

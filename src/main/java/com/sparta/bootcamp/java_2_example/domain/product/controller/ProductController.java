@@ -1,6 +1,7 @@
 package com.sparta.bootcamp.java_2_example.domain.product.controller;
 
 import com.sparta.bootcamp.java_2_example.common.response.ApiResponse;
+import com.sparta.bootcamp.java_2_example.domain.product.dto.ProductResponse;
 import com.sparta.bootcamp.java_2_example.domain.product.dto.ProductSearchRequest;
 import com.sparta.bootcamp.java_2_example.domain.product.dto.ProductSearchResponse;
 import com.sparta.bootcamp.java_2_example.domain.product.service.ProductService;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +29,11 @@ public class ProductController {
             Pageable pageable
     ) {
         return ApiResponse.success(productService.getAll(request, pageable));
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponse<ProductResponse> getById(@PathVariable Long id) {
+        return ApiResponse.success(productService.getById(id));
     }
 
 }
