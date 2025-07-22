@@ -39,6 +39,10 @@ public class AdminCategoryService {
   @Transactional
   public CategoryResponse updateCategory(Long parentId, CategoryRequest request){
 
+    // 1. parentId 넣어서 찾는거 검증
+    // 2. request 값 넣기
+    // 3. 반환 CategoryResponse
+
     return null;
   }
 }
