@@ -81,6 +81,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
   private boolean isAuthenticationRequired(String requestURI) {
     // 인증이 필요하지 않은 경로들
     String[] excludePaths = {
+//        "/api/admin/categories",
         "/api/auth/login",
         "/api/auth/logout",
         "/api/auth/status",

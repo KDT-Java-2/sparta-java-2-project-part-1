@@ -41,6 +41,9 @@ public class Category {
   @Column(nullable = false)
   String name;
 
+  @Column(columnDefinition = "TEXT")
+  private String description;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "parent_id")
   @JsonBackReference  // 만약 Category 를 클라이언트에서 API 로 조회를 해서 Response 로 보내줄때 Json 으로 바뀌면서 뽑을때 순환참조를 하게 됨을 막아준다.
@@ -58,8 +61,9 @@ public class Category {
   LocalDateTime updatedAt;
 
   @Builder
-  public Category(String name, Category parent) {
+  public Category(String name, String description, Category parent) {
     this.name = name;
+    this.description = description;
     this.parent = parent;
   }
 }

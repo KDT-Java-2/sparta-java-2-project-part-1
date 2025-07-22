@@ -68,4 +68,13 @@ public class Product {  // 상품
     this.stock = stock;
     this.category = category;
   }
+
+  // setter는 안 쓰고, 명시적 update 메서드를 만들기
+  public void updateProduct(String name, String description, BigDecimal price, Integer stock, Category category) {
+    this.name = name;
+    this.description = description;
+    this.price = price;
+    this.stock = stock;
+    this.category = category;
+  }
 }

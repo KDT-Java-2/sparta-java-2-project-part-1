@@ -21,6 +21,7 @@ public enum ServiceExceptionCode {
   FAILED_SOFT_DELETE("비활성화 실패"),
   DUPLICATED_CATEGORY("카테고리 중복"),
   INVALID_PRICE("가격은 음수일 수 없습니다."),
+  CANNOT_DELETE_PRODUCT_ALREADY_PURCHASED("구매완료 상품입니다. 삭제할 수 없습니다."),
   DUPLICATED_PRODUCT("등록상품 중복");
   // ... 다른 예외 코드들
 

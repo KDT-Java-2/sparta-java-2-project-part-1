@@ -1,7 +1,9 @@
 package com.socialcommerce.domain.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.socialcommerce.common.enums.Gender;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 import lombok.AccessLevel;
@@ -23,9 +25,10 @@ public class UserCreateRequest {
   String name;
   @NotBlank
   String email;
-  @NotBlank
+  @NotNull
+  @JsonFormat(pattern = "yyyy-MM-dd")
   LocalDate dateOfBirth;
-  @NotBlank
+  @NotNull
   Gender gender;
   @NotBlank
   String phoneNumberHash;

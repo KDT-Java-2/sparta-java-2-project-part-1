@@ -52,7 +52,7 @@ logging:
 
 # 내장 웹 서버 설정
 server:
-  port: 8080
+  port: 8081
   servlet:
     session:
       cookie:

@@ -18,7 +18,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductResponse {
   Long id;
-  Category category;
+  Long categoryId;
   String name;
   String description;
   BigDecimal price;

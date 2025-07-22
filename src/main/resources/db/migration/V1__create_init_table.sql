@@ -7,7 +7,7 @@ CREATE TABLE user (
     date_of_birth DATE NOT NULL,
     gender VARCHAR(10) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    phone_number_hash VARCHAR(20) NOT NULL,
+    phone_number_hash VARCHAR(255) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -49,6 +49,7 @@ CREATE TABLE purchase_product ( -- 단수형으로 이름 변경
 CREATE TABLE category (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
+    description TEXT,
     parent_id BIGINT DEFAULT NULL COMMENT '부모 카테고리 ID (자기 참조)',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

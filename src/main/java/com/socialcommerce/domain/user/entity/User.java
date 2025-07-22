@@ -1,5 +1,6 @@
 package com.socialcommerce.domain.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.socialcommerce.common.enums.Gender;
 import com.socialcommerce.domain.cart.entity.Cart;
@@ -51,16 +52,17 @@ public class User {
   @Column(nullable = false, unique = true)
   String email;
   @Column(nullable = false)
+  @JsonFormat(pattern = "yyyy-MM-dd")
   LocalDate dateOfBirth;
   @Enumerated(EnumType.STRING)
   @Column(length = 10)
   Gender gender; // 'MALE', 'FEMALE', 'NONE' 등
-  @Column(nullable = false, length = 20)
+  @Column(nullable = false, length = 255)
   String phoneNumberHash;
 
   // 카멜표기로 제대로 되어있으면 언더바를 대문자로 인식한다. 그래서 JPA 에서 알아서 인식해주므로 생략가능하다.
   //@Column(name = "password_hash")
-  @Column(nullable = false)
+  @Column(nullable = false, length = 255)
   String passwordHash;
 
   // 1:N
