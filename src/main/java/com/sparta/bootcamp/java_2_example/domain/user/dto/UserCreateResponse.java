@@ -1,11 +1,8 @@
 package com.sparta.bootcamp.java_2_example.domain.user.dto;
 
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)

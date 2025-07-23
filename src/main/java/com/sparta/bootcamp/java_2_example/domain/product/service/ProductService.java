@@ -2,13 +2,13 @@ package com.sparta.bootcamp.java_2_example.domain.product.service;
 
 import com.sparta.bootcamp.java_2_example.common.exception.ServiceException;
 import com.sparta.bootcamp.java_2_example.common.exception.ServiceExceptionCode;
-import com.sparta.bootcamp.java_2_example.domain.product.dto.ProductResponse;
-import com.sparta.bootcamp.java_2_example.domain.product.dto.ProductSearchRequest;
-import com.sparta.bootcamp.java_2_example.domain.product.dto.ProductSearchResponse;
+import com.sparta.bootcamp.java_2_example.domain.category.repository.CategoryRepository;
+import com.sparta.bootcamp.java_2_example.domain.product.dto.*;
 import com.sparta.bootcamp.java_2_example.domain.product.entity.Product;
 import com.sparta.bootcamp.java_2_example.domain.product.mapper.ProductMapper;
 import com.sparta.bootcamp.java_2_example.domain.product.repository.ProductQueryRepository;
 import com.sparta.bootcamp.java_2_example.domain.product.repository.ProductRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +22,7 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final ProductRepository productRepository;
     private final ProductQueryRepository productQueryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
     public Page<ProductSearchResponse> getAll(ProductSearchRequest request, Pageable pageable) {
@@ -34,5 +35,19 @@ public class ProductService {
                 .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_PRODUCT));
 
         return productMapper.toResponse(product);
+    }
+
+    @Transactional
+    public ProductCreateResponse save(ProductCreateRequest request) {
+        if (!categoryRepository.existsById(request.getCategoryId())) {
+            throw new ServiceException(ServiceExceptionCode.NOT_FOUND_CATEGORY);
+        }
+
+        if (productRepository.existsByName(request.getName())) {
+            throw new ServiceException(ServiceExceptionCode.ALREADY_EXISTS_PRODUCT_NAME);
+        }
+
+        Product product = productRepository.save(productMapper.toEntity(request));
+        return productMapper.toCreateResponse(product);
     }
 }

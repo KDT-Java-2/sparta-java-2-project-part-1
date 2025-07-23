@@ -21,10 +21,10 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public List<CategoryHierarchyResponse> getAllHierarchy() {
-        return getCategoryStruct();
+        return getCategoryHierarchy();
     }
 
-    private List<CategoryHierarchyResponse> getCategoryStruct() {
+    private List<CategoryHierarchyResponse> getCategoryHierarchy() {
         List<Category> categories = categoryRepository.findAll();
 
         Map<Long, CategoryHierarchyResponse> responseMap = new HashMap<>();

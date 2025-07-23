@@ -22,7 +22,7 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
-    public UserCreateResponse create(@Valid UserCreateRequest request) {
+    public UserCreateResponse create(UserCreateRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new ServiceException(ServiceExceptionCode.ALREADY_EXISTS_EMAIL);
         }

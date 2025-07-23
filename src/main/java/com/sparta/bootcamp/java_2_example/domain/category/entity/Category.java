@@ -52,11 +52,9 @@ public class Category {
 
   @Builder
   public Category(
-      String name,
-      Category parent
+      Long id
   ) {
-    this.name = name;
-    this.parent = parent;
+    this.id = id;
   }
   
 }
