@@ -32,9 +32,11 @@ public class Category {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Setter
   @Column(nullable = false)
   private String name;
 
+  @Setter
   @Column
   private String description;
 

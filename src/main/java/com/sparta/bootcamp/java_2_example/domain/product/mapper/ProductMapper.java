@@ -14,8 +14,6 @@ import java.math.BigDecimal;
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
 
-    @Mapping(source = "category.id",   target = "category.id")
-    @Mapping(source = "category.name", target = "category.name")
     ProductResponse toResponse(Product product);
 
     @Mapping(source = "categoryId", target = "category", qualifiedByName = "toCategory")
