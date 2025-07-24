@@ -9,6 +9,7 @@ import com.sparta.bootcamp.java_2_example.domain.product.entity.Product;
 import com.sparta.bootcamp.java_2_example.domain.product.mapper.ProductMapper;
 import com.sparta.bootcamp.java_2_example.domain.product.repository.ProductQueryRepository;
 import com.sparta.bootcamp.java_2_example.domain.product.repository.ProductRepository;
+import com.sparta.bootcamp.java_2_example.domain.purchase.repository.PurchaseProductQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +25,9 @@ public class ProductService {
 
     private final ProductMapper productMapper;
     private final ProductRepository productRepository;
-    private final ProductQueryRepository productQueryRepository;
     private final CategoryRepository categoryRepository;
+    private final ProductQueryRepository productQueryRepository;
+    private final PurchaseProductQueryRepository purchaseProductQueryRepository;
 
     @Transactional(readOnly = true)
     public Page<ProductSearchResponse> getAll(ProductSearchRequest request, Pageable pageable) {
@@ -72,6 +74,16 @@ public class ProductService {
         return productMapper.toResponse(product);
     }
 
+    @Transactional
+    public void delete(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_PRODUCT));
+
+        ensureProductNotPurchasedCompleted(productId);
+
+        productRepository.delete(product);
+    }
+
     private void ensureCategoryExists(Long categoryId) {
         if (!categoryRepository.existsById(categoryId)) {
             throw new ServiceException(ServiceExceptionCode.NOT_FOUND_CATEGORY);
@@ -81,6 +93,12 @@ public class ProductService {
     private void ensureNameUnique(String name) {
         if (productRepository.existsByName(name)) {
             throw new ServiceException(ServiceExceptionCode.ALREADY_EXISTS_PRODUCT_NAME);
+        }
+    }
+
+    private void ensureProductNotPurchasedCompleted(Long productId) {
+        if (purchaseProductQueryRepository.existsInCompletedOrders(productId)) {
+            throw new ServiceException(ServiceExceptionCode.PRODUCT_USED_IN_COMPLETED_PURCHASE);
         }
     }
 }

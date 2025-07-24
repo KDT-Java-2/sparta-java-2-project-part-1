@@ -32,4 +32,11 @@ public class AdminProductController {
         return ApiResponse.success(productService.update(productId, request));
     }
 
+    @DeleteMapping("/{productId}")
+    public void delete(
+            @PathVariable Long productId
+    ) {
+        productService.delete(productId);
+    }
+
 }
