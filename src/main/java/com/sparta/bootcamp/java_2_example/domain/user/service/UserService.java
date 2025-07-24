@@ -7,7 +7,6 @@ import com.sparta.bootcamp.java_2_example.domain.user.dto.UserCreateResponse;
 import com.sparta.bootcamp.java_2_example.domain.user.entity.User;
 import com.sparta.bootcamp.java_2_example.domain.user.mapper.UserMapper;
 import com.sparta.bootcamp.java_2_example.domain.user.repository.UserRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,14 +22,18 @@ public class UserService {
 
     @Transactional
     public UserCreateResponse create(UserCreateRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new ServiceException(ServiceExceptionCode.ALREADY_EXISTS_EMAIL);
-        }
+        ensurerEmailUnique(request.getEmail());
 
         request.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
 
         User user = userRepository.save(userMapper.toEntity(request));
 
         return userMapper.toCreateResponse(user);
+    }
+
+    private void ensurerEmailUnique(String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new ServiceException(ServiceExceptionCode.ALREADY_EXISTS_EMAIL);
+        }
     }
 }

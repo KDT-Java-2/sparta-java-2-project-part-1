@@ -32,4 +32,9 @@ public class AdminCategoryController {
         return ApiResponse.success(categoryService.update(categoryId, request));
     }
 
+    @DeleteMapping("/{categoryId}")
+    public void delete(@PathVariable Long categoryId) {
+        categoryService.delete(categoryId);
+    }
+
 }

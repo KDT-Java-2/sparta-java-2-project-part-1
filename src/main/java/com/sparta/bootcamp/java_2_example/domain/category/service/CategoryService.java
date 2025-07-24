@@ -6,7 +6,7 @@ import com.sparta.bootcamp.java_2_example.domain.category.dto.*;
 import com.sparta.bootcamp.java_2_example.domain.category.entity.Category;
 import com.sparta.bootcamp.java_2_example.domain.category.mapper.CategoryMapper;
 import com.sparta.bootcamp.java_2_example.domain.category.repository.CategoryRepository;
-import jakarta.validation.Valid;
+import com.sparta.bootcamp.java_2_example.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +20,7 @@ public class CategoryService {
 
     private final CategoryMapper categoryMapper;
     private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
 
     @Transactional(readOnly = true)
     public List<CategoryHierarchyResponse> getAllHierarchy() {
@@ -61,6 +62,18 @@ public class CategoryService {
         return categoryMapper.toResponse(category);
     }
 
+    @Transactional
+    public void delete(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_CATEGORY));
+
+        ensurerChildCategoriesDoNotExist(category);
+
+        ensurerCategoryNotUsedInProducts(category);
+
+        categoryRepository.delete(category);
+    }
+
     private List<CategoryHierarchyResponse> getCategoryHierarchy() {
         List<Category> categories = categoryRepository.findAll();
 
@@ -95,6 +108,18 @@ public class CategoryService {
     private void ensureNotSelfReference(Long categoryId, Long parentId) {
         if (Objects.equals(categoryId, parentId)) {
             throw new ServiceException(ServiceExceptionCode.INVALID_PARENT_CATEGORY);
+        }
+    }
+
+    private void ensurerChildCategoriesDoNotExist(Category category) {
+        if (categoryRepository.existsByParent(category)) {
+            throw new ServiceException(ServiceExceptionCode.CHILD_CATEGORIES_EXIST);
+        }
+    }
+
+    private void ensurerCategoryNotUsedInProducts(Category category) {
+        if (productRepository.existsByCategory(category)) {
+            throw new ServiceException(ServiceExceptionCode.CATEGORY_HAS_PRODUCTS);
         }
     }
 
