@@ -1,8 +1,14 @@
 package com.sparta.bootcamp.java_2_example.domain.category.service;
 
+import com.sparta.bootcamp.java_2_example.common.exception.ServiceException;
+import com.sparta.bootcamp.java_2_example.common.exception.ServiceExceptionCode;
+import com.sparta.bootcamp.java_2_example.domain.category.dto.CategoryCreateRequest;
+import com.sparta.bootcamp.java_2_example.domain.category.dto.CategoryCreateResponse;
 import com.sparta.bootcamp.java_2_example.domain.category.dto.CategoryHierarchyResponse;
 import com.sparta.bootcamp.java_2_example.domain.category.entity.Category;
+import com.sparta.bootcamp.java_2_example.domain.category.mapper.CategoryMapper;
 import com.sparta.bootcamp.java_2_example.domain.category.repository.CategoryRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,11 +23,27 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CategoryService {
 
+    private final CategoryMapper categoryMapper;
     private final CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
     public List<CategoryHierarchyResponse> getAllHierarchy() {
         return getCategoryHierarchy();
+    }
+
+    @Transactional
+    public CategoryCreateResponse save(@Valid CategoryCreateRequest request) {
+        Category category = categoryMapper.toEntity(request);
+
+        if (!ObjectUtils.isEmpty(request.getParentId())) {
+            Category parent = categoryRepository.findById(request.getParentId())
+                    .orElseThrow(() -> new ServiceException(ServiceExceptionCode.NOT_FOUND_CATEGORY));
+
+            category.setParent(parent);
+        }
+
+        categoryRepository.save(category);
+        return categoryMapper.toCreateResponse(category);
     }
 
     private List<CategoryHierarchyResponse> getCategoryHierarchy() {

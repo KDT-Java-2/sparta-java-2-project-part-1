@@ -11,10 +11,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -37,6 +35,10 @@ public class Category {
   @Column(nullable = false)
   private String name;
 
+  @Column
+  private String description;
+
+  @Setter
   @JsonBackReference
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "parent_id")
@@ -52,9 +54,13 @@ public class Category {
 
   @Builder
   public Category(
-      Long id
+          Long id,
+          String name,
+          String description
   ) {
     this.id = id;
+    this.name = name;
+    this.description = description;
   }
   
 }
