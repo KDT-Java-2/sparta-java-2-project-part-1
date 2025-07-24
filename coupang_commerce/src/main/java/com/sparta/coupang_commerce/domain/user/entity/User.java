@@ -11,8 +11,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -53,7 +53,7 @@ public class User {
   private String phoneNum;     // 실제 암호화된 값
 
   @Column(nullable = false)
-  Date dateOfBirth;
+  LocalDate dateOfBirth;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
@@ -63,12 +63,12 @@ public class User {
   @Column(nullable = false, updatable = false)
   LocalDateTime createdAt;
 
-  @Column
   @UpdateTimestamp
+  @Column
   LocalDateTime updatedAt;
 
   @Builder //Entity에 한에서는 클래스에 붙이지 않는다.
-  public User(String name, String email, String passwordHash, String phoneNumHash, String phoneNum, Date dateOfBirth, GenderType gender) {
+  public User(String name, String email, String passwordHash, String phoneNumHash, String phoneNum, LocalDate dateOfBirth, GenderType gender) {
     this.name = name;
     this.email = email;
     this.passwordHash = passwordHash;

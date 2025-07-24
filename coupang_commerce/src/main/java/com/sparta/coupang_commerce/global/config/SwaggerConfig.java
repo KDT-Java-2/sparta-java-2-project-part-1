@@ -1,4 +1,4 @@
-package com.sparta.coupang_commerce.config;
+package com.sparta.coupang_commerce.global.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;

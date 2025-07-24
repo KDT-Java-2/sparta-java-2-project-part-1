@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 @Component
-@Converter
+@Converter(autoApply = false)
 public class CryptoConverter implements AttributeConverter<String, String> {
 
   private final TextEncryptor encryptor;

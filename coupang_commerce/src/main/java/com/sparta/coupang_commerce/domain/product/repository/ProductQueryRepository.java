@@ -2,6 +2,8 @@ package com.sparta.coupang_commerce.domain.product.repository;
 
 import static com.sparta.coupang_commerce.domain.category.entity.QCategory.category;
 import static com.sparta.coupang_commerce.domain.product.entity.QProduct.product;
+import static com.sparta.coupang_commerce.domain.purchase.entity.QPurchase.purchase;
+import static com.sparta.coupang_commerce.domain.purchase.entity.QPurchaseProduct.purchaseProduct;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -9,6 +11,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sparta.coupang_commerce.common.enums.PurchaseStatusType;
 import com.sparta.coupang_commerce.domain.product.entity.Product;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +49,15 @@ public class ProductQueryRepository {
         .fetchOne();
 
     return new PageImpl<>(products, pageable, total);
+  }
+
+  public Product findProductWithPurchaseStatus(Long productId) {
+    return queryFactory.select(product)
+        .from(product)
+        .leftJoin(product, purchaseProduct.product)
+        .on(product.id.eq(purchaseProduct.product.id))
+        .where(product.id.eq(productId).and(purchase.status.ne(PurchaseStatusType.COMPLETION)))
+        .fetchOne();
   }
 
   private BooleanExpression priceGoe(Integer minPrice) {

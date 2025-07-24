@@ -6,9 +6,9 @@ import com.sparta.coupang_commerce.domain.user.dto.UserResponse;
 import com.sparta.coupang_commerce.domain.user.entity.User;
 import com.sparta.coupang_commerce.domain.user.mapper.UserMapper;
 import com.sparta.coupang_commerce.domain.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor

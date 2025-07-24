@@ -4,6 +4,8 @@ import com.sparta.coupang_commerce.domain.category.entity.Category;
 import com.sparta.coupang_commerce.domain.product.dto.ProductCategoryResponse;
 import com.sparta.coupang_commerce.domain.product.dto.ProductPageResponse;
 import com.sparta.coupang_commerce.domain.product.dto.ProductResponse;
+import com.sparta.coupang_commerce.domain.product.dto.admin.ProductCreateOrUpdateRequest;
+import com.sparta.coupang_commerce.domain.product.dto.admin.ProductCreateResponse;
 import com.sparta.coupang_commerce.domain.product.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,11 +15,16 @@ public interface ProductMapper {
 
   ProductPageResponse toProductPageResponse(Product product);
 
+  @Mapping(target = "productId", source = "product.id")
+  ProductCreateResponse toProductRegistrationResponse(Product product);
+
   @Mapping(target = "id", source = "product.id")
   @Mapping(target = "name", source = "product.name")
   @Mapping(target = "price", source = "product.price")
   @Mapping(target = "category", source = "productCategoryResponse")
   ProductResponse toProductResponse(Product product, ProductCategoryResponse productCategoryResponse);
-  
+
   ProductCategoryResponse toProductCategoryResponse(Category category);
+
+  Product toCreateEntity(ProductCreateOrUpdateRequest request);
 }

@@ -10,9 +10,13 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public enum ServiceExceptionCode {
   NOT_FOUND_DATA("데이터를 찾을 수 없습니다."),
+  NOT_FOUND_CATEGORY("카테고리를 찾을 수 없습니다."),
   NOT_FOUND_USER("유저를 찾을 수 없습니다."),
   NOT_FOUND_PRODUCT("제품을 찾을 수 없습니다."),
-  INSUFFICIENT_STOCK("재고가 없습니다.");
+  INSUFFICIENT_STOCK("재고가 없습니다."),
+  CANNOT_CANCEL("취소가 불가능 합니다."),
+  CANNOT_DELETE_PRODUCT("제품 삭제가 불가능 합니다."),
+  CANNOT_DELETE_CATEGORY("카테고리 삭제가 불가능 합니다.");
 
   final String message;
 }

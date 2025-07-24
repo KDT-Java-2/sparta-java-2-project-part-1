@@ -1,6 +1,6 @@
-package com.sparta.coupang_commerce.domain.category.entity;
+package com.sparta.coupang_commerce.domain.purchase.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sparta.coupang_commerce.domain.product.entity.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,64 +10,52 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.util.StringUtils;
 
 @Table
-@Getter
 @Entity
+@Getter
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Category {
+public class PurchaseProduct {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
 
-  @Column(nullable = false)
-  String name;
-
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "purchase_id", nullable = false)
+  Purchase purchase;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "parent_id")
-  @JsonBackReference
-  Category parent;
+  @JoinColumn(name = "product_id", nullable = false)
+  Product product;
+
+  @Column
+  Integer quantity;
+
+  BigDecimal price;
 
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
   LocalDateTime createdAt;
 
-  @Column
-  @UpdateTimestamp
-  LocalDateTime updatedAt;
-
-  public Category(String name) {
-    this.name = name;
-  }
-
-  public void addParent(Category parent) {
-    this.parent = parent;
-  }
-
-  public void updateParent(Category parent) {
-    if (parent.getParent() == this) {
-
-    }
-  }
-
-  public void updateName(String name) {
-    if (!StringUtils.hasText(name)) {
-      this.name = name;
-    }
+  @Builder
+  public PurchaseProduct(Purchase purchase, Product product, Integer quantity, BigDecimal price) {
+    this.purchase = purchase;
+    this.product = product;
+    this.quantity = quantity;
+    this.price = price;
   }
 }

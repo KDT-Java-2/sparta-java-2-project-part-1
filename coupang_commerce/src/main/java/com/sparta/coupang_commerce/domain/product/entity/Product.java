@@ -35,7 +35,7 @@ public class Product { //상품
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
 
-  @Column
+  @Column(nullable = false, unique = true)
   String name;
 
   @Column
@@ -65,5 +65,25 @@ public class Product { //상품
     this.description = description;
     this.price = price;
     this.stock = stock;
+  }
+
+  public void updateProduct(String name, String description, BigDecimal price, Integer stock, Category category) {
+    this.name = name;
+    this.description = description;
+    this.price = price;
+    this.stock = stock;
+    this.category = category;
+  }
+
+  public void decreaseStock(Integer count) {
+    stock -= count;
+  }
+
+  public void increaseStock(Integer count) {
+    stock += count;
+  }
+
+  public void addCategory(Category category) {
+    this.category = category;
   }
 }
