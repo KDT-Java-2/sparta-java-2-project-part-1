@@ -13,10 +13,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -36,20 +34,25 @@ public class Product {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Setter
   @JsonBackReference
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "category_id")
   private Category category;
 
+  @Setter
   @Column(nullable = false)
   private String name;
 
+  @Setter
   @Column(columnDefinition = "TEXT")
   private String description;
 
+  @Setter
   @Column(nullable = false)
   private BigDecimal price;
 
+  @Setter
   @Column(nullable = false)
   private Integer stock;
 
@@ -57,6 +60,7 @@ public class Product {
   @CreationTimestamp
   LocalDateTime createdAt;
 
+  @Setter
   @Column(nullable = false)
   @UpdateTimestamp
   LocalDateTime updatedAt;
