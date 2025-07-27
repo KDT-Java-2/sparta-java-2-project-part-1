@@ -34,7 +34,8 @@ public class ProductQueryRepository {
                 brand.name,
                 product.description,
                 product.price,
-                product.stock
+                product.stock,
+                product.status
             ))
             .from(product)
             .join(product.brand, brand)
@@ -81,7 +82,8 @@ public class ProductQueryRepository {
                 ),
                 product.description,
                 product.price.intValue(),
-                product.stock
+                product.stock,
+                product.status
             ))
             .from(product)
             .join(product.brand, brand)

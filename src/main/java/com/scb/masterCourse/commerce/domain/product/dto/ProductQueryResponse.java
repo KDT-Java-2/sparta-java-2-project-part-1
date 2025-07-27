@@ -1,6 +1,7 @@
 package com.scb.masterCourse.commerce.domain.product.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
+import com.scb.masterCourse.commerce.common.enums.ProductStatus;
 import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,6 +23,8 @@ public class ProductQueryResponse {
 
     Integer stock;
 
+    String status;
+
     @QueryProjection
     public ProductQueryResponse(
         Long id,
@@ -29,7 +32,8 @@ public class ProductQueryResponse {
         String brand,
         String description,
         BigDecimal price,
-        Integer stock
+        Integer stock,
+        ProductStatus status
     ) {
         this.id = id;
         this.name = name;
@@ -37,5 +41,6 @@ public class ProductQueryResponse {
         this.description = description;
         this.price = price;
         this.stock = stock;
+        this.status = status.toString();
     }
 }
