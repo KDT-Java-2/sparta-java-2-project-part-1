@@ -8,10 +8,14 @@ import com.sparta.commerce_project_01.common.enums.exception.ServiceExceptionCod
 import com.sparta.commerce_project_01.domain.category.dto.CategoryRequest;
 import com.sparta.commerce_project_01.domain.category.dto.CategoryResponse;
 import com.sparta.commerce_project_01.domain.category.entity.Category;
+import com.sparta.commerce_project_01.domain.category.mapper.CategoryMapper;
 import com.sparta.commerce_project_01.domain.category.repository.CategoryRepository;
 import com.sparta.commerce_project_01.domain.product.repository.ProductRepository;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -31,6 +35,7 @@ public class CategoryService {
 
   private final CategoryRepository categoryRepository;
   private final ProductRepository productRepository;
+  private final CategoryMapper categoryMapper;
 
   private static final String CACHE_KEY_CATEGORY_STRUCT = "categoryStruct";
   private static final int CACHE_EXPIRE_SECONDS = 3600;  // 1시간
@@ -106,6 +111,7 @@ public class CategoryService {
   private List<CategoryResponse> findCategoryStruct() {
     List<CategoryResponse> rootCategories = new ArrayList<>();
     List<Category> categories = categoryRepository.findAll();
+
     categories.forEach(category -> {
       if (category.getParent() == null) {
         rootCategories.add(CategoryResponse.builder()
@@ -229,4 +235,52 @@ public class CategoryService {
       log.error("비동기 DB 저장 실패: {}", e.getMessage(), e);
     }
   }
+
+  public List<CategoryResponse> findAllCategories() {
+    List<Category> categories = categoryRepository.findAll();
+
+    Map<Long, CategoryResponse> categoryMap = categories.stream()
+        .map(categoryMapper::toCategoryResponse) // 엔티티를 DTO로 변환
+        .collect(Collectors.toMap(CategoryResponse::getId, dto -> dto));
+
+    List<CategoryResponse> rootCategories = new ArrayList<>(); // 최상위 카테고리들을 담을 리스트
+
+    // 3. 트리 구조를 재조립합니다.
+    // 모든 DTO를 순회하면서 부모-자식 관계를 연결합니다.
+    for (CategoryResponse categoryDto : categoryMap.values()) {
+      if (categoryDto.getParentId() == null || categoryDto.getParentId() == 0) {
+        // 부모 ID가 null이면 최상위 카테고리입니다.
+        rootCategories.add(categoryDto);
+      } else {
+        // 부모 ID가 있으면 해당 부모 DTO를 찾아 자식 리스트에 추가합니다.
+        CategoryResponse parentDto = categoryMap.get(categoryDto.getParentId());
+        if (parentDto != null) {
+          // 부모 DTO가 맵에 존재하는 경우에만 자식으로 추가 (데이터 무결성 문제 방지)
+          parentDto.getChildren().add(categoryDto);
+        }
+        // 만약 parentDto가 null이라면, 해당 자식 카테고리는 유효하지 않은 부모 ID를 가지고 있거나
+        // 부모 카테고리가 데이터베이스에 없는 경우입니다. (이 경우 해당 자식은 트리에 포함되지 않음)
+      }
+    }
+
+    // 4. (선택 사항) 트리 구조의 각 레벨에서 카테고리들을 정렬합니다.
+    // 예를 들어, 이름 순으로 정렬할 수 있습니다.
+    sortCategoryTree(rootCategories);
+
+    return rootCategories;
+  }
+
+  private void sortCategoryTree(List<CategoryResponse> categories) {
+    if (categories == null || categories.isEmpty()) {
+      return;
+    }
+    // 현재 레벨의 카테고리들을 이름 순으로 정렬
+    categories.sort(Comparator.comparing(CategoryResponse::getName));
+
+    // 각 카테고리의 자식 리스트도 재귀적으로 정렬
+    for (CategoryResponse category : categories) {
+      sortCategoryTree(category.getChildren());
+    }
+  }
+
 }

@@ -4,9 +4,11 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 @Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryResponse {
 
@@ -18,17 +20,19 @@ public class CategoryResponse {
 
   final Long parentId;
 
-  final List<CategoryResponse> categories;
+  final Integer depth;
+
+  final List<CategoryResponse> children;
 
   @Builder
-  public CategoryResponse(Long id, String name, String description, Long parentId,
+  public CategoryResponse(Long id, String name, String description, Long parentId, Integer depth,
       List<CategoryResponse> categories) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.parentId = parentId;
-    this.categories = categories;
+    this.depth = depth;
+    this.children = categories;
   }
-
 }
 

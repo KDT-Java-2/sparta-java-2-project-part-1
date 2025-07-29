@@ -6,10 +6,15 @@ import com.sparta.commerce_project_01.domain.category.entity.Category;
 import com.sparta.commerce_project_01.domain.category.repository.CategoryRepository;
 import com.sparta.commerce_project_01.domain.product.dto.ProductRequest;
 import com.sparta.commerce_project_01.domain.product.dto.ProductResponse;
+import com.sparta.commerce_project_01.domain.product.dto.ProductSearchResponse;
 import com.sparta.commerce_project_01.domain.product.entity.Product;
+import com.sparta.commerce_project_01.domain.product.mapper.ProductMapper;
+import com.sparta.commerce_project_01.domain.product.repository.ProductQueryRepository;
 import com.sparta.commerce_project_01.domain.product.repository.ProductRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductService {
 
   private final ProductRepository productRepository;
+  private final ProductQueryRepository productQueryRepository;
+  private final ProductMapper mapper;
   private final CategoryRepository categoryRepository;
 
   @Transactional
@@ -109,5 +116,17 @@ public class ProductService {
     if (requestedQuantity > product.getStock()) {
       throw new ServiceException(ServiceExceptionCode.PRODUCT_OUT_OF_STOCK);
     }
+  }
+
+  @Transactional(readOnly = true)
+  public Page<ProductSearchResponse> findAll(
+      Long categoryId,
+      Integer minPrice,
+      Integer maxPrice,
+      Pageable pageable
+  ) {
+    return productQueryRepository.findProducts(categoryId, minPrice, maxPrice, pageable).map(
+        mapper::toResponse
+    );
   }
 }
