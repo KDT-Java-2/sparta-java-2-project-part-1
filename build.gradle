@@ -32,6 +32,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.session:spring-session-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
+
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
@@ -42,6 +47,7 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 
     runtimeOnly 'com.mysql:mysql-connector-j'
+    implementation 'redis.clients:jedis:4.3.1'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     compileOnly 'org.projectlombok:lombok'
@@ -55,12 +61,8 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:5.4.0'
-    // JUnit 5와 Mockito를 통합해주는 라이브러리 (권장)
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.12.0' // 최신 버전 사용 권장
-
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.12.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-
 }
 
 tasks.named('test') {

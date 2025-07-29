@@ -1,5 +1,6 @@
 package com.sparta.commerce_project_01.domain.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sparta.commerce_project_01.common.enums.UserRole;
 import com.sparta.commerce_project_01.common.enums.UserStatus;
 import com.sparta.commerce_project_01.domain.purchase.entity.Purchase;
@@ -61,15 +62,15 @@ public class User {
 
   @Column
   @Setter
-  boolean isAcceptTerms;
+  boolean acceptTerms;
 
   @Column
   @Setter
-  boolean isAcceptPrivacy;
+  boolean acceptPrivacy;
 
   @Column
   @Setter
-  boolean isAcceptMarketing;
+  boolean acceptMarketing;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
@@ -81,13 +82,15 @@ public class User {
 
   @Column(nullable = false, updatable = false)
   @CreationTimestamp
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
   LocalDateTime createdAt;
 
   @Column(nullable = false)
   @UpdateTimestamp
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
   LocalDateTime updatedAt;
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private List<Purchase> purchases;
 
   @Builder // 생성자의 순서와 상관없이 객체를 생성할 수 있다
@@ -96,17 +99,16 @@ public class User {
       String email,
       String passwordHash,
       String cellPhone,
-      boolean isAcceptTerms,
-      boolean isAcceptPrivacy,
-      boolean isAcceptMarketing
+      boolean acceptTerms,
+      boolean acceptPrivacy,
+      boolean acceptMarketing
   ) {
     this.name = name;
     this.email = email;
     this.passwordHash = passwordHash;
     this.cellPhone = cellPhone;
-    this.isAcceptTerms = isAcceptTerms;
-    this.isAcceptPrivacy = isAcceptPrivacy;
-    this.isAcceptMarketing = isAcceptMarketing;
-
+    this.acceptTerms = acceptTerms;
+    this.acceptPrivacy = acceptPrivacy;
+    this.acceptMarketing = acceptMarketing;
   }
 }

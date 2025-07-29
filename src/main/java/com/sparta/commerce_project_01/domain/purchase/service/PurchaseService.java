@@ -5,10 +5,14 @@ import com.sparta.commerce_project_01.common.enums.exception.ServiceExceptionCod
 import com.sparta.commerce_project_01.domain.purchase.dto.PurchaseCancelRequest;
 import com.sparta.commerce_project_01.domain.purchase.dto.PurchaseCancelResponse;
 import com.sparta.commerce_project_01.domain.purchase.dto.PurchaseRequest;
+import com.sparta.commerce_project_01.domain.purchase.dto.PurchaseSearchCondition;
+import com.sparta.commerce_project_01.domain.purchase.dto.PurchaseSearchResponse;
 import com.sparta.commerce_project_01.domain.purchase.entity.Purchase;
+import com.sparta.commerce_project_01.domain.purchase.repository.PurchaseMapperRepository;
 import com.sparta.commerce_project_01.domain.purchase.repository.PurchaseRepository;
 import com.sparta.commerce_project_01.domain.user.entity.User;
 import com.sparta.commerce_project_01.domain.user.repository.UserRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +26,7 @@ public class PurchaseService {
 
   private final UserRepository userRepository;
   private final PurchaseRepository purchaseRepository;
+  private final PurchaseMapperRepository purchaseMapperRepository;
 
   @Transactional
   public Purchase purchase(PurchaseRequest request) {
@@ -35,6 +40,11 @@ public class PurchaseService {
   public PurchaseCancelResponse cancel(PurchaseCancelRequest request) {
     // user 검증은 Auth 에서 수행 했다고 가정
     return purchaseCancelService.cancelPurchase(request.getPurchaseId(), request.getUserId());
+  }
+
+  public List<PurchaseSearchResponse> findPurchaseWithPagination(
+      PurchaseSearchCondition condition) {
+    return purchaseMapperRepository.findPurchaseWithPagination(condition);
   }
 
 }

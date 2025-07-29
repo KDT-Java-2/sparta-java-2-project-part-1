@@ -12,7 +12,6 @@ import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
 @Getter
-@Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL) // null필드는 JSON에서 제외
@@ -31,4 +30,16 @@ public class ProductResponse {
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
   LocalDateTime updatedAt;
+
+  @Builder
+  public ProductResponse(Long id, String name, String description, BigDecimal price, Integer stock,
+      Long categoryId, String image) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.price = price;
+    this.stock = stock;
+    this.categoryId = categoryId;
+    this.image = image;
+  }
 }

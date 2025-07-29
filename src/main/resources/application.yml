@@ -24,7 +24,17 @@ spring:
     # 마이그레이션 파일 위치 지정 (기본값)
     locations: classpath:db/migration
     #baseline-on-migrate: true # 기존에 테이블이 있는 DB에 Flyway를 처음 적용할 때 사용
-
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: # 비밀번호가 없다면 비워둡니다.
+      # timeout: 1s
+      # database: 0
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      write-dates-as-timestamps: false
 # 로깅 설정은 spring 아래가 아닌 최상위 레벨에 위치해야 합니다
 logging:
   level:
@@ -34,5 +44,12 @@ springdoc:
   swagger-ui:
     enabled: true
 
+# 내장웹서버 설정
 server:
   port: 8080
+  servlet:
+    session:
+      cookie:
+        http-only: true
+mybatis:
+  mapper-locations: classpath:mappers/*.xml

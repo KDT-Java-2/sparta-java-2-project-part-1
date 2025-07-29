@@ -6,12 +6,16 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PACKAGE)
 public class UserCreateRequest {
 
@@ -19,9 +23,11 @@ public class UserCreateRequest {
   @Size(min = 2, max = 20)
   String name;
 
+  @NotNull
   @Email
   String email;
 
+  @NotNull
   String password;
 
   @Pattern(regexp = "\\d{11}$", message = "Phone number must be 11 digit")
@@ -30,7 +36,7 @@ public class UserCreateRequest {
   @Min(value = 18, message = "Age must be greater than 18")
   Integer age;
 
-  boolean isAcceptTerms;
-  boolean isAcceptPrivacy;
-  boolean isAcceptMarketing;
+  boolean acceptTerms;
+  boolean acceptPrivacy;
+  boolean acceptMarketing;
 }

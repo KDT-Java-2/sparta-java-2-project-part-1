@@ -10,9 +10,17 @@ import com.sparta.commerce_project_01.domain.user.entity.User;
 import com.sparta.commerce_project_01.domain.user.mapper.UserMapper;
 import com.sparta.commerce_project_01.domain.user.repository.UserQueryRepository;
 import com.sparta.commerce_project_01.domain.user.repository.UserRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,9 +28,15 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
+  private final EntityManager entityManager;
+  private final JdbcTemplate jdbcTemplate;
+  private final UserMapper userMapper;
+  private final PasswordEncoder passwordEncoder;  // BCryptPasswordEncoder 주입
+
   private final UserRepository userRepository;
   private final UserQueryRepository userQueryRepository;
-  private final UserMapper userMapper;
+
+  private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
   @Transactional(readOnly = true)
   public UserResponse getUserById(Long id) {
@@ -37,11 +51,13 @@ public class UserService {
     return userMapper.toResponse(user);
   }
 
+  @Transactional(readOnly = true)
   public void delete(Long id) {
     User user = getUser(id);
     userRepository.delete(user);
   }
 
+  @Transactional
   public void update(Long id, UserUpdateRequest request) {
     User user = getUser(id);
 
@@ -57,23 +73,69 @@ public class UserService {
         .orElseThrow(() -> new ServiceException(ServiceExceptionCode.USER_NOT_FOUND));
   }
 
-  public void create(@Valid UserCreateRequest request) {
 
-    userRepository.save(User.builder()
+  @Transactional
+  public UserResponse create(@Valid UserCreateRequest request) {
+
+    Optional<User> savedUser;
+    userRepository.findByEmail(request.getEmail())
+        .ifPresent(user -> {
+          throw new ServiceException(ServiceExceptionCode.USER_ALREADY_EXIST);
+        });
+
+    String hashedPassword = passwordEncoder.encode(request.getPassword());
+
+    User user = userRepository.save(User.builder()
         .name(request.getName())
         .email(request.getEmail())
-        .passwordHash(request.getPassword()) // TODO: 패스워드 암호화 필요
+        .passwordHash(hashedPassword)
         .cellPhone(request.getCellPhone())
-        .isAcceptTerms(request.isAcceptTerms())
-        .isAcceptPrivacy(request.isAcceptPrivacy())
-        .isAcceptMarketing(request.isAcceptMarketing())
+        .acceptTerms(request.isAcceptTerms())
+        .acceptPrivacy(request.isAcceptPrivacy())
+        .acceptMarketing(request.isAcceptMarketing())
         .build());
 
-//    userRepository.save(userMapper.toEntity(request));
+    log.info("User created: {}", user);
+    return userMapper.toResponse(user);
   }
 
   @Transactional
   public Page<UserSearchResponse> searchAllUser() {
     return null;
   }
+
+  @Transactional
+  public void saveAllUsers(List<User> users) {
+    String sql = "INSERT INTO user (name, email, password_hash) VALUES (?, ?, ?)";
+
+    jdbcTemplate.batchUpdate(sql, users, 1000, (ps, user) -> {
+      LocalDateTime now = LocalDateTime.now();
+      ps.setString(1, user.getName());
+      ps.setString(2, user.getEmail());
+      ps.setString(3, user.getPasswordHash());
+    });
+  }
+
+  @Transactional
+  public void saveAllUsersWithEntityManager(List<User> users) {
+    int batchSize = 1000;
+    for (int i = 0; i < users.size(); i++) {
+      User user = users.get(i);
+      entityManager.persist(user);
+
+      // 1000건마다 DB에 반영하고 메모리를 비운다.
+      if ((i + 1) % batchSize == 0) {
+        // 1. DB에 쿼리 전송 (데이터 저장) : AUTO INCREMENT 필드 문제 해결해야함
+        // -> DB가 SEQUENCE를 지원하고 SEQUENCE로 설정되어야함 (mysql은  SEQUENCE 지원안함)
+        entityManager.flush();
+        // 2. 영속성 컨텍스트 초기화 (메모리 확보)
+        entityManager.clear();
+      }
+    }
+    // 루프 종료 후 남은 데이터 처리
+    entityManager.flush();
+    entityManager.clear();
+  }
+
+
 }

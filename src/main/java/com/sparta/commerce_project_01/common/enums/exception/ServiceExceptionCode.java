@@ -23,7 +23,11 @@ public enum ServiceExceptionCode {
   PRODUCT_OUT_OF_STOCK("해당 상품 재고가 없습니다"),
 
   PURCHASE_NOT_FOUND("구매내역을 찾을수 없습니다"),
-  PURCHASE_CANNOT_CANCEL("구매내역을 취소할 수 없습니다");
+  PURCHASE_CANNOT_CANCEL("구매내역을 취소할 수 없습니다"),
+
+  CATEGORY_INVAILD_PARENTID("자기는 부모카테고리로 정할 수 없습니다"),
+  CATEGORY_NOT_FOUND("해당 카테고리를 찾을수 없습니다"),
+  CATEGORY_DELETE_FAIL("카테고리를 삭제할 수 없습니다");
 
   final String message;
 }

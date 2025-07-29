@@ -12,7 +12,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -22,17 +21,25 @@ public class ProductService {
   private final CategoryRepository categoryRepository;
 
   @Transactional
-  public void save(ProductRequest request) {
+  public ProductResponse save(ProductRequest request) {
     Category category = categoryRepository.findById(request.getCategoryId())
         .orElseThrow(() -> new ServiceException(ServiceExceptionCode.PRODUCT_NOT_FOUND));
 
-    productRepository.save(Product.builder()
+    Product product = productRepository.save(Product.builder()
         .category(category)
         .name(request.getName())
         .description(request.getDescription())
         .price(request.getPrice())
         .stock(request.getStock())
         .build());
+
+    return ProductResponse.builder()
+        .name(product.getName())
+        .description(product.getDescription())
+        .price(product.getPrice())
+        .stock(product.getStock())
+        .categoryId(product.getCategory().getId())
+        .build();
   }
 
   @Transactional
@@ -47,25 +54,37 @@ public class ProductService {
         .description(product.getDescription())
         .price(product.getPrice())
         .stock(product.getStock())
-        .createdAt(product.getCreatedAt())
         .build();
   }
 
-  public Void delete(Long productId) {
-    if (ObjectUtils.isEmpty(productId)) {
-      // 예외 발생전에 필요한 조치 할 수 있는 영역
-      throw new ServiceException(ServiceExceptionCode.PRODUCT_NOT_FOUND);
-    }
-    productRepository.deleteById(productId);
+  public void delete(Long productId) {
+    Product product = getProductById(productId);
 
-    // ??
-    return null;
+    productRepository.delete(product);
+
   }
 
-  public ProductResponse update(Long productId, ProductRequest productRequest) {
-    return null;
-  }
+  public ProductResponse update(Long productId, ProductRequest request) {
+    Product product = getProductById(productId);
+    Category category = categoryRepository.getCategoryById(request.getCategoryId());
 
+    product.setName(request.getName());
+    product.setDescription(request.getDescription());
+    product.setPrice(request.getPrice());
+    product.setStock(request.getStock());
+    product.setCategory(category);
+
+    productRepository.save(product);
+
+    return ProductResponse.builder()
+        .id(product.getId())
+        .categoryId(product.getCategory().getId())
+        .name(product.getName())
+        .description(product.getDescription())
+        .price(product.getPrice())
+        .stock(product.getStock())
+        .build();
+  }
 
   @Transactional
   public List<ProductResponse> getAll() {
@@ -77,8 +96,18 @@ public class ProductService {
             .description(product.getDescription())
             .price(product.getPrice())
             .stock(product.getStock())
-            .createdAt(product.getCreatedAt())
             .build()))
         .toList();
+  }
+
+  Product getProductById(Long id) {
+    return productRepository.findById(id)
+        .orElseThrow(() -> new ServiceException(ServiceExceptionCode.PRODUCT_NOT_FOUND));
+  }
+
+  void validateStock(Product product, int requestedQuantity) {
+    if (requestedQuantity > product.getStock()) {
+      throw new ServiceException(ServiceExceptionCode.PRODUCT_OUT_OF_STOCK);
+    }
   }
 }

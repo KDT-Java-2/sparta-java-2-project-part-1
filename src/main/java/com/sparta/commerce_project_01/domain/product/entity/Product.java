@@ -14,10 +14,11 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -28,65 +29,71 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Getter
 @DynamicInsert
 @DynamicUpdate
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
 
+  @Setter
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "category_id")
+  Category category;
+
+  @Setter
   @Column(nullable = false)
   String name;
 
+  @Setter
   @Column(columnDefinition = "TEXT")
   String description;
 
+  @Setter
   @Column(nullable = false)
   BigDecimal price;
 
   @Column(nullable = false)
   Integer stock;
 
-  @Column
-  String image;
-
-  @Column
-  boolean onSale = false;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "category_id")
-  Category category;
-
-
   @Column(nullable = false, updatable = false)
   @CreationTimestamp
-  private LocalDateTime createdAt;
+  LocalDateTime createdAt;
 
   @Column(nullable = false)
   @UpdateTimestamp
-  private LocalDateTime updatedAt;
+  LocalDateTime updatedAt;
+
+//  @Version
+//  private Integer version;
 
   @Builder
   public Product(
+      Category category,
       String name,
       String description,
       BigDecimal price,
-      Integer stock,
-      Category category
+      Integer stock
   ) {
+    this.category = category;
     this.name = name;
     this.description = description;
     this.price = price;
     this.stock = stock;
-    this.category = category;
   }
 
   public void reduceStock(Integer quantity) {
     this.stock -= quantity;
   }
 
-  public void increaseStock(int quantity) {
+  public void increaseStock(Integer quantity) {
     this.stock += quantity;
+  }
+
+  public void setStock(Integer stock) {
+    if (stock > 0) {
+      this.stock = stock;
+    }
   }
 }

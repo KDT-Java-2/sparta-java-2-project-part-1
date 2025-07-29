@@ -8,21 +8,20 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Getter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PACKAGE)
 public class ProductRequest {
 
-  @NonNull
-  Long categoryId;
-
-  @NonNull
+  @NotNull
   String name;
 
+  @NotNull
   String description;
 
   @NotNull
@@ -32,6 +31,9 @@ public class ProductRequest {
   @NotNull
   @PositiveOrZero // 갑을 양수 또는 0으로 제한
   Integer stock;
+
+  @NotNull
+  Long categoryId;
 
   String image;
 }

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/products")
+@RequestMapping("/api/admin/products")
 public class ProductController {
 
   private final ProductService productService;
@@ -28,10 +28,8 @@ public class ProductController {
   private final CategoryProductQueryRepository categoryProductQueryRepository;
 
   @PostMapping
-  public ApiResponse<Void> save(@Valid @RequestBody ProductRequest productRequest) {
-
-    productService.save(productRequest);
-    return ApiResponse.success();
+  public ApiResponse<ProductResponse> save(@Valid @RequestBody ProductRequest productRequest) {
+    return ApiResponse.success(productService.save(productRequest));
   }
 
   @GetMapping
@@ -52,7 +50,8 @@ public class ProductController {
 
   @DeleteMapping("/{id}")
   public ApiResponse<Void> delete(@PathVariable Long id) {
-    return ApiResponse.success(productService.delete(id));
+    productService.delete(id);
+    return ApiResponse.success();
   }
 
   @GetMapping("/by-category?categoryName={categoryName}")
