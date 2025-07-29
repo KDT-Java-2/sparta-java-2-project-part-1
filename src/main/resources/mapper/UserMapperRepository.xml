@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace=" com.sparta.commerce_project_01.domain.user.repository.UserMapperRepository">
+
+  <select id="getUserById" parameterType="long"
+    resultType="com.sparta.commerce_project_01.domain.user.dto.SearchUserDto">
+    SELECT id,
+           name,
+           email,
+           cellphone,
+           role,
+           status,
+           created_at,
+           updated_at
+    FROM users
+    WHERE id = #{id}
+  </select>
+
+  <select id="getUserBynameAndEmail" parameterType="long"
+    resultType="com.sparta.commerce_project_01.domain.user.dto.SearchUserDto">
+    SELECT id,
+    name,
+    email,
+    cellphone,
+    role,
+    status,
+    created_at,
+    updated_at
+    FROM users
+    <!--    <where>-->
+    <!--      <if test="name !=null"> name = #{name}</if>-->
+    <!--      <if test="email !=null">AND email = #{email}</if>-->
+    <!--    </where>>-->
+    <!--        -->
+    <where>
+      <choose>
+        <when test="name !=null">name = #{name}</when>
+        <when test="email !=null">email = #{email}</when>
+        <otherwise>1=1</otherwise>
+      </choose>
+    </where>
+  </select>
+
+
+  <insert id="insertUser"
+    parameterType="com.sparta.commerce_project_01.domain.user.dto.UserDto">
+    INSERT INTO user
+    VALUES (#{name}, #{email}, #{password_hash}, now(), now())
+  </insert>
+
+  <insert id="insertUsers"
+    parameterType="com.sparta.commerce_project_01.domain.user.dto.UserDto">
+    INSERT INTO user VALUES
+    <foreach collection="users" item="user" separator=",">
+      (#{name}, #{email}, #{password_hash}, now(), now())
+    </foreach>
+  </insert>
+
+  <update id="updateUser"
+    parameterType="com.sparta.commerce_project_01.domain.user.dto.UserDto">
+    UPDATE user
+    SET name = #{email}
+    WHERE id = #{id}
+  </update>
+
+  <delete id="deleteUser" parameterType="Long">
+    DELETE
+    user WHERE id =
+    #{id}
+  </delete>
+
+
+  <select id="getUserWithPagination"
+    parameterType="com.sparta.commerce_project_01.domain.user.dto.SearchUserRequestWithPagination"
+    resultType="com.sparta.commerce_project_01.domain.user.dto.SearchUserDto">
+    SELECT id,
+           name,
+           email,
+           cellphone,
+           role,
+           status,
+           created_at,
+           updated_at
+    FROM users
+    ORDER BY id
+      LIMTI #{limit}
+    OFFSET #{offset}
+  </select>
+
+</mapper>
