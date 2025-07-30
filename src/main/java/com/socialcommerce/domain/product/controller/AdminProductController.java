@@ -22,7 +22,6 @@ public class AdminProductController {
 
   private final AdminProductService adminProductService;
 
-  // AdminProductController (관리자용)
   @PostMapping
   public ApiResponse<ProductIdResponse> createProduct(@RequestBody @Valid ProductCreateRequest request) {
     ProductIdResponse result = adminProductService.createProduct(request);
@@ -35,7 +34,7 @@ public class AdminProductController {
     return ApiResponse.success(result);
   }
 
-  @DeleteMapping
+  @DeleteMapping("/{productId}")
   public ApiResponse<Void> deleteProduct(@PathVariable Long productId){
     adminProductService.deleteProduct(productId);
     return ApiResponse.success();

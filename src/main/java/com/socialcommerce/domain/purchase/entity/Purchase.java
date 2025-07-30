@@ -37,7 +37,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @DynamicUpdate
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Purchase { // 주문
+public class Purchase {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,13 +48,12 @@ public class Purchase { // 주문
   @JsonBackReference
   User user;
 
-  // 소수점 등 정확한 숫자로 할때 사용하기 좋다.
   @Column
   BigDecimal totalPrice;
 
-  @Enumerated(EnumType.STRING)  // 실제 들어갈때 Enum 에 있는 글자 그대로 들어감
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
-  PurchaseStatus status;  // 실제 컬럼상에는 VARCHAR(20)
+  PurchaseStatus status;
 
   @Column(nullable = false, columnDefinition = "TEXT")
   String shippingAddress;

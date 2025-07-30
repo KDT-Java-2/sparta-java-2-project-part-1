@@ -1,7 +1,6 @@
 package com.socialcommerce.domain.product.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.socialcommerce.domain.category.entity.Category;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;

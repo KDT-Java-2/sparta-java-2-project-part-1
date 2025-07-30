@@ -16,12 +16,11 @@ public class CategoryService {
   public List<CategoryTreeResponse> getCategoryHierarchy(){
     List<Category> allCategories = categoryRepository.findAll();
 
-    // 1. 최상위 카테고리만 추리기
     List<Category> roots = allCategories.stream()
         .filter(c -> c.getParent() == null)
         .toList();
 
-    // 2. 트리형 DTO 변환(재귀)
+    // 2. 트리형 DTO 변환
     return roots.stream()
         // 람다식으로 쓸 때
         .map(category -> this.toTreeResponse(category))

@@ -22,8 +22,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "coupon")
 @DynamicInsert
 @DynamicUpdate
-@NoArgsConstructor  // 빈생성자를 만들어준다. 항상 있는데 귀찮기 때문에
-@FieldDefaults(level = AccessLevel.PRIVATE) // 모든 접근 제한이 private 으로 바뀐다.
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Coupon {
     @Id
     @GeneratedValue
@@ -33,7 +33,7 @@ public class Coupon {
     @Column(nullable = false, length = 100)
     String name;
 
-    // 원화가 아닌 다른 화폐를 사용한다면 소수점도 포함되야함.
+    // 원화가 아닌 다른 화폐를 사용한다면 소수점도 포함.
     @Column(name = "discount_amount", precision = 10, scale = 2)
     BigDecimal discountAmount;
 

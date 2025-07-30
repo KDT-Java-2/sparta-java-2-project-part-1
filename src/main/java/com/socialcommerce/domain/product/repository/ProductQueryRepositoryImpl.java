@@ -25,7 +25,6 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
   ) {
     QProduct product = QProduct.product;
 
-    // QueryDSL 동적 쿼리 예시
     List<Product> content = queryFactory
         .selectFrom(product)
         .where(

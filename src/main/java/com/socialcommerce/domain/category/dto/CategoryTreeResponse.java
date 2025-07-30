@@ -16,5 +16,5 @@ import lombok.experimental.FieldDefaults;
 public class CategoryTreeResponse {
   Long id;
   String name;
-  List<CategoryTreeResponse> children;  // List<Category>가 아니라 List<CategoryTreeResponse>로
+  List<CategoryTreeResponse> children;
 }

@@ -1,5 +1,6 @@
 package com.socialcommerce.domain.product.repository;
 
+import com.socialcommerce.domain.category.entity.Category;
 import com.socialcommerce.domain.product.dto.ProductResponse;
 import com.socialcommerce.domain.product.entity.Product;
 import java.util.Optional;
@@ -12,4 +13,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
   Optional<Product> findById(@NotNull Long id);
 
   Optional<Product> findByName(@NotNull String name);
+
+  boolean existsByCategory(Category category);
 }

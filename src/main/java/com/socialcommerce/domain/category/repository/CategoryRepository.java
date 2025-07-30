@@ -7,4 +7,5 @@ import com.socialcommerce.domain.category.entity.Category;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
   // List<Category> findAll();
+  boolean existsByParent(Category parent);
 }

@@ -26,8 +26,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "coupon_usage")
 @DynamicInsert
 @DynamicUpdate
-@NoArgsConstructor  // 빈생성자를 만들어준다. 항상 있는데 귀찮기 때문에
-@FieldDefaults(level = AccessLevel.PRIVATE) // 모든 접근 제한이 private 으로 바뀐다.
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CouponUsage {
     @Id @GeneratedValue
     Long id;

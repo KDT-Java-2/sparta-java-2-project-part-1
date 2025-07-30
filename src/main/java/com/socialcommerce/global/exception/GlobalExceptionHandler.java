@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
   }
 
   // 웹에서는 Request/Response 로 넘어오기전에 필터가있는데 이는 Spring 에서는 잡지 못한다.
-  // 그때 잡을수있는 에러 핸들러이다
+  // 그때 잡을수있는 에러 핸들러이다 @ExceptionHandler
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<?> methodArgumentNotValidException(MethodArgumentNotValidException ex) {
     AtomicReference<String> errors = new AtomicReference<>("");
@@ -39,8 +39,6 @@ public class GlobalExceptionHandler {
     return ApiResponse.badRequest(VALIDATE_ERROR, String.valueOf(errors));
   }
 
-  // 웹에서는 Request/Response 로 넘어오기전에 필터가있는데 이는 Spring 에서는 잡지 못한다.
-  // 그때 잡을수있는 에러 핸들러이다
   @ExceptionHandler(BindException.class)
   public ResponseEntity<?> bindException(BindException ex) {
     AtomicReference<String> errors = new AtomicReference<>("");

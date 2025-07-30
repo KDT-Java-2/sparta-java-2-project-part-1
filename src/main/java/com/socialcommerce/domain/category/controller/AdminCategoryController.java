@@ -5,6 +5,7 @@ import com.socialcommerce.domain.category.dto.CategoryRequest;
 import com.socialcommerce.domain.category.dto.CategoryResponse;
 import com.socialcommerce.domain.category.service.AdminCategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,9 +26,15 @@ public class AdminCategoryController {
     return ApiResponse.success(categoryId);
   }
 
-  @PutMapping("/categoryId")
+  @PutMapping("/{categoryId}")
   public ApiResponse<CategoryResponse> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryRequest request){
     CategoryResponse categoryResponse = adminCategoryService.updateCategory(categoryId, request);
     return ApiResponse.success(categoryResponse);
+  }
+
+  @DeleteMapping("/{categoryId}")
+  public ApiResponse<Void> deleteCategory(@PathVariable Long categoryId){
+    adminCategoryService.deleteCategory(categoryId);
+    return ApiResponse.success();
   }
 }

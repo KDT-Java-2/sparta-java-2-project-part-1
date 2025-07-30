@@ -30,7 +30,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @DynamicUpdate
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Product {  // 상품
+public class Product {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,7 +69,6 @@ public class Product {  // 상품
     this.category = category;
   }
 
-  // setter는 안 쓰고, 명시적 update 메서드를 만들기
   public void updateProduct(String name, String description, BigDecimal price, Integer stock, Category category) {
     this.name = name;
     this.description = description;
