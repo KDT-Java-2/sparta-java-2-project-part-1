@@ -3,6 +3,7 @@ package com.socialcommerce.domain.cart.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.socialcommerce.domain.product.entity.Product;
 import com.socialcommerce.domain.user.entity.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,8 +12,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,13 +45,8 @@ public class Cart {
   @JsonBackReference
   User user;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "product_id", nullable = false)
-  @JsonBackReference
-  Product product;
-
-  @Column(nullable = false)
-  int quantity;
+  @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+  List<CartItem> cartItems = new ArrayList<>();
 
   @Column(nullable = false, updatable = false)
   @CreationTimestamp
@@ -57,10 +56,34 @@ public class Cart {
   @UpdateTimestamp
   LocalDateTime updatedAt;
 
+//  @ManyToOne(fetch = FetchType.LAZY)
+//  @JoinColumn(name = "product_id", nullable = false)
+//  @JsonBackReference
+//  Product product;
+//
+//  @Column(nullable = false)
+//  int quantity;
+//
+//  @Column(nullable = false, updatable = false)
+//  @CreationTimestamp
+//  LocalDateTime createdAt;
+//
+//  @Column
+//  @UpdateTimestamp
+//  LocalDateTime updatedAt;
+
   @Builder
-  public Cart(User user, Product product, int quantity) {
+  public Cart(User user) {
     this.user = user;
-    this.product = product;
-    this.quantity = quantity;
+  }
+
+  public void addItem(CartItem item) {
+    cartItems.add(item);
+    item.setCart(this);
+  }
+
+  public void removeItem(CartItem item) {
+    cartItems.remove(item);
+    item.setCart(null);
   }
 }

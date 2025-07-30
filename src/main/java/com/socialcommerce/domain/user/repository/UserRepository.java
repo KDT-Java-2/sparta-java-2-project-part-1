@@ -11,4 +11,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   // find 와 get 의 차이점은 get 은 반드시있고, find 는 있을수도 없을수도 있다로 정의된다.
   Optional<User> findByNameAndEmail(String name, String email);
   boolean existsByEmail(String email);
+
+  Optional<User> findByEmail(String email);
 }
