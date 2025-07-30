@@ -11,10 +11,8 @@ import com.socialcommerce.domain.product.dto.ProductResponse;
 import com.socialcommerce.domain.product.entity.Product;
 import com.socialcommerce.domain.product.repository.ProductRepository;
 import com.socialcommerce.domain.purchase.repository.PurchaseProductRepository;
-import com.socialcommerce.domain.purchase.repository.PurchaseRepository;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

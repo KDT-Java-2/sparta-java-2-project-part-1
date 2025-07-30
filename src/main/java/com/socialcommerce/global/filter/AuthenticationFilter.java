@@ -78,15 +78,19 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     filterChain.doFilter(request, response);
   }
 
+  // TODO: 추후 빌드시 추가 및 변경필요
   private boolean isAuthenticationRequired(String requestURI) {
     // 인증이 필요하지 않은 경로들
     String[] excludePaths = {
-//        "/api/admin/categories",
-        "/api/auth/login",
-        "/api/auth/logout",
-        "/api/auth/status",
+        "/api/admin/login",
+        "/api/admin/logout",
+        "/api/admin/products",
+        "/api/admin/categories",
+        "/api/admin/status",
         "/api/users",
         "/api/users/availability",
+        "/api/products",
+        "/api/categories",
         "/swagger-ui",
         "/v3/api-docs",
         "/actuator",

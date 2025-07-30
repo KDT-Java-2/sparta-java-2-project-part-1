@@ -29,7 +29,7 @@ public class UserCreateRequest {
   @JsonFormat(pattern = "yyyy-MM-dd")
   LocalDate dateOfBirth;
   @NotNull
-  Gender gender;
+  Gender gender;  // 'MALE', 'FEMALE', 'NONE'
   @NotBlank
   String phoneNumberHash;
   @NotBlank

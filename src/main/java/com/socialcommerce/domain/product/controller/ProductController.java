@@ -31,7 +31,7 @@ public class ProductController {
     return ApiResponse.success(result);
   }
 
-  @GetMapping("/productId")
+  @GetMapping("/{productId}")
   public ApiResponse<ProductResponse> findProduct(@PathVariable Long productId){
     ProductResponse result = productService.findProduct(productId);
     return ApiResponse.success(result);

@@ -54,6 +54,8 @@ public class ProductService {
         .price(product.getPrice())
         .stock(product.getStock())
         .categoryId(product.getCategory().getId())
+        .createdAt(product.getCreatedAt())
+        .updatedAt(product.getUpdatedAt())
         .build();
   }
 
