@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -78,33 +79,61 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     filterChain.doFilter(request, response);
   }
 
-  // TODO: 추후 빌드시 추가 및 변경필요
+  private static final AntPathMatcher pathMatcher = new AntPathMatcher();
+
   private boolean isAuthenticationRequired(String requestURI) {
-    // 인증이 필요하지 않은 경로들
     String[] excludePaths = {
-        "/api/admin/login",
-        "/api/admin/logout",
-        "/api/admin/products",
-        "/api/admin/categories",
-        "/api/admin/status",
+        "/api/products/**",
+        "/swagger-ui/**",
+        "/v3/api-docs/**",
+        "/api/admin/**",
+        "/swagger-ui/**",
+        "/v3/api-docs/**",
         "/api/users",
         "/api/users/availability",
         "/api/products",
         "/api/categories",
-        "/swagger-ui",
-        "/v3/api-docs",
         "/actuator",
-        "/public"
-    };
+        "/public",
+  };
 
-    for (String excludePath : excludePaths) {
-      if (requestURI.startsWith(excludePath)) {
+    for (String pattern : excludePaths) {
+      if (pathMatcher.match(pattern, requestURI)) {
         return false;
       }
     }
 
     return true;
   }
+
+
+  // TODO: 추후 빌드시 추가 및 변경필요
+//  private boolean isAuthenticationRequired(String requestURI) {
+//    // 인증이 필요하지 않은 경로들
+//    String[] excludePaths = {
+//        "/api/admin/login",
+//        "/api/admin/logout",
+//        "/api/admin/products",
+//        "/api/admin/categories",
+//        "/api/admin/status",
+//        "/api/users",
+//        "/api/users/availability",
+//        "/api/products",
+//        "/api/categories",
+//        "/swagger-ui/**",
+//        "/v3/api-docs/**",
+//        "/actuator",
+//        "/public"
+//    };
+//
+//    for (String excludePath : excludePaths) {
+//      if (requestURI.startsWith(excludePath)) {
+//        return false;
+//      }
+//    }
+//
+//    return true;
+//  }
 
   private void sendUnauthorizedResponse(HttpServletResponse response, String message)
       throws IOException {

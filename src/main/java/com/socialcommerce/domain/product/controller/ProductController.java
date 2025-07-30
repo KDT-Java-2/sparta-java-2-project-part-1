@@ -3,6 +3,7 @@ package com.socialcommerce.domain.product.controller;
 import com.socialcommerce.common.response.ApiResponse;
 import com.socialcommerce.domain.product.dto.ProductResponse;
 import com.socialcommerce.domain.product.service.ProductService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;

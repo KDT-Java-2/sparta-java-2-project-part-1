@@ -12,6 +12,10 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(
     info = @Info(title = "My API Docs", description = "API 명세서", version = "v1")
 )
+//@OpenAPIDefinition(
+//    info = @Info(title = "My API Docs", description = "API 명세서", version = "v1"),
+//    security = { @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "jwtAuth") }
+//)
 @Configuration
 public class SwaggerConfig {
 
