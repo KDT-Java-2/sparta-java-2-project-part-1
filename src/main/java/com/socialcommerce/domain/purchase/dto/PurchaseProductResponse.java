@@ -1,8 +1,6 @@
 package com.socialcommerce.domain.purchase.dto;
 
-
-import jakarta.validation.constraints.NotNull;
-import java.util.List;
+import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Getter
-//@Builder
-//@AllArgsConstructor
-//@NoArgsConstructor
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PurchaseRequest {
-//  @NotNull
-//  Long userId;
-//  @NotNull
-//  List<PurchaseProductRequest> purchaseProducts;
+public class PurchaseProductResponse {
+  private Long productId;
+  private String productName;
+  private int quantity;
+  private BigDecimal price;
 }

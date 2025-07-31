@@ -1,4 +1,4 @@
-package com.socialcommerce.domain.coupon;
+package com.socialcommerce.domain.coupon.entity;
 
 import com.socialcommerce.domain.purchase.entity.Purchase;
 import com.socialcommerce.domain.user.entity.User;

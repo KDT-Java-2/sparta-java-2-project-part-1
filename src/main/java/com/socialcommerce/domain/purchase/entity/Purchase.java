@@ -3,9 +3,10 @@ package com.socialcommerce.domain.purchase.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import com.socialcommerce.common.enums.PurchaseStatus;
-import com.socialcommerce.domain.coupon.Coupon;
+import com.socialcommerce.domain.coupon.entity.Coupon;
 import com.socialcommerce.domain.refund.entity.Refund;
 import com.socialcommerce.domain.user.entity.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,10 +17,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -58,6 +61,9 @@ public class Purchase {
   @Column(nullable = false, columnDefinition = "TEXT")
   String shippingAddress;
 
+  @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
+  List<PurchaseProduct> purchaseProducts;
+
   // 전체환불
   @OneToOne(mappedBy = "purchase", fetch = FetchType.LAZY)
   Refund refund;
@@ -84,5 +90,10 @@ public class Purchase {
 
   public void setStatus(PurchaseStatus status) {
      this.status = status;
+  }
+
+  public void addPurchaseProduct(PurchaseProduct pp) {
+    this.purchaseProducts.add(pp);
+    pp.setPurchase(this);
   }
 }

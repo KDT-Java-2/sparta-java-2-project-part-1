@@ -2,6 +2,7 @@ package com.socialcommerce.domain.purchase.controller;
 
 import com.socialcommerce.common.response.ApiResponse;
 import com.socialcommerce.domain.purchase.dto.PurchaseRequest;
+import com.socialcommerce.domain.purchase.dto.PurchaseResponse;
 import com.socialcommerce.domain.purchase.service.PurchaseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class PurchaseController {
   private final PurchaseService purchaseService;
 
-//  @PostMapping("/from-cart")
-//  public ApiResponse<PurchaseResponse> createPurchase(@RequestBody @Valid PurchaseRequest request){
-//    PurchaseResponse purchaseResponse = purchaseService.createPurchase(request);
-//    return ApiResponse.success(purchaseResponse);
-//  }
+  @PostMapping("/from-cart")
+  public ApiResponse<PurchaseResponse> createPurchaseFromCart(@RequestBody @Valid PurchaseRequest request){
+    PurchaseResponse purchaseResponse = purchaseService.createPurchaseFromCart(request);
+    return ApiResponse.success(purchaseResponse);
+  }
 }
