@@ -52,16 +52,16 @@ public class SecurityConfig {
     http
         .cors(withDefaults())
         .csrf(AbstractHttpConfigurer::disable)
-//        .authorizeHttpRequests(authorize -> authorize
-//            .requestMatchers(SECURITY_EXCLUDE_PATHS).permitAll()  // 정의된 경로는 인증없이 접근허용설정
-//            .requestMatchers("/api/user").hasRole("USER") // ROLE_ 접두사 자동 추가
-//            .requestMatchers("/api/admin").hasRole("ADMIN") // ROLE_ 접두사 자동 추가
-//            .anyRequest().authenticated() // 그 외 모든 요청은 인증된 사용자만 접근
-//        )
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers(SECURITY_EXCLUDE_PATHS).permitAll()
-            .anyRequest().permitAll()
+            .requestMatchers(SECURITY_EXCLUDE_PATHS).permitAll()  // 정의된 경로는 인증없이 접근허용설정
+            .requestMatchers("/api/user").hasRole("USER") // ROLE_ 접두사 자동 추가
+            .requestMatchers("/api/admin").hasRole("ADMIN") // ROLE_ 접두사 자동 추가
+            .anyRequest().authenticated() // 그 외 모든 요청은 인증된 사용자만 접근
         )
+//        .authorizeHttpRequests(authorize -> authorize
+//            .requestMatchers(SECURITY_EXCLUDE_PATHS).permitAll()
+//            .anyRequest().permitAll()
+//        )
         .sessionManagement(session -> session
             .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // 세션이 필요할 경우에만 생성
             .maximumSessions(1) // 한 사용자가 동시에 가질 수 있는 세션 수를 1로 제한
