@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -18,7 +19,6 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.Id;
 
 @Entity
 @Table(name = "cart_item")
@@ -50,17 +50,23 @@ public class CartItem {
 
   @Builder
   public CartItem(
+      Cart cart,
       Product product,
       int quantity) {
+    this.cart = cart;
     this.product = product;
     this.quantity = quantity;
   }
 
   public void addQuantity(int qty) {
-    this.quantity += qty;
+    if(qty >= 0){
+      this.quantity += qty;
+    }
   }
 
   public void changeQuantity(int qty) {
-    this.quantity = qty;
+    if(qty >= 0){
+      this.quantity = qty;
+    }
   }
 }

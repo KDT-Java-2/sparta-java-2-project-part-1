@@ -1,5 +1,6 @@
 package com.socialcommerce.domain.cart.dto;
 
+import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,5 +17,5 @@ public class CartItemResponse {
   private Long productId;
   private String productName;
   private int quantity;
-  private int price;
+  private BigDecimal price;
 }

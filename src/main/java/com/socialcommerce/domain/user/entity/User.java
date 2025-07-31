@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -37,7 +38,16 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 //@Table(name = "user") // 테이블명(db.migration 안에있는 .sql 안에 테이블명..)과 클래스명이 완전히 같으면 생략이 가능
-public class User {
+public class User implements Serializable {
+
+  /*
+  * Spring Security는 로그인 인증 후
+    CustomUserDetails 객체 전체를 세션(혹은 Redis 세션)에 저장함.
+    이때 내부에 있는 User user도 함께 세션에 직렬화되어 저장되어야 함
+    User 엔티티가 implements Serializable을 안 하고 있으면 직렬화 에러 발생!
+  * */
+
+  private static final long serialVersionUID = 1L; // 직렬화버전 고정해두기 (명시적으로 써주면 더 안전)
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

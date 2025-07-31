@@ -77,13 +77,13 @@ public class Cart {
     this.user = user;
   }
 
-  public void addItem(CartItem item) {
-    cartItems.add(item);
+  public void addCartItem(CartItem item) {
     item.setCart(this);
+    this.cartItems.add(item);
   }
 
   public void removeItem(CartItem item) {
-    cartItems.remove(item);
     item.setCart(null);
+    this.cartItems.remove(item);
   }
 }

@@ -3,6 +3,8 @@ package com.socialcommerce.global.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socialcommerce.common.response.ApiResponse;
 import com.socialcommerce.domain.auth.dto.CustomUserDetails;
+import com.socialcommerce.domain.user.entity.User;
+import com.socialcommerce.domain.user.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -27,6 +30,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
    *
    * */
   private final ObjectMapper objectMapper;
+  private final UserRepository userRepository;
 
   private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AuthenticationFilter.class);
 
@@ -53,7 +57,16 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             if (!ObjectUtils.isEmpty(userId) && !ObjectUtils.isEmpty(email)) {
               // 세션 정보가 있으면 Spring Security 컨텍스트에 설정
               // 실제로는 CustomUserDetailsService를 통해 UserDetails를 가져와야 함
-              log.info("Session authentication found for user: {}", email);
+              // 세션에 사용자 정보가 존재 → SecurityContext에 Authentication 수동 주입 필요
+              User user = userRepository.findById(userId)
+                  .orElseThrow(() -> new RuntimeException("세션에 저장된 userId가 존재하지만 DB에 없음"));
+
+              CustomUserDetails userDetails = new CustomUserDetails(user); // 여기서 User 주입
+              UsernamePasswordAuthenticationToken authenticationToken =
+                  new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+              SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+              log.info("Session 인증 정보로 SecurityContext 설정 완료: {}", email);
             } else {
               sendUnauthorizedResponse(response, "Authentication required");
               return;
@@ -83,6 +96,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
   private boolean isAuthenticationRequired(String requestURI) {
     String[] excludePaths = {
+        "/api/auth/**",
         "/api/products/**",
         "/swagger-ui/**",
         "/v3/api-docs/**",
