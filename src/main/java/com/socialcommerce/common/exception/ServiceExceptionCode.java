@@ -11,8 +11,10 @@ import lombok.experimental.FieldDefaults;
 public enum ServiceExceptionCode {
   NOT_FOUND_PRODUCT("상품을 찾을 수 없습니다."),
   NOT_FOUND_CART("장바구니 정보를 찾을 수 없습니다."),
+  IS_EMPTY_CART_ITEMS("장바구니가 비었습니다."),
   NOT_FOUND_PURCHASE("구매정보를 찾을 수 없습니다."),
   INSUFFICIENT_STOCK("상품의 재고가 부족합니다."),
+  NOT_FOUND_COUPON("쿠폰이 존재하지 않습니다."),
   NOT_FOUND_USER("유저를 찾을 수 없습니다."),
   NOT_FOUND_DATA("데이터를 찾을 수 없습니다."),
   DUPLICATE_EMAIL("이메일이 중복되었습니다."),

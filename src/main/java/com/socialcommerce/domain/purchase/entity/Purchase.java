@@ -81,11 +81,12 @@ public class Purchase {
   LocalDateTime updatedAt;
 
   @Builder
-  public Purchase(User user, BigDecimal totalPrice, PurchaseStatus status, String shippingAddress) {
+  public Purchase(User user, BigDecimal totalPrice, PurchaseStatus status, String shippingAddress, Coupon coupon) {
     this.user = user;
     this.totalPrice = totalPrice;
     this.status = status;
     this.shippingAddress = shippingAddress;
+    this.coupon = coupon;
   }
 
   public void setStatus(PurchaseStatus status) {
