@@ -1,0 +1,11 @@
+-- V2__create_purchase_table.sql
+
+CREATE TABLE IF NOT EXISTS purchase (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    total_price DECIMAL(19,2) NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT fk_purchase_user FOREIGN KEY (user_id) REFERENCES user(id)
+);
