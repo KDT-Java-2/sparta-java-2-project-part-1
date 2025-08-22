@@ -16,6 +16,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -25,6 +26,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table
 @Entity
 @Getter
+@Setter
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
@@ -73,6 +75,17 @@ public class Product {
     this.description = description;
     this.price = price;
     this.stock = stock;
+  }
+
+  public void setCategory(Category category) {
+    this.category = category;
+  }
+
+  public void decreaseStock(Integer quantity) {
+    if (this.stock < quantity) {
+      throw new IllegalArgumentException("재고가 부족합니다.");
+    }
+    this.stock -= quantity;
   }
 
 }
