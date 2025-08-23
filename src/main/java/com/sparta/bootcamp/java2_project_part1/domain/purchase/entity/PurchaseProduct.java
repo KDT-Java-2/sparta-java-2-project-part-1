@@ -1,0 +1,69 @@
+package com.sparta.bootcamp.java2_project_part1.domain.purchase.entity;
+
+import com.sparta.bootcamp.java2_project_part1.common.enums.PurchaseProductStatus;
+import com.sparta.bootcamp.java2_project_part1.domain.product.entity.Product;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
+
+@Table(name = "purchase_product")
+@Entity
+@DynamicInsert
+@DynamicUpdate
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class PurchaseProduct {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Long id;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "purchase_id", nullable = false)
+  Purchase purchase;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "product_id", nullable = false)
+  Product product;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 20)
+  PurchaseProductStatus status;
+
+  @Column
+  BigDecimal quantity;
+
+  @Column
+  BigDecimal sellPrice;
+
+  @Column
+  BigDecimal buyPrice;
+
+  @Column
+  BigDecimal totalPrice;
+
+  @CreationTimestamp
+  @Column(nullable = false, updatable = false)
+  LocalDateTime createdAt;
+
+  @Column
+  @UpdateTimestamp
+  LocalDateTime updatedAt;
+}
