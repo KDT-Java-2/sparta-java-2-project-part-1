@@ -1,0 +1,11 @@
+CREATE TABLE cart
+(
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id    BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    price      DECIMAL(10, 2)  NOT NULL,
+    quantity   INT    NOT NULL DEFAULT 1,
+
+    created_at DATETIME        DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME        DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
