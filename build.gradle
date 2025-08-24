@@ -39,6 +39,7 @@ dependencies {
     implementation 'org.flywaydb:flyway-mysql'
 
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 
     compileOnly 'org.projectlombok:lombok'
 
@@ -48,6 +49,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -55,4 +59,9 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// build.gradle 파일 하단에 추가
+tasks.named('compileJava') {
+    options.annotationProcessorPath = configurations.annotationProcessor
 }
